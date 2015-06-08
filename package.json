@@ -1,0 +1,11 @@
+{
+  "name": "mockcs",
+  "version": "0.0.0",
+  "dependencies": {
+    "gulp": "latest",
+    "gulp-connect": "latest"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  }
+}
