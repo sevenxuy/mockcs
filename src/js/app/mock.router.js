@@ -14,6 +14,7 @@ define(function(require, exports, module) {
   require('mock.view.rawonline');
   require('mock.view.rawpending');
   require('mock.view.rawfail');
+  require('mock.view.rawdel');
   require('mock.view.adhomepage');
   require('mock.view.addetail');
   require('mock.view.adoponline');
@@ -26,10 +27,10 @@ define(function(require, exports, module) {
   var AppRouter = Backbone.Router.extend({
     routes: {
       '(login)': 'login',
-      'homepage':'homepage',
-      'mocks':'mockme',
-      'mocks/(me)':'mockme',
-      'mocks/square':'mocksquare',
+      'homepage': 'homepage',
+      'mocks': 'mockme',
+      'mocks/(me)': 'mockme',
+      'mocks/square': 'mocksquare',
       'msg': 'msg',
       'msgs': 'msglatest',
       'msgs/(latest)': 'msglatest',
@@ -42,15 +43,16 @@ define(function(require, exports, module) {
       'raw/(online)': 'rawonline',
       'raw/pending': 'rawpending',
       'raw/fail': 'rawfail',
-      'ads':'adhomepage',
-      'ads/(homepage)':'adhomepage',
-      'ads/detail':'addetail',
+      'raw/del': 'rawdel',
+      'ads': 'adhomepage',
+      'ads/(homepage)': 'adhomepage',
+      'ads/detail': 'addetail',
       'adop': 'adoponline',
       'adop/(online)': 'adoponline',
       'adop/pending': 'adoppending',
       'adop/fail': 'adopfail',
-      'trafad':'trafad',
-      'trafuser':'trafuser'
+      'trafad': 'trafad',
+      'trafuser': 'trafuser'
     }
   });
 
@@ -193,7 +195,17 @@ define(function(require, exports, module) {
     showNav();
   });
 
-   router.on('route:adhomepage', function() {
+  router.on('route:rawdel', function() {
+    $('div.current').removeClass('current').addClass('hide');
+    if ($('#rawdel').data('widgetCreated')) {
+      $('#rawdel').rawdel('reRender');
+    } else {
+      $('#rawdel').rawdel();
+    }
+    showNav();
+  });
+
+  router.on('route:adhomepage', function() {
     $('div.current').removeClass('current').addClass('hide');
     if ($('#adhomepage').data('widgetCreated')) {
       $('#adhomepage').adhomepage('reRender');
@@ -203,7 +215,7 @@ define(function(require, exports, module) {
     showNav();
   });
 
-   router.on('route:addetail', function() {
+  router.on('route:addetail', function() {
     $('div.current').removeClass('current').addClass('hide');
     if ($('#addetail').data('widgetCreated')) {
       $('#addetail').addetail('reRender');
@@ -214,7 +226,7 @@ define(function(require, exports, module) {
   });
 
 
-   router.on('route:adoponline', function() {
+  router.on('route:adoponline', function() {
     $('div.current').removeClass('current').addClass('hide');
     if ($('#adoponline').data('widgetCreated')) {
       $('#adoponline').adoponline('reRender');

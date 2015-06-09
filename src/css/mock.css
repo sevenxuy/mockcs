@@ -120,6 +120,7 @@
     vertical-align: middle;
     width: 100%;
   }
+  
   .mock-forgetpwd {
     font-size: 13px;
     margin-bottom: 10px;
@@ -129,6 +130,7 @@
   .mock-keep {
     display: inline-block;
   }
+  
   .mock-forgetpwd {
     display: inline-block;
     float: right;
@@ -428,12 +430,11 @@
     border-bottom: 1px solid #e7e7eb;
   }
   
-  .mock-title{
+  .mock-title {
     font-size: 16px;
     height: 60px;
     line-height: 60px;
   }
-
   
   .mock-upload-table {
     background: #fff;
@@ -520,6 +521,7 @@
     background: none;
     border-bottom: 1px solid #e7e7eb;
   }
+  
   .bg-warning {
     font-size: 12px;
     color: #f8991d;
@@ -644,7 +646,8 @@
     line-height: 60px;
     background: #63a2ef;
   }
- .hp-avatar > img {
+  
+  .hp-avatar > img {
     max-width: 96%;
     max-height: 96%;
   }

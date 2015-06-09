@@ -12,6 +12,7 @@ define(function(require, exports, module) {
       h.push('<li class="tab-nav-item"><a href="#raw/online">已上线</a></li>');
       h.push('<li class="tab-nav-item"><a href="#raw/pending">待审核</a></li>');
       h.push('<li class="tab-nav-item tab-nav-item-selected"><a href="#raw/fail">未通过审核</a></li>');
+      h.push('<li class="tab-nav-item"><a href="#raw/del">已删除</a></li>');
       h.push('</ul>');
       h.push('<div class="tabs-content">');
       h.push('<div class="mock-search-box"><input type="search" placeholder="按关键词搜索" class="form-control mock-search"><div class="mock-search-icon"></div></div>');

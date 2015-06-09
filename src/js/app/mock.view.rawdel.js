@@ -2,7 +2,7 @@ define(function(require, exports, module) {
   'use strict';
   var _view = require('mock.view');
 
-  $.widget('mock.rawpending', _view, {
+  $.widget('mock.rawdel', _view, {
     options: {},
     _createElem: function() {
       var h = [];
@@ -10,9 +10,9 @@ define(function(require, exports, module) {
       h.push('<div class="page-content">');
       h.push('<ul class="tabs-nav">');
       h.push('<li class="tab-nav-item"><a href="#raw/online">已上线</a></li>');
-      h.push('<li class="tab-nav-item tab-nav-item-selected"><a href="#raw/pending">待审核</a></li>');
+      h.push('<li class="tab-nav-item"><a href="#raw/pending">待审核</a></li>');
       h.push('<li class="tab-nav-item"><a href="#raw/fail">未通过审核</a></li>');
-      h.push('<li class="tab-nav-item"><a href="#raw/del">已删除</a></li>');
+      h.push('<li class="tab-nav-item tab-nav-item-selected"><a href="#raw/del">已删除</a></li>');
       h.push('</ul>');
       h.push('<div class="tabs-content">');
       h.push('<div class="mock-search-box"><input type="search" placeholder="按关键词搜索" class="form-control mock-search"><div class="mock-search-icon"></div></div>');
@@ -35,5 +35,5 @@ define(function(require, exports, module) {
       });
     }
   });
-  module.exports = $.mock.rawpending;
+  module.exports = $.mock.rawdel;
 });
