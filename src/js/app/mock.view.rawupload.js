@@ -11,7 +11,7 @@ define(function(require, exports, module) {
   $.widget('mock.rawupload', _view, {
     options: {
       uploadfile: '/umis/pushc/uploadfile',
-      addaudinews: '/mock/addaudinews'
+      addaudinews: 'http://uil.shahe.baidu.com/mock/addaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0'
     },
 
     render: function() {
@@ -36,13 +36,13 @@ define(function(require, exports, module) {
       h.push('<div class="mock-title">吐槽能量池</div>');
       h.push('<table class="table table-bordered mock-upload-table"><tbody>');
       h.push('<tr><td>标题*</td><td><div class="mock-input-box"><input type="text" maxlength="18" class="form-control" id="upload-title"><span class="mock-input-tip">最多18字符</span></div></td></tr>');
-      h.push('<tr><td>广场图</td><td><div class="bg-warning">最小宽度640px， 最大高度1080px，宽高比在1~2之间， 最佳宽高比是3:2。</div><div class="upload-img-box"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-img-tx" id="upload-simg"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传广场图</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div></td></tr>');
+      h.push('<tr><td>广场图</td><td><div class="bg-warning">图片尺寸要求：最小宽度640px， 最大高度1080px，宽高比在1~2之间， 最佳宽高比是3:2。</div><div class="upload-img-box"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-img-tx" id="upload-simg" style="resize: vertical;"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传广场图</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div></td></tr>');
       h.push('<tr><td>摘要*</td><td><div class="mock-textarea-box"><textarea class="form-control upload-desc" cols="3" maxlength="100" id="upload-desc"></textarea><span class="mock-input-tip">最多100字符</span></div></td>');
       h.push('</tbody>');
       h.push('</table>');
       h.push('<div class="mock-title">吐槽放大镜</div>');
       h.push('<table class="table table-bordered mock-upload-table">');
-      h.push('<tr><td>主图</td><td><div class="bg-warning">宽度720px， 高度2048px。</div><div class="upload-img-box"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-img-tx" id="upload-img"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传主图</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div></td></tr>');
+      h.push('<tr><td>主图</td><td><div class="bg-warning">图片尺寸要求：宽度720px， 高度2048px。</div><div class="upload-img-box"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-img-tx" id="upload-img" style="resize: vertical;"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传主图</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div></td></tr>');
       h.push('<tr><td>正文*</td><td><textarea id="upload-content" class="form-control"></textarea></td></tr>');
       h.push('<tr><td>内容类型</td><td>');
       h.push('<select class="form-control" id="upload-type"><option value="0" selected="selected">资讯</option><option value="1">PK</option><option value="2">投票</option></select>');
@@ -53,32 +53,38 @@ define(function(require, exports, module) {
       h.push('<div class="upload-vote hide" id="upload-vote">');
       h.push('<div class="upload-vote-box" id="upload-vote-box">');
       h.push('<div class="upload-vote-item">');
+
       h.push('<div class="mock-input-box"><input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符"><span class="mock-input-tip">最多20字符</span></span></span></div><div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>');
-      h.push('<div class="upload-img-box hide"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-img-tx upload-vote-img"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传图片</div><div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div>');
-      h.push('</div>');
+      h.push('<div class="upload-img-box-wrapper hide">');
+      h.push('<div class="bg-warning">图片尺寸要求：宽度200px，高度200px。</div>');
+      h.push('<div class="upload-img-box"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-img-tx upload-vote-img" style="resize: vertical;"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传图片</div><div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div>');
+      h.push('</div></div>');
       h.push('<div class="upload-vote-item">');
       h.push('<div class="mock-input-box"><input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符"><span class="mock-input-tip">最多20字符</span></span></span></div><div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>');
-      h.push('<div class="upload-img-box hide"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-img-tx upload-vote-img"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传图片</div><div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div>');
-      h.push('</div>');
+      h.push('<div class="upload-img-box-wrapper hide">');
+      h.push('<div class="bg-warning">图片尺寸要求：宽度200px，高度200px。</div>');
+      h.push('<div class="upload-img-box"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-img-tx upload-vote-img" style="resize: vertical;"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传图片</div><div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div>');
+      h.push('</div></div>');
       h.push('<div class="upload-vote-item">');
       h.push('<div class="mock-input-box"><input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符"><span class="mock-input-tip">最多20字符</span></span></span></div><div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>');
-      h.push('<div class="upload-img-box hide"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-img-tx upload-vote-img"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传图片</div><div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div>');
-      h.push('</div>');
+      h.push('<div class="upload-img-box-wrapper hide">');
+      h.push('<div class="bg-warning">图片尺寸要求：宽度200px，高度200px。</div>');
+      h.push('<div class="upload-img-box"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-img-tx upload-vote-img" style="resize: vertical;"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传图片</div><div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div>');
+      h.push('</div></div>');
       h.push('</div>');
       h.push('<div class="mock-btn mock-btn-red" id="upload-vote-additem">+ 添加投票观点</div>');
       h.push('</div>');
       h.push('</td></tr>');
-      h.push('<tr><td>是否置顶</td><td><div class="checkbox"><label><input type="checkbox">置顶</label></div></td></tr>'); // fa-toggle-on
       h.push('<tr><td>上线时间*</td><td><input class="form-control" type="text" id="upload-uptime"></td></tr>');
       h.push('</table>');
       h.push('<div class="mock-center-box"><div class="mock-btn mock-btn-red" id="upload-submit">提交审核</div></div>');
+      h.push('<img id="upload-img-check" class="upload-img-check" style="width:0;height:0" src="">');
       h.push('</div>');
       return h.join('');
     },
     _bindEvents: function() {
       this._on(this.element, {
         'change #upload-type': this._changeType,
-        'click .fa-toggle-off': this._toggleTop,
         'click div.upload-vote-item-addimg': this._addImg,
         'click div.upload-vote-item-clearimg': this._clearImg,
         'click #upload-vote-additem': this._addVoteItem,
@@ -125,11 +131,10 @@ define(function(require, exports, module) {
     _addImg: function(event) {
       var
         $item = $(event.target).closest('div.upload-vote-item'),
-        $imgbox = $item.children('div.upload-img-box');
+        $imgbox = $item.children('div.upload-img-box-wrapper');
       if ($imgbox.hasClass('hide')) {
         $imgbox.removeClass('hide');
       }
-
       return false;
     },
     _clearImg: function(event) {
@@ -142,8 +147,10 @@ define(function(require, exports, module) {
       var h = [];
       h.push('<div class="upload-vote-item">');
       h.push('<div class="mock-input-box"><input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符"><span class="mock-input-tip">最多20字符</span></div><div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>');
-      h.push('<div class="upload-img-box hide"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-vote-img"></textarea><div class="mock-btn mock-btn-red">上传图片</div><div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div><input type="file" class="hide"></div><div class="upload-img-preivew"></div></div>');
-      h.push('</div>');
+      h.push('<div class="upload-img-box-wrapper hide">');
+      h.push('<div class="bg-warning">图片尺寸要求：宽度200px，高度200px。</div>');
+      h.push('<div class="upload-img-box"><div class="upload-img"><textarea placeholder="图片链接" class="form-control upload-vote-img" style="resize: vertical;"></textarea><div class="mock-btn mock-btn-red">上传图片</div><div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div><input type="file" class="hide"></div><div class="upload-img-preivew"></div></div>');
+      h.push('</div></div>');
       $('#upload-vote-box').append(h.join(''));
     },
     _triggerUploadImg: function(event) {
@@ -152,7 +159,6 @@ define(function(require, exports, module) {
       return false;
     },
     _uploadImg: function(event) {
-      console.log(0);
       var
         self = this,
         options = this.options,
@@ -197,23 +203,20 @@ define(function(require, exports, module) {
           $tx.val(newsrc);
           autosize($tx);
 
-          if (bNeedCompress) {
-            var $img = $('<img>');
-            $img.src = newsrc;
-            var
-              w = img.offsetWidth,
-              h = img.offsetHeight,
-              key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + newsrc);
-            if ($tx.id == 'upload-img') {
-              options.img_w = w;
-              options.img_h = h;
-            }
-            console.log(w + '_' + h);
-            $.getJSON('http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + newsrc).done(function(data) {
+          var newImg = new Image(),
+            w, h;
+          newImg.onload = function() {
+            h = newImg.height;
+            w = newImg.width;
 
-            });
+            self._checkImgSize($tx, w, h);
+
+            if (bNeedCompress) {
+              self._compressImg($tx, newsrc, w, h);
+            }
+            $tx.trigger('change');
           }
-          $tx.trigger('change');
+          newImg.src = newsrc;
         } else {
           notify({
             tmpl: 'error',
@@ -222,6 +225,41 @@ define(function(require, exports, module) {
         }
       }).fail(function() {});
       return false;
+    },
+    _checkImgSize: function($tx, w, h) {
+      var options = this.options;
+      if (($tx.attr('id') == 'upload-simg') && ((w < 640) || (h > 1080) || (w / h > 2) || (w / h < 1))) {
+        notify({
+          tmpl: 'error',
+          text: '广场图尺寸要求是：最小宽度640px， 最大高度1080px，宽高比在1~2之间，最佳宽高比是3:2。'
+        });
+        $tx.val('');
+        return false;
+      } else {
+        options.img_w = w;
+        options.img_h = h;
+      }
+      if (($tx.attr('id') == 'upload-img') && ((w != 720) || (h != 2048))) {
+        notify({
+          tmpl: 'error',
+          text: '主图尺寸要求是：尺寸要求：宽度720px， 高度2048px。'
+        });
+        $tx.val('');
+        return false;
+      }
+      if ($tx.hasClass('upload-vote-img') && ((w != 200) || (h != 200))) {
+        notify({
+          tmpl: 'error',
+          text: '投票观点配图要求是：尺寸要求：宽度720px， 高度2048px。'
+        });
+        $tx.val('');
+        return false;
+      }
+    },
+    _compressImg: function($tx, newsrc, w, h) {
+      var key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + newsrc);
+      $tx.val('http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + newsrc);
+      autosize($tx);
     },
     _previewImg: function(event) {
       var
@@ -290,12 +328,14 @@ define(function(require, exports, module) {
       var img = $('#upload-img').val().trim();
 
       var content = $('#upload-content').val().trim();
-      if (!uptime.length) {
+      if (!content.length) {
         notify({
           tmpl: 'error',
           text: '请输入正文。'
         });
         return false;
+      } else {
+        content = _.escape(content);
       }
 
       var type = $('#upload-type').val();
@@ -354,15 +394,7 @@ define(function(require, exports, module) {
         default:
           ext = '';
       }
-
-      var top;
-      if ($('#upload-top').hasClass('fa-toggle-on')) {
-        top = true;
-      } else {
-        top = false;
-      }
-
-      var uptime = $('#uptime').val().trim();
+      var uptime = $('#upload-uptime').val().trim();
       if (!uptime.length) {
         notify({
           tmpl: 'error',
@@ -370,26 +402,39 @@ define(function(require, exports, module) {
         });
         return false;
       }
+      var rawdata = {
+        img: img,
+        img_w: '' + (options.img_w || 0),
+        img_h: '' + (options.img_h || 0),
+        simg: simg,
+        title: title,
+        desc: desc,
+        content: content,
+        type: type,
+        uptime: uptime,
+        ext: ext
+      };
 
       $.ajax({
         url: options.addaudinews,
+        crossDomain: true,
+        dataType: 'jsonp',
         data: {
-          img: img,
-          img_w: options.img_w,
-          img_h: options.img_h,
-          simg: simg,
-          title: title,
-          desc: desc,
-          content: content,
-          type: type,
-          top: top,
-          uptime: uptime,
-          ext: ext
+          data: JSON.stringify(rawdata)
         }
       }).done(function(res) {
-
+        if (!res.errno) {
+          var router = new Backbone.Router;
+          router.navigate('raw/pending', {
+            trigger: true
+          });
+        } else {
+          notify({
+            tmpl: 'error',
+            text: res.error
+          });
+        }
       }).fail(function(res) {});
-
       return false;
     }
   });
