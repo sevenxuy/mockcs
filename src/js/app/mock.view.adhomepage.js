@@ -45,7 +45,7 @@ define(function(require, exports, module) {
       h.push('</div>');
       h.push('<div class="modal-body">');
       h.push('<table class="table table-bordered mock-upload-table mock-aditem"><tbody>');
-      h.push('<tr><td>广场图*</td><td><div class="bg-warning">建议尺寸（待定，找PM）</div><div class="upload-img-box"><div class="upload-img"><textarea placeholder="广告图片链接" class="form-control upload-img-tx"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传广场图</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div></td></tr>');
+      h.push('<tr><td>广场图*</td><td><div class="bg-warning">图片尺寸宽720px，高140px</div><div class="upload-img-box"><div class="upload-img"><textarea placeholder="广告图片链接" class="form-control upload-img-tx"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传广场图</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div><div class="upload-img-preivew"></div></div></td></tr>');
       h.push('<tr><td>广告跳转链接*</td><td><textarea class="form-control upload-desc" cols="3" maxlength="100" id="upload-desc"></textarea></td></tr>');
       h.push('</tbody></table>');
       h.push('</div>');
