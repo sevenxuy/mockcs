@@ -520,25 +520,12 @@
     background: none;
     border-bottom: 1px solid #e7e7eb;
   }
-  
-  .fa-toggle-on,
-  .fa-toggle-off {
-    font-size: 30px;
-  }
-  
-  .fa-toggle-off {
-    color: #e7e7eb;
-  }
-  
-  .fa-toggle-on {
-    color: #ea6363;
-  }
-  
   .bg-warning {
     font-size: 12px;
     color: #f8991d;
     padding: 10px;
     margin-bottom: 6px;
+    display: inline-block;
   }
   
   .upload-pk-item,
