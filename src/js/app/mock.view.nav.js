@@ -10,7 +10,7 @@ define(function(require, exports, module) {
       h.push('<li class="menu-item">');
       h.push('<div class="menu-text"><i class="icon-menu icon-function"></i> 功能模块</div>');
       h.push('<ul class="submenu">');
-      h.push('<li class="submenu-item" data-link="#rawupload">原始内容上传</li>');
+      h.push('<li class="submenu-item" data-link="#rawedit">原始内容上传</li>');
       h.push('<li class="submenu-item" data-link="#homepage">个人主页设置</li>');
       h.push('<li class="submenu-item" data-link="#ad">广告位编辑</li>');
       h.push('<li class="submenu-item" data-link="#mocks">快速吐槽</li>');

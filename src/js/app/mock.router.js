@@ -10,7 +10,7 @@ define(function(require, exports, module) {
   require('mock.view.msgall');
   require('mock.view.fanlatest');
   require('mock.view.fanall');
-  require('mock.view.rawupload');
+  require('mock.view.rawedit');
   require('mock.view.raws');
   require('mock.view.adhomepage');
   require('mock.view.addetail');
@@ -33,7 +33,8 @@ define(function(require, exports, module) {
       'fans': 'fanlatest',
       'fans/(latest)': 'fanlatest',
       'fans/all': 'fanall',
-      'rawupload': 'rawupload',
+      'rawedit': 'rawedit',
+      'rawedit/:id': 'rawedit',
       'raws': 'raws',
       'raws/(:type)': 'raws',
       'raws/(:type)/': 'raws',
@@ -149,12 +150,15 @@ define(function(require, exports, module) {
     showNav();
   });
 
-  router.on('route:rawupload', function() {
+  router.on('route:rawedit', function(id) {
+    var opt = {
+      id: id
+    }
     $('div.current').removeClass('current').addClass('hide');
-    if ($('#rawupload').data('widgetCreated')) {
-      $('#rawupload').rawupload('reRender');
+    if ($('#rawedit').data('widgetCreated')) {
+      $('#rawedit').rawedit('reRender', opt);
     } else {
-      $('#rawupload').rawupload();
+      $('#rawedit').rawedit(opt);
     }
     showNav();
   });

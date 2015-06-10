@@ -670,3 +670,6 @@
   .page-go {
     width: 70px;
   }
+.dropdown-menu{
+  cursor: pointer;
+}

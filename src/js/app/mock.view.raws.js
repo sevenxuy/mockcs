@@ -1,11 +1,14 @@
 define(function(require, exports, module) {
   'use strict';
   var _view = require('mock.view'),
+    _util = require('mock.util'),
     notify = require('mock.plugin.notify');
 
   $.widget('mock.raws', _view, {
     options: {
       getaudinewsbyvid: 'http://uil.shahe.baidu.com/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+      audinewsdo: 'http://uil.shahe.baidu.com/mock/audinewsdo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+      deleteaudinews: 'http://uil.shahe.baidu.com/mock/deleteaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
       ps: 30
     },
     render: function(opt) {
@@ -21,7 +24,6 @@ define(function(require, exports, module) {
         url: options.getaudinewsbyvid,
         crossDomain: true,
         dataType: 'jsonp',
-        type: 'GET',
         data: {
           type: options.type,
           pn: options.pn,
@@ -47,7 +49,12 @@ define(function(require, exports, module) {
     },
     _bindEvents: function() {
       this._on(this.element, {
-        'click li.tab-nav-item': this._goPage
+        'click': this._clearPop,
+        'click li.tab-nav-item': this._goPage,
+        'click div.data-edit': this._editRaw,
+        'click div.data-audit': this._auditRaw,
+        'click a.data-del': this._delRaw,
+        'click div.data-del-btn': this._toggleDelBox
       });
     },
     _createWrapperElem: function() {
@@ -61,7 +68,7 @@ define(function(require, exports, module) {
       h.push('<li class="tab-nav-item" data-type="3"><a>已删除</a></li>');
       h.push('</ul>');
       h.push('<div class="tabs-content">');
-      h.push('<div class="mock-search-box"><input type="search" placeholder="按关键词搜索" class="form-control mock-search"><div class="mock-search-icon"></div></div>');
+      // h.push('<div class="mock-search-box"><input type="search" placeholder="按关键词搜索" class="form-control mock-search"><div class="mock-search-icon"></div></div>');
       h.push('<table class="table table-bordered table-hover" id="raws-table">');
       h.push('</table>');
       h.push('<div class="paging hide">');
@@ -98,7 +105,14 @@ define(function(require, exports, module) {
       h.push('<tbody>');
       if (!_.isEmpty(data)) {
         _.each(data, function(item, index) {
-          h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + item.uptime + '</td><td><div class="mock-btn mock-btn-red  mock-btn-s">修改</div><div class="mock-btn mock-btn-red  mock-btn-s">提交</div></td></tr>');
+          h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td>');
+          h.push('<div class="mock-btn mock-btn-red  mock-btn-s data-audit" data-id="' + item.id + '">提交</div>');
+          h.push('<div class="mock-btn mock-btn-red  mock-btn-s data-edit" data-id="' + item.id + '">修改</div>');
+          h.push('<div class="btn-group">');
+          h.push('<div class="mock-btn mock-btn-red  mock-btn-s data-del-btn">删除</div>');
+          h.push('<ul class="dropdown-menu dropdown-menu-right"><li><a class="data-del" data-id="' + item.id + '">是，确认删除。</a></li></ul>');
+          h.push('</div>');
+          h.push('</td></tr>');
         });
       } else {
         h.push('<tr><td colspan="4">没有数据</td></tr>');
@@ -112,7 +126,7 @@ define(function(require, exports, module) {
       h.push('<tbody>');
       if (!_.isEmpty(data)) {
         _.each(data, function(item, index) {
-          h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + item.uptime + '</td><td><input type="checkbox"></td></tr>');
+          h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><input type="checkbox"></td></tr>');
         });
       } else {
         h.push('<tr><td colspan="4">没有数据</td></tr>');
@@ -126,7 +140,7 @@ define(function(require, exports, module) {
       h.push('<tbody>');
       if (!_.isEmpty(data)) {
         _.each(data, function(item, index) {
-          h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + item.uptime + '</td></tr>');
+          h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
         });
       } else {
         h.push('<tr><td colspan="3">没有数据</td></tr>');
@@ -140,6 +154,78 @@ define(function(require, exports, module) {
       router.navigate('raws/' + type, {
         trigger: true
       });
+      return false;
+    },
+    _editRaw: function(event) {
+      var id = $(event.target).attr('data-id'),
+        router = new Backbone.Router;
+      router.navigate('rawedit/' + id, {
+        trigger: true
+      });
+      return false;
+    },
+    _auditRaw: function(event) {
+      var options = this.options,
+        id = $(event.target).attr('data-id');
+      $.ajax({
+        url: options.audinewsdo,
+        crossDomain: true,
+        dataType: 'jsonp',
+        data: {
+          id: id,
+          tp: 3
+        }
+      }).done(function(res) {
+        if (!res.errno) {
+          $(event.target).closest('tr').remove();
+        } else {
+          notify({
+            tmpl: 'error',
+            text: res.error
+          });
+        }
+      });
+      return false;
+    },
+    _delRaw: function(event) {
+      var options = this.options,
+        id = $(event.target).attr('data-id');
+      $.ajax({
+        url: options.deleteaudinews,
+        crossDomain: true,
+        dataType: 'jsonp',
+        data: {
+          id: id
+        }
+      }).done(function(res) {
+        if (!res.errno) {
+          $(event.target).closest('tr').remove();
+        } else {
+          notify({
+            tmpl: 'error',
+            text: res.error
+          });
+        }
+      });
+      return false;
+    },
+    _toggleDelBox: function(event) {
+      var $dropdown = $(event.target).closest('div.btn-group').children('ul.dropdown-menu');
+      if ($dropdown.is(':visible')) {
+        $dropdown.css({
+          'display': 'none'
+        });
+      } else {
+        $dropdown.css({
+          'display': 'block'
+        });
+      }
+      return false;
+    },
+    _clearPop: function(event) {
+      $('ul.dropdown-menu').css({
+        'display': 'none'
+      })
       return false;
     }
   });

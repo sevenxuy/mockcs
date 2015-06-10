@@ -29,7 +29,7 @@
           <div id="msgall" class="hide"></div>
           <div id="fanlatest" class="hide"></div>
           <div id="fanall" class="hide"></div>
-          <div id="rawupload" class="hide"></div>
+          <div id="raweidt" class="hide"></div>
           <div id="raws" class="hide"></div>
           <div id="adhomepage" class="hide"></div>
           <div id="addetail" class="hide"></div>
