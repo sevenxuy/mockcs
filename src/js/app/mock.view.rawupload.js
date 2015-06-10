@@ -425,7 +425,7 @@ define(function(require, exports, module) {
       }).done(function(res) {
         if (!res.errno) {
           var router = new Backbone.Router;
-          router.navigate('raws/2', {
+          router.navigate('raws/1', {
             trigger: true
           });
         } else {
