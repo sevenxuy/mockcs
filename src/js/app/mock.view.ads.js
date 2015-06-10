@@ -15,7 +15,7 @@ define(function(require, exports, module) {
     renderTable: function() {
       var self = this,
         options = this.options;
-      this.updateNavStatus();
+      this._updateWrapperElemStatus();
       $.ajax({
         url: options.getmyadlist,
         crossDomain: true,
@@ -28,7 +28,9 @@ define(function(require, exports, module) {
         }
       }).done(function(res) {
         if (!res.errno) {
-          $('#ads-table').addClass('hide').empty().append(self._createTableElem(res.data)).removeClass('hide');
+          options.allcount = res.data.allcount;
+          options.totalpage = Math.ceil(options.allcount / options.ps);
+          $('#ads-table').addClass('hide').empty().append(self._createTableElem(res.data.list)).removeClass('hide');
         } else {
           notify({
             tmpl: 'error',
@@ -122,12 +124,6 @@ define(function(require, exports, module) {
         trigger: true
       });
       return false;
-    },
-    updateNavStatus: function() {
-      var options = this.options,
-        $nav = $('#ads-nav');
-      $nav.children('li.tab-nav-item-selected').removeClass('tab-nav-item-selected');
-      $nav.children('li[data-type=' + options.type + ']').addClass('tab-nav-item-selected');
     }
   });
   module.exports = $.mock.ads;

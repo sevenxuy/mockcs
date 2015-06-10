@@ -16,7 +16,7 @@ define(function(require, exports, module) {
     renderTable: function() {
       var self = this,
         options = this.options;
-      this.updateNavStatus();
+      this._updateWrapperElemStatus();
       $.ajax({
         url: options.getaudinewsbyvid,
         crossDomain: true,
@@ -29,7 +29,9 @@ define(function(require, exports, module) {
         }
       }).done(function(res) {
         if (!res.errno) {
-          $('#raws-table').addClass('hide').empty().append(self._createTableElem(res.data)).removeClass('hide');
+          options.allcount = res.data.allcount;
+          options.totalpage = Math.ceil(options.allcount / options.ps);
+          $('#raws-table').addClass('hide').empty().append(self._createTableElem(res.data.list)).removeClass('hide');
         } else {
           notify({
             tmpl: 'error',
@@ -52,10 +54,10 @@ define(function(require, exports, module) {
       var h = [];
       h.push('<div class="mock-hd">原始内容管理</div>');
       h.push('<div class="page-content">');
-      h.push('<ul class="tabs-nav" id="raws-nav">');
+      h.push('<ul class="tabs-nav">');
       h.push('<li class="tab-nav-item" data-type="2"><a>已上线</a></li>');
       h.push('<li class="tab-nav-item" data-type="1"><a>待审核</a></li>');
-      h.push('<li class="tab-nav-item" data-type="0"><a>未通过审核</a></li>');
+      h.push('<li class="tab-nav-item" data-type="0"><a>已保存</a></li>');
       h.push('<li class="tab-nav-item" data-type="3"><a>已删除</a></li>');
       h.push('</ul>');
       h.push('<div class="tabs-content">');
@@ -79,7 +81,7 @@ define(function(require, exports, module) {
       var options = this.options;
       switch (options.type) {
         case '0':
-          return this._createFailTable(data);
+          return this._createSaveTable(data);
           break;
         case '1':
         case '3':
@@ -90,13 +92,13 @@ define(function(require, exports, module) {
           break;
       }
     },
-    _createFailTable: function(data) {
+    _createSaveTable: function(data) {
       var h = [];
       h.push('<thead><tr><th>id</th><th>内容标题</th><th>上线时间</th><th>操作</th></tr></thead>');
       h.push('<tbody>');
       if (!_.isEmpty(data)) {
         _.each(data, function(item, index) {
-          h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + item.uptime + '</td><td><div class="mock-btn mock-btn-red  mock-btn-s">修改</div></td></tr>');
+          h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + item.uptime + '</td><td><div class="mock-btn mock-btn-red  mock-btn-s">修改</div><div class="mock-btn mock-btn-red  mock-btn-s">提交</div></td></tr>');
         });
       } else {
         h.push('<tr><td colspan="4">没有数据</td></tr>');
@@ -139,12 +141,6 @@ define(function(require, exports, module) {
         trigger: true
       });
       return false;
-    },
-    updateNavStatus: function() {
-      var options = this.options,
-        $nav = $('#raws-nav');
-      $nav.children('li.tab-nav-item-selected').removeClass('tab-nav-item-selected');
-      $nav.children('li[data-type=' + options.type + ']').addClass('tab-nav-item-selected');
     }
   });
   module.exports = $.mock.raws;

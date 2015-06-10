@@ -77,7 +77,7 @@ define(function(require, exports, module) {
       h.push('</td></tr>');
       h.push('<tr><td>上线时间*</td><td><input class="form-control" type="text" id="upload-uptime"></td></tr>');
       h.push('</table>');
-      h.push('<div class="mock-center-box"><div class="mock-btn mock-btn-red" id="upload-submit">提交审核</div></div>');
+      h.push('<div class="mock-center-box"><div class="mock-btn mock-btn-red" id="upload-submit">保存</div></div>');
       h.push('<img id="upload-img-check" class="upload-img-check" style="width:0;height:0" src="">');
       h.push('</div>');
       return h.join('');
@@ -429,7 +429,7 @@ define(function(require, exports, module) {
       }).done(function(res) {
         if (!res.errno) {
           var router = new Backbone.Router;
-          router.navigate('raws/1', {
+          router.navigate('raws/0', {
             trigger: true
           });
         } else {
