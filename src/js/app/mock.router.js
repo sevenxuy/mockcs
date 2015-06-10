@@ -11,10 +11,7 @@ define(function(require, exports, module) {
   require('mock.view.fanlatest');
   require('mock.view.fanall');
   require('mock.view.rawupload');
-  require('mock.view.rawonline');
-  require('mock.view.rawpending');
-  require('mock.view.rawfail');
-  require('mock.view.rawdel');
+  require('mock.view.raws');
   require('mock.view.adhomepage');
   require('mock.view.addetail');
   require('mock.view.adoponline');
@@ -39,11 +36,10 @@ define(function(require, exports, module) {
       'fans/(latest)': 'fanlatest',
       'fans/all': 'fanall',
       'rawupload': 'rawupload',
-      'raw': 'rawonline',
-      'raw/(online)': 'rawonline',
-      'raw/pending': 'rawpending',
-      'raw/fail': 'rawfail',
-      'raw/del': 'rawdel',
+      'raws': 'raws',
+      'raws/(:type)': 'raws',
+      'raws/(:type)/': 'raws',
+      'raws/(:type)/(:pn)': 'raws',
       'ads': 'adhomepage',
       'ads/(homepage)': 'adhomepage',
       'ads/detail': 'addetail',
@@ -165,42 +161,20 @@ define(function(require, exports, module) {
     showNav();
   });
 
-  router.on('route:rawonline', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#rawonline').data('widgetCreated')) {
-      $('#rawonline').rawonline('reRender');
-    } else {
-      $('#rawonline').rawonline();
+  router.on('route:raws', function(type, pn) {
+    var opt = {
+      type: type || '2',
+      pn: pn || 0
     }
-    showNav();
-  });
+    if ($('#raws').hasClass('hide')) {
+      $('div.current').removeClass('current').addClass('hide');
+      $('#raws').removeClass('hide').addClass('current');
 
-  router.on('route:rawpending', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#rawpending').data('widgetCreated')) {
-      $('#rawpending').rawpending('reRender');
-    } else {
-      $('#rawpending').rawpending();
     }
-    showNav();
-  });
-
-  router.on('route:rawfail', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#rawfail').data('widgetCreated')) {
-      $('#rawfail').rawfail('reRender');
+    if ($('#raws').data('widgetCreated')) {
+      $('#raws').raws('reRender', opt);
     } else {
-      $('#rawfail').rawfail();
-    }
-    showNav();
-  });
-
-  router.on('route:rawdel', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#rawdel').data('widgetCreated')) {
-      $('#rawdel').rawdel('reRender');
-    } else {
-      $('#rawdel').rawdel();
+      $('#raws').raws(opt);
     }
     showNav();
   });

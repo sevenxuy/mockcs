@@ -11,7 +11,7 @@ define(function(require, exports, module) {
   $.widget('mock.rawupload', _view, {
     options: {
       uploadfile: '/umis/pushc/uploadfile',
-      addaudinews: 'http://uil.shahe.baidu.com/mock/addaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0'
+      addaudinews: 'http://uil.shahe.baidu.com/mock/addaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?'
     },
 
     render: function() {

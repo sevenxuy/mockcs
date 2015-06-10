@@ -19,7 +19,7 @@ define(function(require, exports, module) {
       h.push('<li class="menu-item">');
       h.push('<div class="menu-text"><i class="icon-menu icon-management"></i> 管理模块</div>');
       h.push('<ul class="submenu">');
-      h.push('<li class="submenu-item" data-link="#raw">原始内容管理</li>');
+      h.push('<li class="submenu-item" data-link="#raws">原始内容管理</li>');
       h.push('<li class="submenu-item" data-link="#adop">广告位状态管理</li>');
       h.push('<li class="submenu-item" data-link="#msgs">消息管理</li>');
       h.push('<li class="submenu-item" data-link="#fans">粉丝管理</li>');

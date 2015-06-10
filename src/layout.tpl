@@ -30,10 +30,7 @@
           <div id="fanlatest" class="hide"></div>
           <div id="fanall" class="hide"></div>
           <div id="rawupload" class="hide"></div>
-          <div id="rawonline" class="hide"></div>
-          <div id="rawpending" class="hide"></div>
-          <div id="rawfail" class="hide"></div>
-          <div id="rawdel" class="hide"></div>
+          <div id="raws" class="hide"></div>
           <div id="adhomepage" class="hide"></div>
           <div id="addetail" class="hide"></div>
           <div id="adoponline" class="hide"></div>
