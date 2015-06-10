@@ -12,7 +12,7 @@ define(function(require, exports, module) {
       h.push('<ul class="submenu">');
       h.push('<li class="submenu-item" data-link="#rawupload">原始内容上传</li>');
       h.push('<li class="submenu-item" data-link="#homepage">个人主页设置</li>');
-      h.push('<li class="submenu-item" data-link="#ads">广告位编辑</li>');
+      h.push('<li class="submenu-item" data-link="#ad">广告位编辑</li>');
       h.push('<li class="submenu-item" data-link="#mocks">快速吐槽</li>');
       h.push('</ul>');
       h.push('</li>');
@@ -20,7 +20,7 @@ define(function(require, exports, module) {
       h.push('<div class="menu-text"><i class="icon-menu icon-management"></i> 管理模块</div>');
       h.push('<ul class="submenu">');
       h.push('<li class="submenu-item" data-link="#raws">原始内容管理</li>');
-      h.push('<li class="submenu-item" data-link="#adop">广告位状态管理</li>');
+      h.push('<li class="submenu-item" data-link="#ads">广告位状态管理</li>');
       h.push('<li class="submenu-item" data-link="#msgs">消息管理</li>');
       h.push('<li class="submenu-item" data-link="#fans">粉丝管理</li>');
       h.push('</ul>');

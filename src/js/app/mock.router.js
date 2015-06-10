@@ -14,9 +14,7 @@ define(function(require, exports, module) {
   require('mock.view.raws');
   require('mock.view.adhomepage');
   require('mock.view.addetail');
-  require('mock.view.adoponline');
-  require('mock.view.adoppending');
-  require('mock.view.adopfail');
+  require('mock.view.ads');
   require('mock.view.trafuser');
   require('mock.view.trafad');
 
@@ -40,13 +38,13 @@ define(function(require, exports, module) {
       'raws/(:type)': 'raws',
       'raws/(:type)/': 'raws',
       'raws/(:type)/(:pn)': 'raws',
-      'ads': 'adhomepage',
-      'ads/(homepage)': 'adhomepage',
-      'ads/detail': 'addetail',
-      'adop': 'adoponline',
-      'adop/(online)': 'adoponline',
-      'adop/pending': 'adoppending',
-      'adop/fail': 'adopfail',
+      'ad': 'adhomepage',
+      'ad/(homepage)': 'adhomepage',
+      'ad/detail': 'addetail',
+      'ads': 'ads',
+      'ads/(:type)': 'ads',
+      'ads/(:type)/': 'ads',
+      'ads/(:type)/(:pn)': 'ads',
       'trafad': 'trafad',
       'trafuser': 'trafuser'
     }
@@ -199,33 +197,20 @@ define(function(require, exports, module) {
     showNav();
   });
 
-
-  router.on('route:adoponline', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#adoponline').data('widgetCreated')) {
-      $('#adoponline').adoponline('reRender');
-    } else {
-      $('#adoponline').adoponline();
+  router.on('route:ads', function(type, pn) {
+    var opt = {
+      type: type || '2',
+      pn: pn || 0
     }
-    showNav();
-  });
+    if ($('#ads').hasClass('hide')) {
+      $('div.current').removeClass('current').addClass('hide');
+      $('#ads').removeClass('hide').addClass('current');
 
-  router.on('route:adoppending', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#adoppending').data('widgetCreated')) {
-      $('#adoppending').adoppending('reRender');
-    } else {
-      $('#adoppending').adoppending();
     }
-    showNav();
-  });
-
-  router.on('route:adopfail', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#adopfail').data('widgetCreated')) {
-      $('#adopfail').adopfail('reRender');
+    if ($('#ads').data('widgetCreated')) {
+      $('#ads').ads('reRender', opt);
     } else {
-      $('#adopfail').adopfail();
+      $('#ads').ads(opt);
     }
     showNav();
   });
