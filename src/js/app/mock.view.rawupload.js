@@ -312,6 +312,8 @@ define(function(require, exports, module) {
           text: '请输入标题。'
         });
         return false;
+      }else{
+        title = _.escape(title);
       }
 
       var simg = $('#upload-simg').val().trim();
@@ -323,6 +325,8 @@ define(function(require, exports, module) {
           text: '请输入摘要。'
         });
         return false;
+      }else{
+        desc = _.escape(desc);
       }
 
       var img = $('#upload-img').val().trim();
