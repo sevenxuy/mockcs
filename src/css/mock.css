@@ -579,27 +579,6 @@
   .tab-nav-item-selected:hover {
     border-bottom: 3px solid #ea6363;
   }
-  
-  .mock-search-box {
-    display: inline-block;
-    position: relative;
-    margin-bottom: 10px;
-  }
-  
-  .mock-search {
-    width: 250px;
-  }
-  
-  .mock-search-icon {
-    width: 34px;
-    height: 34px;
-    background: url(../img/search.png) no-repeat center;
-    display: inline-block;
-    top: 0;
-    right: 0;
-    position: absolute;
-  }
-  
   .mock-btn-s {
     margin-top: 0px;
     width: 50px;
@@ -609,6 +588,7 @@
   
   .mock-add {
     float: right;
+    margin-bottom: 10px;
   }
   
   .modal-backdrop {

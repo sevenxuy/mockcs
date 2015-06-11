@@ -60,7 +60,6 @@ define(function(require, exports, module) {
       h.push('<li class="tab-nav-item" data-type="3"><a>已删除</a></li>');
       h.push('</ul>');
       h.push('<div class="tabs-content">');
-      // h.push('<div class="mock-search-box"><input type="search" placeholder="按关键词搜索" class="form-control mock-search"><div class="mock-search-icon"></div></div>');
       h.push('<table class="table table-bordered table-hover" id="ads-table">');
       h.push('</table>');
       h.push('<div class="paging hide">');
