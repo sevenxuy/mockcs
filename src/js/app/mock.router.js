@@ -10,15 +10,11 @@ define(function(require, exports, module) {
   require('mock.view.msgall');
   require('mock.view.fanlatest');
   require('mock.view.fanall');
-  require('mock.view.rawupload');
-  require('mock.view.rawonline');
-  require('mock.view.rawpending');
-  require('mock.view.rawfail');
+  require('mock.view.rawedit');
+  require('mock.view.raws');
   require('mock.view.adhomepage');
   require('mock.view.addetail');
-  require('mock.view.adoponline');
-  require('mock.view.adoppending');
-  require('mock.view.adopfail');
+  require('mock.view.ads');
   require('mock.view.trafuser');
   require('mock.view.trafad');
 
@@ -26,10 +22,10 @@ define(function(require, exports, module) {
   var AppRouter = Backbone.Router.extend({
     routes: {
       '(login)': 'login',
-      'homepage':'homepage',
-      'mocks':'mockme',
-      'mocks/(me)':'mockme',
-      'mocks/square':'mocksquare',
+      'homepage': 'homepage',
+      'mocks': 'mockme',
+      'mocks/(me)': 'mockme',
+      'mocks/square': 'mocksquare',
       'msg': 'msg',
       'msgs': 'msglatest',
       'msgs/(latest)': 'msglatest',
@@ -37,20 +33,21 @@ define(function(require, exports, module) {
       'fans': 'fanlatest',
       'fans/(latest)': 'fanlatest',
       'fans/all': 'fanall',
-      'rawupload': 'rawupload',
-      'raw': 'rawonline',
-      'raw/(online)': 'rawonline',
-      'raw/pending': 'rawpending',
-      'raw/fail': 'rawfail',
-      'ads':'adhomepage',
-      'ads/(homepage)':'adhomepage',
-      'ads/detail':'addetail',
-      'adop': 'adoponline',
-      'adop/(online)': 'adoponline',
-      'adop/pending': 'adoppending',
-      'adop/fail': 'adopfail',
-      'trafad':'trafad',
-      'trafuser':'trafuser'
+      'rawedit': 'rawedit',
+      'rawedit/:id': 'rawedit',
+      'raws': 'raws',
+      'raws/(:type)': 'raws',
+      'raws/(:type)/': 'raws',
+      'raws/(:type)/(:pn)': 'raws',
+      'ad': 'adhomepage',
+      'ad/(homepage)': 'adhomepage',
+      'ad/detail': 'addetail',
+      'ads': 'ads',
+      'ads/(:type)': 'ads',
+      'ads/(:type)/': 'ads',
+      'ads/(:type)/(:pn)': 'ads',
+      'trafad': 'trafad',
+      'trafuser': 'trafuser'
     }
   });
 
@@ -153,47 +150,38 @@ define(function(require, exports, module) {
     showNav();
   });
 
-  router.on('route:rawupload', function() {
+  router.on('route:rawedit', function(id) {
+    var opt = {
+      id: id
+    }
     $('div.current').removeClass('current').addClass('hide');
-    if ($('#rawupload').data('widgetCreated')) {
-      $('#rawupload').rawupload('reRender');
+    if ($('#rawedit').data('widgetCreated')) {
+      $('#rawedit').rawedit('reRender', opt);
     } else {
-      $('#rawupload').rawupload();
+      $('#rawedit').rawedit(opt);
     }
     showNav();
   });
 
-  router.on('route:rawonline', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#rawonline').data('widgetCreated')) {
-      $('#rawonline').rawonline('reRender');
+  router.on('route:raws', function(type, pn) {
+    var opt = {
+      type: type || '2',
+      pn: pn || 0
+    }
+    if ($('#raws').hasClass('hide')) {
+      $('div.current').removeClass('current').addClass('hide');
+      $('#raws').removeClass('hide').addClass('current');
+
+    }
+    if ($('#raws').data('widgetCreated')) {
+      $('#raws').raws('reRender', opt);
     } else {
-      $('#rawonline').rawonline();
+      $('#raws').raws(opt);
     }
     showNav();
   });
 
-  router.on('route:rawpending', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#rawpending').data('widgetCreated')) {
-      $('#rawpending').rawpending('reRender');
-    } else {
-      $('#rawpending').rawpending();
-    }
-    showNav();
-  });
-
-  router.on('route:rawfail', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#rawfail').data('widgetCreated')) {
-      $('#rawfail').rawfail('reRender');
-    } else {
-      $('#rawfail').rawfail();
-    }
-    showNav();
-  });
-
-   router.on('route:adhomepage', function() {
+  router.on('route:adhomepage', function() {
     $('div.current').removeClass('current').addClass('hide');
     if ($('#adhomepage').data('widgetCreated')) {
       $('#adhomepage').adhomepage('reRender');
@@ -203,7 +191,7 @@ define(function(require, exports, module) {
     showNav();
   });
 
-   router.on('route:addetail', function() {
+  router.on('route:addetail', function() {
     $('div.current').removeClass('current').addClass('hide');
     if ($('#addetail').data('widgetCreated')) {
       $('#addetail').addetail('reRender');
@@ -213,33 +201,20 @@ define(function(require, exports, module) {
     showNav();
   });
 
-
-   router.on('route:adoponline', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#adoponline').data('widgetCreated')) {
-      $('#adoponline').adoponline('reRender');
-    } else {
-      $('#adoponline').adoponline();
+  router.on('route:ads', function(type, pn) {
+    var opt = {
+      type: type || '2',
+      pn: pn || 0
     }
-    showNav();
-  });
+    if ($('#ads').hasClass('hide')) {
+      $('div.current').removeClass('current').addClass('hide');
+      $('#ads').removeClass('hide').addClass('current');
 
-  router.on('route:adoppending', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#adoppending').data('widgetCreated')) {
-      $('#adoppending').adoppending('reRender');
-    } else {
-      $('#adoppending').adoppending();
     }
-    showNav();
-  });
-
-  router.on('route:adopfail', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#adopfail').data('widgetCreated')) {
-      $('#adopfail').adopfail('reRender');
+    if ($('#ads').data('widgetCreated')) {
+      $('#ads').ads('reRender', opt);
     } else {
-      $('#adopfail').adopfail();
+      $('#ads').ads(opt);
     }
     showNav();
   });

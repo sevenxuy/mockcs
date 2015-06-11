@@ -18,17 +18,17 @@ define(function(require, exports, module) {
       this.element.addClass('hide').empty();
       this.render();
     },
-    _bindEvents:function(){},
+    _bindEvents: function() {},
     _createElem: function() {},
-    _toggleTop: function(event) {
-      var
-        $i = $(event.target);
-      if ($i.hasClass('fa-toggle-on')) {
-        $i.removeClass('fa-toggle-on');
-      } else {
-        $i.addClass('fa-toggle-on');
+    _updateWrapperElemStatus: function() {
+      var options = this.options,
+        $nav = this.element.find('ul.tabs-nav:eq(0)');
+      $nav.children('li.tab-nav-item-selected').removeClass('tab-nav-item-selected');
+      $nav.children('li[data-type=' + options.type + ']').addClass('tab-nav-item-selected');
+      if (options.totalpage > 1) {
+        this.element.find('div.paging').removeClass('hide');
       }
-    },
+    }
   });
   module.exports = $.mock.view;
 });

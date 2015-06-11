@@ -16,8 +16,8 @@ define(function(require, exports, module) {
       h.push('<div class="mock-hd">广告位编辑</div>');
       h.push('<div class="page-content">');
       h.push('<ul class="tabs-nav">');
-      h.push('<li class="tab-nav-item tab-nav-item-selected"><a href="#ads/homepage">个人主页</a></li>');
-      h.push('<li class="tab-nav-item"><a href="#ads/detail">详情页</a></li>');
+      h.push('<li class="tab-nav-item tab-nav-item-selected"><a href="#ad/homepage">个人主页</a></li>');
+      h.push('<li class="tab-nav-item"><a href="#ad/detail">详情页</a></li>');
       h.push('</ul>');
       h.push('<div class="tabs-content">');
       h.push('<div class="mock-search-box"><input type="search" placeholder="按关键词搜索" class="form-control mock-search"><div class="mock-search-icon"></div></div>');
