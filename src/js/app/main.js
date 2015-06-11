@@ -9,7 +9,10 @@ require.config({
     'bootstraplib': '../lib/bootstrap.min',
     'jquery.datetimepicker': '../lib/jquery.datetimepicker',
     'te': '../lib/jquery-te-1.4.0.min',
-    'md5': '../lib/jquery.md5'
+    'md5': '../lib/jquery.md5',
+    'widget.table':'../widget/widget.table',
+    'widget.tab':'../widget/widget.tab',
+    'widget.search':'../widget/widget.search'
   },
   // Configure the dependencies, exports, and custom initialization
   shim: {

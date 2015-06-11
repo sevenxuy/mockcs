@@ -1,5 +1,34 @@
 define(function(require, exports, module) {
+    /**
+    util lib
+    @module
+    */
     'use strict';
+    var tags = ["DIV", "TR", "TH", "TD", "TBODY", "THEAD", "TABLE", "CAPTION", "SPAN", "LABEL","FORM"];
+    var CreateElementMethods = function CreateElementMethods() {
+        var createElement = function createElement(tag, opts) {
+            var htmlobj = document.createElement(tag);
+            for (var field in opts) {
+                htmlobj.setAttribute(field, opts[field]);
+            }
+            return htmlobj;
+        };
+        var funParts = [];
+        for (var i = 0; i < tags.length; i++) {
+            funParts.push(tags[i] + ':function(opts){var htmlobj = document.createElement("'+tags[i] +'");for (var field in opts) {htmlobj.setAttribute(field, opts[field]);}return htmlobj;}');
+        }
+        var funBody = ['return {', funParts.join(','), '};'].join("");
+        var createFunction = new Function(funBody);
+        return createFunction();
+    }
+
+    /**
+    date format method
+    * @param {number} timestamp - timestemp like 1433840242036
+    * @param {string} fmt - format string
+    * @returns {string} formated date string
+    * @author xunying
+    */
     exports.dateFormat = function(timestamp, fmt) {
         var date = new Date(timestamp);
         var o = {
@@ -16,6 +45,14 @@ define(function(require, exports, module) {
                 fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
         return fmt;
     };
+
+    /**
+    date format method
+    * @param {number} timestamp - timestemp like 1433840242036
+    * @param {string} fmt - format string
+    * @returns {string} formated date string
+    * @author xunying
+    */
     exports.createSelectElem = function(opt) {
         var h = [];
         if (opt.multiple) {
@@ -44,6 +81,26 @@ define(function(require, exports, module) {
         h.push('</select>');
         return h.join('');
     };
+
+    /**
+    function set of create html document
+    * @property {function} DIV - create DIV.
+    * @property {function} TR - create TR.
+    * @property {function} TH - create TH.
+    * @property {function} TD - create TD.
+    * @property {function} TBODY - create TBODY.
+    * @property {function} THEAD - create THEAD.
+    * @property {function} TABLE - create TABLE.
+    * @property {function} CAPTION - create CAPTION.
+    * @property {function} SPAN - create SPAN.
+    * @property {function} LABEL - create LABEL.
+    * @example 
+        util.ce.DIV({"id":"testdiv", "class="testclass"});
+        //return <div id="testdiv" class="testclass"></div>
+    * @author huangchunhua
+    */
+    exports.ce = CreateElementMethods();
+
     exports.validateId = function(str) {
         var result = str.match(/^[a-zA-Z]\w+$/);
         if (result == null) return false;
