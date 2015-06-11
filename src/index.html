@@ -31,8 +31,7 @@
           <div id="fanall" class="hide"></div>
           <div id="rawedit" class="hide"></div>
           <div id="raws" class="hide"></div>
-          <div id="adhomepage" class="hide"></div>
-          <div id="addetail" class="hide"></div>
+          <div id="ad" class="hide"></div>
           <div id="ads" class="hide"></div>
           <div id="mockme" class="hide"></div>
           <div id="mockquare" class="hide"></div>

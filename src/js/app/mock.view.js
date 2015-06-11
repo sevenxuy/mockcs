@@ -25,11 +25,10 @@ define(function(require, exports, module) {
     },
     _bindEvents: function() {},
     _createElem: function() {},
-    _updateWrapperElemStatus: function() {
-      var options = this.options,
-        $nav = this.element.find('ul.tabs-nav:eq(0)');
+    _updateWrapperElemStatus: function(type) {
+      var $nav = this.element.find('ul.tabs-nav:eq(0)');
       $nav.children('li.tab-nav-item-selected').removeClass('tab-nav-item-selected');
-      $nav.children('li[data-type=' + options.type + ']').addClass('tab-nav-item-selected');
+      $nav.children('li[data-type=' + type + ']').addClass('tab-nav-item-selected');
     },
     _triggerUploadImg: function(event) {
       var $input = $(event.target).closest('div.upload-img').children('input');
@@ -121,14 +120,16 @@ define(function(require, exports, module) {
           $next = $paging.children('div.page_next:eq(0)'),
           $cur = $paging.find('span.page_current:eq(0)'),
           $total = $paging.find('span.page_total:eq(0)');
-        if (pn == 0 && (!$pre.hasClass('hide'))) {
+        if ((pn == 0) && (!$pre.hasClass('hide'))) {
+          console.log(1);
           $pre.addClass('hide');
-        } else if ($pre.hasClass('hide')) {
+        } else if ((pn > 0) && $pre.hasClass('hide')) {
+           console.log(2);
           $pre.removeClass('hide');
         }
         if ((pn == (totalpage - 1)) && (!$next.hasClass('hide'))) {
           $next.addClass('hide');
-        } else if ($next.hasClass('hide')) {
+        } else if ((pn < (totalpage - 1)) && $next.hasClass('hide')) {
           $next.removeClass('hide');
         }
         $cur.text(pn + 1);
@@ -166,10 +167,12 @@ define(function(require, exports, module) {
           return false;
         }
       }
-      this._goSiblingPage(pn);
+      if (pn > -1) {
+        this._goSiblingPage(pn);
+      }
       return false;
     },
-    _goSiblingPage:function(pn){}
+    _goSiblingPage: function(pn) {}
   });
   module.exports = $.mock.view;
 });

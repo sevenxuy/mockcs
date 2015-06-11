@@ -12,8 +12,7 @@ define(function(require, exports, module) {
   require('mock.view.fanall');
   require('mock.view.rawedit');
   require('mock.view.raws');
-  require('mock.view.adhomepage');
-  require('mock.view.addetail');
+  require('mock.view.ad');
   require('mock.view.ads');
   require('mock.view.trafuser');
   require('mock.view.trafad');
@@ -39,9 +38,10 @@ define(function(require, exports, module) {
       'raws/(:type)': 'raws',
       'raws/(:type)/': 'raws',
       'raws/(:type)/(:pn)': 'raws',
-      'ad': 'adhomepage',
-      'ad/(homepage)': 'adhomepage',
-      'ad/detail': 'addetail',
+      'ad': 'ad',
+      'ad/(:stype)': 'ad',
+      'ad/(:stype)/': 'ad',
+      'ad/(:stype)/(:pn)': 'ad',
       'ads': 'ads',
       'ads/(:type)': 'ads',
       'ads/(:type)/': 'ads',
@@ -181,22 +181,20 @@ define(function(require, exports, module) {
     showNav();
   });
 
-  router.on('route:adhomepage', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#adhomepage').data('widgetCreated')) {
-      $('#adhomepage').adhomepage('reRender');
-    } else {
-      $('#adhomepage').adhomepage();
+  router.on('route:ad', function(stype, pn) {
+    var opt = {
+      stype: stype || '0',
+      pn: pn || 0
     }
-    showNav();
-  });
+    if ($('#ad').hasClass('hide')) {
+      $('div.current').removeClass('current').addClass('hide');
+      $('#ad').removeClass('hide').addClass('current');
 
-  router.on('route:addetail', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#addetail').data('widgetCreated')) {
-      $('#addetail').addetail('reRender');
+    }
+    if ($('#ad').data('widgetCreated')) {
+      $('#ad').ad('reRender', opt);
     } else {
-      $('#addetail').addetail();
+      $('#ad').ad(opt);
     }
     showNav();
   });
@@ -209,7 +207,6 @@ define(function(require, exports, module) {
     if ($('#ads').hasClass('hide')) {
       $('div.current').removeClass('current').addClass('hide');
       $('#ads').removeClass('hide').addClass('current');
-
     }
     if ($('#ads').data('widgetCreated')) {
       $('#ads').ads('reRender', opt);

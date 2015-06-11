@@ -74,10 +74,9 @@ define(function(require, exports, module) {
       h.push('<table class="table table-bordered table-hover" id="raws-table">');
       h.push('</table>');
       h.push('<div class="paging hide">');
-      h.push('<div class="mock-btn mock-btn-white page_pre">&lt;</div>');
-      h.push('<div class="page_num"><span class="page_current"></span><span class="num_gap">/</span><span class="page_total"></span>');
-      h.push('</div>');
-      h.push('<div class="mock-btn mock-btn-white page_next">&gt;</div>');
+      h.push('<div class="mock-btn mock-btn-white page_pre hide">&lt;</div>');
+      h.push('<div class="page_num"><span class="page_current"></span><span class="num_gap">/</span><span class="page_total"></span></div>');
+      h.push('<div class="mock-btn mock-btn-white page_next hide">&gt;</div>');
       h.push('<input type="text" class="form-control goto_page">');
       h.push('<div class="mock-btn mock-btn-white page_go">跳转</div>');
       h.push('</div>');
