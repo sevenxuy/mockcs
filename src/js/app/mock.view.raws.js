@@ -50,12 +50,9 @@ define(function(require, exports, module) {
     },
     _bindEvents: function() {
       this._on(this.element, {
-        'click': this._clearPop,
         'click li.tab-nav-item': this._goPage,
         'click div.data-edit': this._editRaw,
         'click div.data-audit': this._auditRaw,
-        'click a.data-del': this._delRaw,
-        'click div.data-del-btn': this._toggleDelBox,
         'click div.page_pre': this._preGoSiblingPage,
         'click div.page_next': this._preGoSiblingPage,
         'click div.page_go': this._preGoSiblingPage
@@ -89,7 +86,7 @@ define(function(require, exports, module) {
       this.element.append(h.join(''));
       this.renderTable();
     },
-    _goSiblingPage:function(pn){
+    _goSiblingPage: function(pn) {
       var router = new Backbone.Router;
       router.navigate('raws/' + this.options.type + '/' + pn, {
         trigger: true
@@ -120,10 +117,6 @@ define(function(require, exports, module) {
           h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td>');
           h.push('<div class="mock-btn mock-btn-red  mock-btn-s data-audit" data-id="' + item.id + '">提交</div>');
           h.push('<div class="mock-btn mock-btn-red  mock-btn-s data-edit" data-id="' + item.id + '">修改</div>');
-          h.push('<div class="btn-group">');
-          h.push('<div class="mock-btn mock-btn-red  mock-btn-s data-del-btn">删除</div>');
-          h.push('<ul class="dropdown-menu dropdown-menu-right"><li><a class="data-del" data-id="' + item.id + '">是，确认删除。</a></li></ul>');
-          h.push('</div>');
           h.push('</td></tr>');
         });
       } else {
@@ -197,47 +190,6 @@ define(function(require, exports, module) {
           });
         }
       });
-      return false;
-    },
-    _delRaw: function(event) {
-      var options = this.options,
-        id = $(event.target).attr('data-id');
-      $.ajax({
-        url: options.deleteaudinews,
-        crossDomain: true,
-        dataType: 'jsonp',
-        data: {
-          id: id
-        }
-      }).done(function(res) {
-        if (!res.errno) {
-          $(event.target).closest('tr').remove();
-        } else {
-          notify({
-            tmpl: 'error',
-            text: res.error
-          });
-        }
-      });
-      return false;
-    },
-    _toggleDelBox: function(event) {
-      var $dropdown = $(event.target).closest('div.btn-group').children('ul.dropdown-menu');
-      if ($dropdown.is(':visible')) {
-        $dropdown.css({
-          'display': 'none'
-        });
-      } else {
-        $dropdown.css({
-          'display': 'block'
-        });
-      }
-      return false;
-    },
-    _clearPop: function(event) {
-      $('ul.dropdown-menu').css({
-        'display': 'none'
-      })
       return false;
     }
   });
