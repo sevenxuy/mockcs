@@ -9,7 +9,7 @@ define(function(require, exports, module) {
       addaudiad: 'http://uil.shahe.baidu.com/mock/addaudiad?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
       getmyadlist: 'http://uil.shahe.baidu.com/mock/getmyadlist?&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
       type: 0, //saved ad list
-      ps: 1
+      ps: 2
     },
     render: function(opt) {
       var options = this.options;
@@ -71,7 +71,7 @@ define(function(require, exports, module) {
       h.push('<table class="table table-bordered mock-upload-table mock-aditem"><tbody>');
       h.push('<tr><td>广告图*</td><td><div class="bg-warning">广告图片尺寸要求：宽720px，高140px。</div><div class="upload-img-box"><div class="upload-img">');
       h.push('<textarea placeholder="广告图片链接" class="form-control upload-img-tx" id="ad-img"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传广告图</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div>');
-      h.push('<div class="upload-img-preivew"></div></div></td></tr>');
+      h.push('<div class="ad-img-preivew"></div></div></td></tr>');
       h.push('<tr><td>广告跳转链接*</td><td><textarea class="form-control upload-desc" cols="3" maxlength="100" id="ad-link"></textarea></td></tr>');
       h.push('</tbody></table>');
       h.push('</div>');
@@ -83,7 +83,7 @@ define(function(require, exports, module) {
       h.push('</div>');
       h.push('</div>');
       h.push('<table class="table table-bordered table-hover">');
-      h.push('<thead><tr><th>id</th><th>广告图片</th><th>广告链接</th><th>保存时间</th></tr></thead><tbody id="ad-table">');
+      h.push('<thead><tr><th>id</th><th>广告图片</th><th>广告链接</th><th>操作时间</th></tr></thead><tbody id="ad-table">');
       h.push('</tbody></table>');
       h.push('<div class="paging hide">');
       h.push('<div class="mock-btn mock-btn-white page_pre hide">&lt;</div>');
@@ -110,7 +110,7 @@ define(function(require, exports, module) {
       return h.join('');
     },
     _createItemElem: function(item) {
-      return '<tr><td>' + item.id + '</td><td><div class="upload-img-preivew"><img src="' + item.img + '"></div></td><td>' + item.link + '</td><td>'+_util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm')+'</td></tr>';
+      return '<tr><td>' + item.id + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"></div></td><td>' + item.link + '</td><td>'+_util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm')+'</td></tr>';
     },
     _bindEvents: function() {
       this._on(this.element, {

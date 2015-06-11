@@ -479,7 +479,21 @@
     line-height: 100px;
   }
   
-  .upload-img-preivew > img {
+  .ad-img-preivew {
+    width: 210px;
+    height: 50px;
+    background: url(../img/preview.png) no-repeat center;
+    border: 1px solid #e7e7eb;
+    border-radius: 4px;
+    margin-left: 5px;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 45px;
+    display: inline-block;
+  }
+  
+  .upload-img-preivew > img,
+  .ad-img-preivew>img {
     max-width: 96%;
     max-height: 96%;
   }
@@ -579,6 +593,7 @@
   .tab-nav-item-selected:hover {
     border-bottom: 3px solid #ea6363;
   }
+  
   .mock-btn-s {
     margin-top: 0px;
     width: 50px;
@@ -650,6 +665,7 @@
   .page-go {
     width: 70px;
   }
-.dropdown-menu{
-  cursor: pointer;
-}
+  
+  .dropdown-menu {
+    cursor: pointer;
+  }

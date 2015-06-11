@@ -1,12 +1,12 @@
 define(function(require, exports, module) {
   'use strict';
   var _view = require('mock.view'),
-  _util = require('mock.util');
+    _util = require('mock.util');
 
   $.widget('mock.ads', _view, {
     options: {
-      getmyadlist: 'http://uil.shahe.baidu.com/mock/getmyadlist?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-      ps: 1
+      getmyadlist: 'http://uil.shahe.baidu.com:8050/umis/message/pullmsg?&fn=?',
+      ps: 4
     },
     render: function(opt) {
       var options = this.options;
@@ -93,11 +93,11 @@ define(function(require, exports, module) {
     },
     _createCommonTable: function(data) {
       var h = [];
-      h.push('<thead><tr><th>id</th><th><select class="form-control ads-stype"><option selected="selected" disabled="disabled">广告位置</option><option value="0">个人主页</option><option value="1">详情页</option></select></th><th>广告图片</th><th>广告链接</th><th>添加时间</th></tr></thead>');
-      h.push('<tbody>');
+      h.push('<thead><tr><th>id</th><th><select class="form-control ads-stype"><option selected="selected" disabled="disabled">广告位置</option><option value="0">个人主页</option><option value="1">详情页</option></select></th><th>广告图片</th><th>广告链接</th><th>操作时间</th></tr></thead>');
+      h.push('<tbody id="ads-table">');
       if (!_.isEmpty(data)) {
         _.each(data, function(item, index) {
-          h.push('<tr><td>' + item.id + '</td><td>' + (item.type == 0 ? '个人主页' : '详情页') + '</td><td><div class="upload-img-preivew"><img src="' + item.img + '"/></div></td><td>' + item.link + '</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
+          h.push('<tr data-type="' + item.type + '"><td>' + item.id + '</td><td>' + (item.type == 0 ? '个人主页' : '详情页') + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"/></div></td><td>' + item.link + '</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
         });
       } else {
         h.push('<tr><td colspan="6">没有数据</td></tr>');
@@ -120,7 +120,11 @@ define(function(require, exports, module) {
       });
       return false;
     },
-    _filterAds:function(event){
+    _filterAds: function(event) {
+      var selectedType = $(event.target).val(), $ads=$('#ads-table');
+      console.log(selectedType);
+      $ads.children().removeClass('hide');
+      $ads.children('tr[data-type='+selectedType+']').addClass('hide');
       return false;
     }
   });
