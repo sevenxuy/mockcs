@@ -56,11 +56,11 @@ define(function(require, exports, module) {
       h.push('<ul class="tabs-nav" id="ads-nav">');
       h.push('<li class="tab-nav-item" data-type="2"><a>已上线</a></li>');
       h.push('<li class="tab-nav-item" data-type="1"><a>待审核</a></li>');
-      h.push('<li class="tab-nav-item" data-type="0"><a>未通过审核</a></li>');
+      h.push('<li class="tab-nav-item" data-type="0"><a>已保存</a></li>');
       h.push('<li class="tab-nav-item" data-type="3"><a>已删除</a></li>');
       h.push('</ul>');
       h.push('<div class="tabs-content">');
-      h.push('<div class="mock-search-box"><input type="search" placeholder="按关键词搜索" class="form-control mock-search"><div class="mock-search-icon"></div></div>');
+      // h.push('<div class="mock-search-box"><input type="search" placeholder="按关键词搜索" class="form-control mock-search"><div class="mock-search-icon"></div></div>');
       h.push('<table class="table table-bordered table-hover" id="ads-table">');
       h.push('</table>');
       h.push('<div class="paging hide">');

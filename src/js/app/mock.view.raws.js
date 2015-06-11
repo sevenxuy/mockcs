@@ -9,7 +9,7 @@ define(function(require, exports, module) {
       getaudinewsbyvid: 'http://uil.shahe.baidu.com/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
       audinewsdo: 'http://uil.shahe.baidu.com/mock/audinewsdo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
       deleteaudinews: 'http://uil.shahe.baidu.com/mock/deleteaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-      ps: 30
+      ps: 1
     },
     render: function(opt) {
       var options = this.options;
@@ -33,6 +33,7 @@ define(function(require, exports, module) {
         if (!res.errno) {
           options.allcount = res.data.allcount;
           options.totalpage = Math.ceil(options.allcount / options.ps);
+          self._updatePagingStatus();
           $('#raws-table').addClass('hide').empty().append(self._createTableElem(res.data.list)).removeClass('hide');
         } else {
           notify({
@@ -54,11 +55,15 @@ define(function(require, exports, module) {
         'click div.data-edit': this._editRaw,
         'click div.data-audit': this._auditRaw,
         'click a.data-del': this._delRaw,
-        'click div.data-del-btn': this._toggleDelBox
+        'click div.data-del-btn': this._toggleDelBox,
+        'click div.page_pre': this._preGoSiblingPage,
+        'click div.page_next': this._preGoSiblingPage,
+        'click div.page_go': this._preGoSiblingPage
       });
     },
     _createWrapperElem: function() {
-      var h = [];
+      var options = this.options,
+        h = [];
       h.push('<div class="mock-hd">原始内容管理</div>');
       h.push('<div class="page-content">');
       h.push('<ul class="tabs-nav">');
@@ -77,12 +82,19 @@ define(function(require, exports, module) {
       h.push('</div>');
       h.push('<div class="mock-btn mock-btn-white page_next">&gt;</div>');
       h.push('<input type="text" class="form-control goto_page">');
-      h.push('<div class="mock-btn mock-btn-white page-go">跳转</div>');
+      h.push('<div class="mock-btn mock-btn-white page_go">跳转</div>');
       h.push('</div>');
       h.push('</div>');
       h.push('</div>');
       this.element.append(h.join(''));
       this.renderTable();
+    },
+    _goSiblingPage:function(pn){
+      var router = new Backbone.Router;
+      router.navigate('raws/' + this.options.type + '/' + pn, {
+        trigger: true
+      });
+      return false;
     },
     _createTableElem: function(data) {
       var options = this.options;
