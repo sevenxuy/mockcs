@@ -58,9 +58,9 @@ define(function(require, exports, module) {
     exports.createSelectElem = function(opt) {
         var h = [];
         if (opt.multiple) {
-            h.push('<select class="' + opt.selectClass + '" multiple="multiple">');
+            h.push('<select class="form-control ' + opt.selectClass + '" multiple="multiple">');
         } else {
-            h.push('<select class="' + opt.selectClass + '">');
+            h.push('<select class="form-control ' + opt.selectClass + '">');
         }
         h.push('<option selected="selected" disabled="disabled">请选择</option>');
         if (_.isArray(opt.data)) {
