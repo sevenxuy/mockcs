@@ -1,11 +1,12 @@
 define(function(require, exports, module) {
   'use strict';
   var _view = require('mock.view'),
+    notify = require('mock.plugin.notify'),
     _util = require('mock.util');
 
   $.widget('mock.ads', _view, {
     options: {
-      getmyadlist: 'http://uil.shahe.baidu.com:8050/umis/message/pullmsg?&fn=?',
+      getmyadlist: 'uil.shahe.baidu.com/mock/getmyadlist?&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
       ps: 4
     },
     render: function(opt) {
@@ -121,10 +122,11 @@ define(function(require, exports, module) {
       return false;
     },
     _filterAds: function(event) {
-      var selectedType = $(event.target).val(), $ads=$('#ads-table');
+      var selectedType = $(event.target).val(),
+        $ads = $('#ads-table');
       console.log(selectedType);
       $ads.children().removeClass('hide');
-      $ads.children('tr[data-type='+selectedType+']').addClass('hide');
+      $ads.children('tr[data-type=' + selectedType + ']').addClass('hide');
       return false;
     }
   });
