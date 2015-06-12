@@ -25,14 +25,11 @@
           <div id="mockme" class="hide"></div>
           <div id="mocksquare" class="hide"></div>
           <div id="msg" class="hide"></div>
-          <div id="msglatest" class="hide"></div>
-          <div id="msgall" class="hide"></div>
-          <div id="fanlatest" class="hide"></div>
-          <div id="fanall" class="hide"></div>
+          <div id="msgs" class="hide"></div>
+          <div id="fans" class="hide"></div>
           <div id="rawedit" class="hide"></div>
           <div id="raws" class="hide"></div>
-          <div id="adhomepage" class="hide"></div>
-          <div id="addetail" class="hide"></div>
+          <div id="ad" class="hide"></div>
           <div id="ads" class="hide"></div>
           <div id="mockme" class="hide"></div>
           <div id="mockquare" class="hide"></div>

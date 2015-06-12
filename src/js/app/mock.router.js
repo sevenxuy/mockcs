@@ -6,14 +6,11 @@ define(function(require, exports, module) {
   require('mock.view.mockme');
   require('mock.view.mocksquare');
   require('mock.view.msg');
-  require('mock.view.msglatest');
-  require('mock.view.msgall');
-  require('mock.view.fanlatest');
-  require('mock.view.fanall');
+  require('mock.view.msgs');
+  require('mock.view.fans');
   require('mock.view.rawedit');
   require('mock.view.raws');
-  require('mock.view.adhomepage');
-  require('mock.view.addetail');
+  require('mock.view.ad');
   require('mock.view.ads');
   require('mock.view.trafuser');
   require('mock.view.trafad');
@@ -27,21 +24,24 @@ define(function(require, exports, module) {
       'mocks/(me)': 'mockme',
       'mocks/square': 'mocksquare',
       'msg': 'msg',
-      'msgs': 'msglatest',
-      'msgs/(latest)': 'msglatest',
-      'msgs/all': 'msgall',
-      'fans': 'fanlatest',
-      'fans/(latest)': 'fanlatest',
-      'fans/all': 'fanall',
+      'msgs': 'msgs',
+      'msgs/(:status)': 'msgs',
+      'msgs/(:status)/': 'msgs',
+      'msgs/(:status)/(:pn)': 'msgs',
+      'fans': 'fans',
+      'fans/(:status)': 'fans',
+      'fans/(:status)/': 'fans',
+      'fans/(:status)/(:pn)': 'fans',
       'rawedit': 'rawedit',
       'rawedit/:id': 'rawedit',
       'raws': 'raws',
       'raws/(:type)': 'raws',
       'raws/(:type)/': 'raws',
       'raws/(:type)/(:pn)': 'raws',
-      'ad': 'adhomepage',
-      'ad/(homepage)': 'adhomepage',
-      'ad/detail': 'addetail',
+      'ad': 'ad',
+      'ad/(:stype)': 'ad',
+      'ad/(:stype)/': 'ad',
+      'ad/(:stype)/(:pn)': 'ad',
       'ads': 'ads',
       'ads/(:type)': 'ads',
       'ads/(:type)/': 'ads',
@@ -106,46 +106,36 @@ define(function(require, exports, module) {
     showNav();
   });
 
-  router.on('route:msglatest', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#msglatest').data('widgetCreated')) {
-      $('#msglatest').msglatest('reRender');
-
+  router.on('route:msgs', function(status, pn) {
+    var opt = {
+      status: status || '1',
+      pn: pn || 0
+    }
+    if ($('#msgs').hasClass('hide')) {
+      $('div.current').removeClass('current').addClass('hide');
+      $('#msgs').removeClass('hide').addClass('current');
+    }
+    if ($('#msgs').data('widgetCreated')) {
+      $('#msgs').msgs('reRender', opt);
     } else {
-      $('#msglatest').msglatest();
+      $('#msgs').msgs(opt);
     }
     showNav();
   });
 
-  router.on('route:msgall', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#msgall').data('widgetCreated')) {
-      $('#msgall').msgall('reRender');
-
-    } else {
-      $('#msgall').msgall();
+  router.on('route:fans', function(status, pn) {
+    var opt = {
+      status: status || '1',
+      pn: pn || 0
     }
-    showNav();
-  });
-
-  router.on('route:fanlatest', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#fanlatest').data('widgetCreated')) {
-      $('#fanlatest').fanlatest('reRender');
-
-    } else {
-      $('#fanlatest').fanlatest();
+    if ($('#fans').hasClass('hide')) {
+      $('div.current').removeClass('current').addClass('hide');
+      $('#fans').removeClass('hide').addClass('current');
     }
-    showNav();
-  });
-
-  router.on('route:fanall', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#fanall').data('widgetCreated')) {
-      $('#fanall').fanall('reRender');
-
+    if ($('#fans').data('widgetCreated')) {
+      $('#fans').fans('reRender', opt);
     } else {
-      $('#fanall').fanall();
+      $('#fans').fans(opt);
     }
     showNav();
   });
@@ -181,22 +171,20 @@ define(function(require, exports, module) {
     showNav();
   });
 
-  router.on('route:adhomepage', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#adhomepage').data('widgetCreated')) {
-      $('#adhomepage').adhomepage('reRender');
-    } else {
-      $('#adhomepage').adhomepage();
+  router.on('route:ad', function(stype, pn) {
+    var opt = {
+      stype: stype || '0',
+      pn: pn || 0
     }
-    showNav();
-  });
+    if ($('#ad').hasClass('hide')) {
+      $('div.current').removeClass('current').addClass('hide');
+      $('#ad').removeClass('hide').addClass('current');
 
-  router.on('route:addetail', function() {
-    $('div.current').removeClass('current').addClass('hide');
-    if ($('#addetail').data('widgetCreated')) {
-      $('#addetail').addetail('reRender');
+    }
+    if ($('#ad').data('widgetCreated')) {
+      $('#ad').ad('reRender', opt);
     } else {
-      $('#addetail').addetail();
+      $('#ad').ad(opt);
     }
     showNav();
   });
@@ -209,7 +197,6 @@ define(function(require, exports, module) {
     if ($('#ads').hasClass('hide')) {
       $('div.current').removeClass('current').addClass('hide');
       $('#ads').removeClass('hide').addClass('current');
-
     }
     if ($('#ads').data('widgetCreated')) {
       $('#ads').ads('reRender', opt);

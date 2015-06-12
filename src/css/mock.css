@@ -189,7 +189,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    z-index: 1031;
+    z-index: 1200;
   }
   
   .notify {
@@ -266,6 +266,7 @@
     background: #fff;
     border: 1px solid #d9dadc;
     display: -webkit-box;
+    display: -moz-box;
     width: 1198px;
     min-height: 600px;
     margin: 0 auto;
@@ -273,6 +274,7 @@
   
   .main-content {
     -webkit-box-flex: 1;
+    -moz-box-flex: 1;
     color: #5f5f5f;
   }
   
@@ -354,22 +356,29 @@
   }
   
   .msg-notify-box {
-    display: -webkit-box;
     margin-bottom: 20px;
+    height: 100px;
+    position: relative;
   }
   
   .msg-notify-item {
-    width: 250px;
+    min-width: 250px;
+    width: 46%;
     height: 100px;
     padding: 25px;
     color: #fff;
     text-align: center;
     background: #ea6363;
-    -webkit-box-flex: 1;
+    display: inline-block;
+    position: absolute;
   }
   
   .msg-notify-item:first-child {
-    margin-right: 10px;
+    left: 0;
+  }
+  
+  .msg-notify-item:last-child {
+    right: 0;
   }
   
   .msg-notify-msgs,
@@ -479,7 +488,21 @@
     line-height: 100px;
   }
   
-  .upload-img-preivew > img {
+  .ad-img-preivew {
+    width: 210px;
+    height: 50px;
+    background: url(../img/preview.png) no-repeat center;
+    border: 1px solid #e7e7eb;
+    border-radius: 4px;
+    margin-left: 5px;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 45px;
+    display: inline-block;
+  }
+  
+  .upload-img-preivew > img,
+  .ad-img-preivew>img {
     max-width: 96%;
     max-height: 96%;
   }
@@ -580,26 +603,6 @@
     border-bottom: 3px solid #ea6363;
   }
   
-  .mock-search-box {
-    display: inline-block;
-    position: relative;
-    margin-bottom: 10px;
-  }
-  
-  .mock-search {
-    width: 250px;
-  }
-  
-  .mock-search-icon {
-    width: 34px;
-    height: 34px;
-    background: url(../img/search.png) no-repeat center;
-    display: inline-block;
-    top: 0;
-    right: 0;
-    position: absolute;
-  }
-  
   .mock-btn-s {
     margin-top: 0px;
     width: 50px;
@@ -609,6 +612,7 @@
   
   .mock-add {
     float: right;
+    margin-bottom: 10px;
   }
   
   .modal-backdrop {

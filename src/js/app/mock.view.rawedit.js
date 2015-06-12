@@ -10,7 +10,6 @@ define(function(require, exports, module) {
 
   $.widget('mock.rawedit', _view, {
     options: {
-      uploadfile: '/umis/pushc/uploadfile',
       addaudinews: 'http://uil.shahe.baidu.com/mock/addaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
       updateaudinews: 'http://uil.shahe.baidu.com/mock/updateaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
       getaudinews: 'http://uil.shahe.baidu.com/mock/getaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?'
@@ -24,7 +23,6 @@ define(function(require, exports, module) {
           url: options.getaudinews,
           crossDomain: true,
           dataType: 'jsonp',
-          type: 'GET',
           data: {
             id: options.id
           }
@@ -281,79 +279,7 @@ define(function(require, exports, module) {
       h.push('</div></div>');
       $('#upload-vote-box').append(h.join(''));
     },
-    _triggerUploadImg: function(event) {
-      var $input = $(event.target).closest('div.upload-img').children('input');
-      $input.trigger('click');
-      return false;
-    },
-    _uploadImg: function(event) {
-      var
-        self = this,
-        options = this.options,
-        data = new FormData(),
-        img = event.target.files[0],
-        $imgbox = $(event.target).closest('div.upload-img-box'),
-        $tx = $imgbox.find('textarea.upload-img-tx'),
-        $preview = $imgbox.children('div.upload-img-preivew');
-
-      if (!img) {
-        return false;
-      }
-      //image can only be png, jpeg or gif.
-      if (!_.contains(['image/png', 'image/jpeg', 'image/gif'], img.type)) {
-        notify({
-          tmpl: 'error',
-          text: '请检查图片格式，只能上传png, jpeg, gif格式的图片。'
-        });
-        return false;
-      }
-      // 如果图片尺寸大于100K， 就按照60的质量进行压缩
-      var bNeedCompress = false;
-      if (img.size > 100 * 1024) {
-        bNeedCompress = true;
-      }
-      if (('' + img.name).match(/\.gif$/i)) {
-        // GIF一定需要压缩， 为了获取到第一帧
-        bNeedCompress = true;
-      }
-
-      data.append('file', img);
-      $.ajax({
-        url: options.uploadfile,
-        data: data,
-        cache: false,
-        contentType: false,
-        processData: false,
-        type: 'POST'
-      }).done(function(res) {
-        if (!res.errno) {
-          var newsrc = res.data;
-          $tx.val(newsrc);
-          autosize($tx);
-
-          var newImg = new Image(),
-            w, h;
-          newImg.onload = function() {
-            h = newImg.height;
-            w = newImg.width;
-
-            self._checkImgSize($tx, w, h);
-
-            if (bNeedCompress) {
-              self._compressImg($tx, newsrc, w, h);
-            }
-            $tx.trigger('change');
-          }
-          newImg.src = newsrc;
-        } else {
-          notify({
-            tmpl: 'error',
-            text: res.error
-          });
-        }
-      }).fail(function() {});
-      return false;
-    },
+ 
     _checkImgSize: function($tx, w, h) {
       var options = this.options;
       if (($tx.attr('id') == 'upload-simg') && ((w < 640) || (h > 1080) || (w / h > 2) || (w / h < 1))) {
@@ -383,11 +309,6 @@ define(function(require, exports, module) {
         $tx.val('');
         return false;
       }
-    },
-    _compressImg: function($tx, newsrc, w, h) {
-      var key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + newsrc);
-      $tx.val('http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + newsrc);
-      autosize($tx);
     },
     _previewImg: function(event) {
       var
