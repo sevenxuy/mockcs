@@ -121,10 +121,8 @@ define(function(require, exports, module) {
                     $cur = $paging.find('span.page_current:eq(0)'),
                     $total = $paging.find('span.page_total:eq(0)');
                 if ((pn == 0) && (!$pre.hasClass('hide'))) {
-                    console.log(1);
                     $pre.addClass('hide');
                 } else if ((pn > 0) && $pre.hasClass('hide')) {
-                    console.log(2);
                     $pre.removeClass('hide');
                 }
                 if ((pn == (totalpage - 1)) && (!$next.hasClass('hide'))) {

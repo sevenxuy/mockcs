@@ -682,3 +682,7 @@
   .border0 {
       border-width: 0px;
   }
+  
+  .modal-content {
+      width: 750px;
+  }

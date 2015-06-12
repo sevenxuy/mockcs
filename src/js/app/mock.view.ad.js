@@ -9,7 +9,7 @@ define(function(require, exports, module) {
             addaudiad: 'http://uil.shahe.baidu.com/mock/addaudiad?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             getmyadlist: 'http://uil.shahe.baidu.com/mock/getmyadlist?&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             type: 0, //saved ad list
-            ps: 2
+            ps: 4
         },
         render: function(opt) {
             var options = this.options;
@@ -71,9 +71,9 @@ define(function(require, exports, module) {
             h.push('<table class="table table-bordered mock-upload-table mock-aditem"><tbody>');
             h.push('<tr><td>广告图*</td><td><div class="bg-warning">广告图片尺寸要求：宽720px，高140px。</div><div class="upload-img-box"><div class="upload-img">');
             h.push('<textarea placeholder="广告图片链接" class="form-control upload-img-tx" id="ad-img"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传广告图</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div>');
-            h.push('<div class="ad-img-preivew"></div></div></td></tr>');
+            h.push('<div class="upload-img-preivew ad-img-preivew"></div></div></td></tr>');
             h.push('<tr><td>广告跳转链接*</td><td><textarea class="form-control upload-desc" cols="3" maxlength="100" id="ad-link"></textarea></td></tr>');
-            h.push('<tr><td>有效期</td><td></td></tr>');
+            h.push('<tr><td>有效期*</td><td><div id="ad-expire"></div></td></tr>');
             h.push('</tbody></table>');
             h.push('</div>');
             h.push('<div class="modal-footer">');
@@ -84,7 +84,7 @@ define(function(require, exports, module) {
             h.push('</div>');
             h.push('</div>');
             h.push('<table class="table table-bordered table-hover">');
-            h.push('<thead><tr><th>id</th><th>广告图片</th><th>广告链接</th><th>操作时间</th></tr></thead><tbody id="ad-table">');
+            h.push('<thead><tr><th>id</th><th>广告图片</th><th>广告链接</th><th>有效期</th><th>操作时间</th></tr></thead><tbody id="ad-table">');
             h.push('</tbody></table>');
             h.push('<div class="paging hide">');
             h.push('<div class="mock-btn mock-btn-white page_pre hide">&lt;</div>');
@@ -97,6 +97,11 @@ define(function(require, exports, module) {
             h.push('</div>');
             this.element.append(h.join(''));
             this.renderTable();
+            $('#ad-expire').append(
+                _util.createSelectElem({
+                    selectClass: 'mock-add-expire',
+                    data: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30]
+                }));
         },
         _createTableElem: function(data) {
             var self = this,
@@ -111,7 +116,7 @@ define(function(require, exports, module) {
             return h.join('');
         },
         _createItemElem: function(item) {
-            return '<tr><td>' + item.id + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"></div></td><td>' + item.link + '</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>';
+            return '<tr><td>' + item.id + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"></div></td><td>' + item.link + '</td><td>' + item.expire + '天</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>';
         },
         _bindEvents: function() {
             this._on(this.element, {
@@ -185,6 +190,15 @@ define(function(require, exports, module) {
                 });
                 return false;
             }
+            var expire = $('#ad-expire').children('select').val();
+            if (!expire) {
+                notify({
+                    tmpl: 'error',
+                    text: '请选择有效期。'
+                });
+                return false;
+            }
+
             $.ajax({
                 url: options.addaudiad,
                 crossDomain: true,
@@ -192,6 +206,7 @@ define(function(require, exports, module) {
                 data: {
                     img: img,
                     link: link,
+                    expire: expire,
                     stype: options.stype,
                     stime: Date.now()
                 }
@@ -201,7 +216,8 @@ define(function(require, exports, module) {
                     $('#ad-table').prepend(self._createItemElem({
                         id: id,
                         img: img,
-                        link: link
+                        link: link,
+                        expire: expire
                     }));
                     self.element.find('button.data-cancel').trigger('click');
                 } else {
