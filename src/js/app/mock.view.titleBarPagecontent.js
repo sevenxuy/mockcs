@@ -13,6 +13,9 @@ define(["mock.util", "mock.view", "widget.tab"], function(util, _view, Tab) {
             if (this.title) {
                 this.$title.html(this.title);
             }
+            var fragement = document.createDocumentFragment();
+            fragement.appendChild(this.$title[0]);
+            fragement.appendChild(this.$pageContent[0]);
             this.$tabsNav = $('<ul class="tabs-nav"></ul>').appendTo(this.$pageContent);
             this.$tabsContent = $('<div class="tabs-content"></div>').appendTo(this.$pageContent);
             this.$tabsNav.tab({
@@ -22,9 +25,7 @@ define(["mock.util", "mock.view", "widget.tab"], function(util, _view, Tab) {
             this.renderTitle();
             this.renderContent();
 
-            var fragement = document.createDocumentFragment();
-            fragement.appendChild(this.$title[0]);
-            fragement.appendChild(this.$pageContent[0]);
+            
             return fragement;
         },
         renderTitle: function renderTitle() {},

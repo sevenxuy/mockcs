@@ -1,4 +1,4 @@
-define(function() {
+define(function(require, module, exports) {
     var _widget = {
         options: {},
         events: {
@@ -37,5 +37,5 @@ define(function() {
     };
 
     $.widget("widget.tab", _widget);
-    return $.widget.tab;
+    module.exports = $.widget.tab;
 });

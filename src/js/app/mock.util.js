@@ -4,7 +4,9 @@ define(function(require, exports, module) {
     @module
     */
     'use strict';
-    var tags = ["DIV", "TR", "TH", "TD", "TBODY", "THEAD", "TABLE", "CAPTION", "SPAN", "LABEL","FORM"];
+    var config = require("config");
+    var host = "";
+    var tags = ["DIV", "TR", "TH", "TD", "TBODY", "THEAD", "TABLE", "CAPTION", "SPAN", "LABEL", "FORM"];
     var CreateElementMethods = function CreateElementMethods() {
         var createElement = function createElement(tag, opts) {
             var htmlobj = document.createElement(tag);
@@ -15,7 +17,7 @@ define(function(require, exports, module) {
         };
         var funParts = [];
         for (var i = 0; i < tags.length; i++) {
-            funParts.push(tags[i] + ':function(opts){var htmlobj = document.createElement("'+tags[i] +'");for (var field in opts) {htmlobj.setAttribute(field, opts[field]);}return htmlobj;}');
+            funParts.push(tags[i] + ':function(opts){var htmlobj = document.createElement("' + tags[i] + '");for (var field in opts) {htmlobj.setAttribute(field, opts[field]);}return htmlobj;}');
         }
         var funBody = ['return {', funParts.join(','), '};'].join("");
         var createFunction = new Function(funBody);
@@ -105,5 +107,71 @@ define(function(require, exports, module) {
         var result = str.match(/^[a-zA-Z]\w+$/);
         if (result == null) return false;
         return true;
-    }
+    };
+
+    /**
+    getApiUrl
+    * @function util.getApiUrl;
+    * @param {obj} param - this param include path, name, params(option), protocol(option)
+    * @example
+    * util.getApiUrl({
+    *     protocol:http//default is http, so you can omit it.
+    *     path:"mock",
+    *     name:"mysquare",
+    *     params:{
+    *         "id":123123123
+    *         "name":"Seed Huang"
+    *     }
+    * });
+    */
+    exports.getApiUrl = function(obj) {
+        var url = "",
+            host = "",
+            protocol = "http:/",
+            path = "",
+            name = "",
+            urlParts = null;
+        //obj is required
+        if (!obj) {
+            throw "please input your param";
+        }
+
+        //path is required
+        if (!obj.path && !config.servicePath) {
+            throw "please input your service's path";
+        } else {
+            path = obj.path || config.servicePath;
+        }
+
+        //name is required
+        if (!obj.name) {
+            throw "please input your service's name";
+        } else {
+            name = obj.name;
+        }
+
+        if (obj.protocol) {
+            protocol = obj.protocol + ":/";
+        }
+
+
+        if (!host) {
+            if (/^localhost:\d{4}|^webapp.shahe.baidu.com$/.test(location.host)) {
+                host = config.env.shahe;
+            } else {
+                host = config.env.cbs;
+            }
+        }
+        url = [protocol, host, path, name].join("/");
+
+        //add parameters
+        if (obj.params) {
+            var parameters = [];
+            for (var field in obj.params) {
+                parameters.push(field + "=" + obj.params[field]);
+            }
+            parameters.length && (url += "?" + parameters.join("&"));
+        }
+        return url;
+    };
 });

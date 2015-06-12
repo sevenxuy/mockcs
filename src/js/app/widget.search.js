@@ -1,4 +1,4 @@
-define(["mock.util"], function(util) {
+define(function(require, module, exports) {
     /**
     search widget
     * @module
@@ -17,6 +17,9 @@ define(["mock.util"], function(util) {
                 this._on(this.events);
             }
         },
+        alert:function(){
+            alert("123123123");
+        },
         events: {
             "keyup": function() {
                 this.onKeyUp(this);
@@ -29,5 +32,5 @@ define(["mock.util"], function(util) {
         onKeyDown: function() {}
     };
     $.widget("widget.search", _widget);
-    return $.widget.search;
+    module.exports = $.widget.search;
 });
