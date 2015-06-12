@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 
   $.widget('mock.ads', _view, {
     options: {
-      getmyadlist: 'uil.shahe.baidu.com/mock/getmyadlist?&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+      getmyadlist: 'http://uil.shahe.baidu.com/mock/getmyadlist?&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
       ps: 4
     },
     render: function(opt) {
