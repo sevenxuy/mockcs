@@ -1,4 +1,4 @@
 require(['mock'], function(mock) {
-  'use strict';
-  mock.initialize();
+    'use strict';
+    mock.initialize();
 });

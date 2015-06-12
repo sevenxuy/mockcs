@@ -1,16 +1,16 @@
 define(function(require, exports, module) {
 
-  'use strict';
+    'use strict';
 
-  require('mock.router');
+    require('mock.router');
 
 
-  var $login = $('#login');
+    var $login = $('#login');
 
-  var mock = {
-    initialize: function() {
-      // $login.login();
-    }
-  };
-  module.exports = mock;
+    var mock = {
+        initialize: function() {
+            // $login.login();
+        }
+    };
+    module.exports = mock;
 });
