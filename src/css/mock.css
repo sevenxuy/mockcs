@@ -579,6 +579,7 @@
       border-bottom: 1px solid #e7e7eb;
       padding-left: 0;
   }
+  
   .tab-nav-item {
       float: left;
       line-height: 37px;
@@ -761,7 +762,25 @@
       width: 200px;
       margin-bottom: 20px;
   }
-.traf-period-date {
+  
+  .traf-period-date {
       display: inline-block;
       width: 120px;
+  }
+  
+  .axis path,
+  .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+  }
+  
+  .x.axis path {
+      display: none;
+  }
+  
+  .line {
+      fill: none;
+      stroke: steelblue;
+      stroke-width: 1.5px;
   }
