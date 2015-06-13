@@ -7,7 +7,9 @@ define(function(require, exports, module) {
     $.widget('mock.ads', _view, {
         options: {
             getmyadlist: 'http://uil.shahe.baidu.com/mock/getmyadlist?&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            ps: 4
+            audiaddo: 'http://uil.shahe.baidu.com/mock/audiaddo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            ps: 4,
+            tp_audit: 3
         },
         render: function(opt) {
             var options = this.options;
@@ -52,6 +54,7 @@ define(function(require, exports, module) {
             this._on(this.element, {
                 'click li.tab-nav-item': this._goPage,
                 'change select.ads-stype': this._filterAds,
+                'click div.data-audit': this._auditAd,
                 'click div.page_pre': this._preGoSiblingPage,
                 'click div.page_next': this._preGoSiblingPage,
                 'click div.page_go': this._preGoSiblingPage
@@ -68,10 +71,7 @@ define(function(require, exports, module) {
             h.push('<li class="tab-nav-item" data-type="3"><a>已删除</a></li>');
             h.push('</ul>');
             h.push('<div class="tabs-content">');
-            h.push('<table class="table table-bordered table-hover">');
-            h.push('<thead><tr><th>id</th><th><select class="form-control ads-stype" id="ads-stype"><option selected="selected" value="2">全部广告</option><option value="0">个人主页</option><option value="1">详情页</option></select></th><th>广告图片</th><th>广告链接</th><th>有效期</th><th>操作时间</th></tr></thead>');
-            h.push('<tbody id="ads-table">');
-            h.push('</tbody>');
+            h.push('<table class="table table-bordered table-hover" id="ads-table">');
             h.push('</table>');
             h.push('<div class="paging hide">');
             h.push('<div class="mock-btn mock-btn-white page_pre hide">&lt;</div>');
@@ -81,7 +81,6 @@ define(function(require, exports, module) {
             h.push('<div class="mock-btn mock-btn-white page-go">跳转</div>');
             h.push('</div>');
             h.push('</div>');
-            h.push('</div>');
             this.element.append(h.join(''));
             this.renderTable();
         },
@@ -89,6 +88,8 @@ define(function(require, exports, module) {
             var options = this.options;
             switch (options.type) {
                 case '0':
+                    return this._createSaveTable(data);
+                    break;
                 case '1':
                 case '2':
                 case '3':
@@ -96,10 +97,26 @@ define(function(require, exports, module) {
                     break;
             }
         },
+        _createSaveTable: function(data) {
+            var h = [];
+            h.push('<thead><tr><th>id</th><th><select class="form-control ads-stype" id="ads-stype"><option selected="selected" value="2">全部广告</option><option value="0">个人主页</option><option value="1">详情页</option></select></th><th>广告图片</th><th>广告链接</th><th>有效期</th><th>操作时间</th><th>操作</th></tr></thead>');
+            h.push('<tbody>');
+
+
+            if (!_.isEmpty(data)) {
+                _.each(data, function(item, index) {
+                    h.push('<tr data-type="' + item.type + '"><td>' + item.id + '</td><td>' + (item.type == 0 ? '个人主页' : '详情页') + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"/></div></td><td>' + item.link + '</td><td>' + item.expire + '天</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><div class="mock-btn mock-btn-red  mock-btn-s data-audit" data-id="' + item.id + '">提交</div></td></tr>');
+                });
+            } else {
+                h.push('<tr><td colspan="6">没有数据</td></tr>');
+            }
+            h.push('</tbody>');
+            return h.join('');
+        },
         _createCommonTable: function(data) {
             var h = [];
-
-
+            h.push('<thead><tr><th>id</th><th><select class="form-control ads-stype" id="ads-stype"><option selected="selected" value="2">全部广告</option><option value="0">个人主页</option><option value="1">详情页</option></select></th><th>广告图片</th><th>广告链接</th><th>有效期</th><th>操作时间</th></tr></thead>');
+            h.push('<tbody>');
             if (!_.isEmpty(data)) {
                 _.each(data, function(item, index) {
                     h.push('<tr data-type="' + item.type + '"><td>' + item.id + '</td><td>' + (item.type == 0 ? '个人主页' : '详情页') + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"/></div></td><td>' + item.link + '</td><td>' + item.expire + '天</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
@@ -107,7 +124,7 @@ define(function(require, exports, module) {
             } else {
                 h.push('<tr><td colspan="6">没有数据</td></tr>');
             }
-
+            h.push('</tbody>');
             return h.join('');
         },
         _goSiblingPage: function(pn) {
@@ -144,6 +161,29 @@ define(function(require, exports, module) {
             $('#ads-stype').children('option:eq(0)').attr({
                 'selected': 'selected'
             });
+        },
+        _auditAd: function(event) {
+            var options = this.options,
+                id = $(event.target).attr('data-id');
+            $.ajax({
+                url: options.audiaddo,
+                crossDomain: true,
+                dataType: 'jsonp',
+                data: {
+                    id: id,
+                    tp: options.tp_audit
+                }
+            }).done(function(res) {
+                if (!res.errno) {
+                    $(event.target).closest('tr').remove();
+                } else {
+                    notify({
+                        tmpl: 'error',
+                        text: res.error
+                    });
+                }
+            });
+            return false;
         }
     });
     module.exports = $.mock.ads;

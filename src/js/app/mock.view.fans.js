@@ -1,12 +1,21 @@
 define(function(require, exports, module) {
     'use strict';
-    var _view = require('mock.view');
+    var _view = require('mock.view'),
+        notify = require('mock.plugin.notify'),
+        _util = require('mock.util');
 
     $.widget('mock.fans', _view, {
         options: {
             message: 'http://uil.shahe.baidu.com:8050/umis/message/pullmsg?&fn=?',
             type: 1,
-            ps: 2
+            ps: 5,
+            loadmore: true
+        },
+        _create: function() {
+            this.render();
+            this._bindEvents();
+            this._bindWindowEvent();
+            this.element.data('widgetCreated', true);
         },
         render: function(opt) {
             var options = this.options;
@@ -16,6 +25,7 @@ define(function(require, exports, module) {
         reRender: function(opt) {
             var options = this.options;
             _.extend(options, opt);
+            options.loadmore = true;
             this.renderTable();
         },
         renderTable: function() {
@@ -28,20 +38,44 @@ define(function(require, exports, module) {
                 dataType: 'jsonp',
                 data: {
                     status: options.status,
-                    pn: options.pn,
+                    type: options.type,
                     ps: options.ps
                 }
             }).done(function(res) {
                 if (!res.errno) {
-                    options.allcount = res.data.allcount;
-                    options.totalpage = Math.ceil(options.allcount / options.ps);
-                    self._updatePagingStatus();
                     $('#fans-table').addClass('hide').empty().append(self._createTableElem(res.data.list)).removeClass('hide');
                 } else {
                     notify({
                         tmpl: 'error',
                         text: res.error
                     })
+                }
+            });
+        },
+        _loadMore: function() {
+            var self = this,
+                options = this.options;
+            if (!options.loadmore) {
+                return false;
+            }
+            $.ajax({
+                url: options.message,
+                crossDomain: true,
+                dataType: 'jsonp',
+                data: {
+                    status: options.status,
+                    type: options.type,
+                    ps: options.ps,
+                    startid: options.startid
+                }
+            }).done(function(res) {
+                if (!res.errno) {
+                    $('#fans-table').append(self._createTableElem(res.data.list));
+                } else {
+                    notify({
+                        tmpl: 'error',
+                        text: res.error
+                    });
                 }
             });
         },
@@ -55,27 +89,47 @@ define(function(require, exports, module) {
             h.push('</ul>');
             h.push('<div class="tabs-content">');
             h.push('<table class="table table-bordered table-hover">');
-            h.push('<thead><tr><th>粉丝昵称</th><th>粉丝头像</th><th>关注时间</th></tr></thead><tbody id="fans-table">');
+            h.push('<thead><tr><th>粉丝头像</th><th>粉丝昵称</th><th>关注时间</th></tr></thead><tbody id="fans-table">');
             h.push('</tbody></table>');
-            h.push('</div>');
+            h.push('<div id="fans-nomore" class="mock-nomore hide">没有更多数据</div>');
             h.push('</div>');
             this.element.append(h.join(''));
             this.renderTable();
         },
         _createTableElem: function(data) {
-            var h = [];
+            var options = this.options,
+                h = [],
+                $nomore = $('#fans-nomore');
             if (!_.isEmpty(data)) {
                 _.each(data, function(item, index) {
-                    h.push('<tr><td>哆啦A梦</td><td>img</td><td>2015-06-06 18:00</td></tr>');
+                    var fan = $.parseJSON(item.content);
+                    h.push('<tr><td><div class="hp-avatar"><img src="' + fan.uc + '"></div></td><td>' + fan.username + '</td><td>' + _util.dateFormat(item.timestamp * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
                 });
+                if (data.length < options.ps) {
+                    options.loadmore = false;
+                    if ($nomore.hasClass('hide')) {
+                        $nomore.removeClass('hide');
+                    }
+                }
+                options.startid = _.last(data).id;
             } else {
-                h.push('<tr><td colspan="3">没有更多数据</td></tr>');
+                if ($nomore.hasClass('hide')) {
+                    $nomore.removeClass('hide');
+                }
             }
             return h.join('');
         },
         _bindEvents: function() {
             this._on(this.element, {
                 'click li.tab-nav-item': this._goPage
+            });
+        },
+        _bindWindowEvent: function() {
+            var self = this;
+            $(window).on('scroll', function() {
+                if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                    self._loadMore();
+                }
             });
         },
         _goPage: function(event) {

@@ -665,12 +665,12 @@
       vertical-align: middle;
       text-align: center;
       line-height: 60px;
-      background: #63a2ef;
   }
   
   .hp-avatar > img {
       max-width: 96%;
       max-height: 96%;
+      border-radius: 4px;
   }
   /*paging*/
   
@@ -767,6 +767,7 @@
       display: inline-block;
       width: 120px;
   }
+  /*visual figure*/
   
   .axis path,
   .axis line {
@@ -784,3 +785,12 @@
       stroke: steelblue;
       stroke-width: 1.5px;
   }
+  
+  .mock-nomore {
+      border: 1px solid #ddd;
+      height: 40px;
+      line-height: 40px;
+      margin-top: -21px;
+      text-align: center;
+  }
+}

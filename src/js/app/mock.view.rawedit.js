@@ -2,8 +2,7 @@ define(function(require, exports, module) {
     'use strict';
     require('mock.view.nav');
 
-    var
-        _view = require('mock.view'),
+    var _view = require('mock.view'),
         _util = require('mock.util'),
         notify = require('mock.plugin.notify'),
         autosize = require('mock.plugin.autosize.min');

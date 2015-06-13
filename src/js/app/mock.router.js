@@ -20,6 +20,8 @@ define(function(require, exports, module) {
         routes: {
             '(login)': 'login',
             'homepage': 'homepage',
+            'homepage/': 'homepage',
+            'homepage/(:pn)': 'homepage',
             'mocks': 'mockme',
             'mocks/(me)': 'mockme',
             'mocks/square': 'mocksquare',
@@ -27,11 +29,9 @@ define(function(require, exports, module) {
             'msgs': 'msgs',
             'msgs/(:status)': 'msgs',
             'msgs/(:status)/': 'msgs',
-            'msgs/(:status)/(:pn)': 'msgs',
             'fans': 'fans',
             'fans/(:status)': 'fans',
             'fans/(:status)/': 'fans',
-            'fans/(:status)/(:pn)': 'fans',
             'rawedit': 'rawedit',
             'rawedit/:id': 'rawedit',
             'raws': 'raws',
@@ -68,13 +68,18 @@ define(function(require, exports, module) {
         }
     });
 
-    router.on('route:homepage', function() {
-        $('div.current').removeClass('current').addClass('hide');
+    router.on('route:homepage', function(status, pn) {
+        var opt = {
+            pn: pn || 0
+        }
+        if ($('#homepage').hasClass('hide')) {
+            $('div.current').removeClass('current').addClass('hide');
+            $('#homepage').removeClass('hide').addClass('current');
+        }
         if ($('#homepage').data('widgetCreated')) {
-            $('#homepage').homepage('reRender');
-
+            $('#homepage').homepage('reRender', opt);
         } else {
-            $('#homepage').homepage();
+            $('#homepage').homepage(opt);
         }
         showNav();
     });

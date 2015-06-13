@@ -9,7 +9,8 @@ define(function(require, exports, module) {
             getaudinewsbyvid: 'http://uil.shahe.baidu.com/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             audinewsdo: 'http://uil.shahe.baidu.com/mock/audinewsdo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             deleteaudinews: 'http://uil.shahe.baidu.com/mock/deleteaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            ps: 4
+            ps: 4,
+            tp_audit: 3
         },
         render: function(opt) {
             var options = this.options;
@@ -176,7 +177,7 @@ define(function(require, exports, module) {
                 dataType: 'jsonp',
                 data: {
                     id: id,
-                    tp: 3
+                    tp: options.tp_audit
                 }
             }).done(function(res) {
                 if (!res.errno) {
