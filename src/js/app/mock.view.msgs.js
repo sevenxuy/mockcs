@@ -8,7 +8,7 @@ define(function(require, exports, module) {
         options: {
             message: 'http://uil.shahe.baidu.com:8050/umis/message/pullmsg?&fn=?',
             type: 2,
-            ps: 5
+            ps: 10
         },
         _create: function() {
             this.render();
@@ -22,9 +22,13 @@ define(function(require, exports, module) {
             this._createWrapperElem();
         },
         reRender: function(opt) {
-            var options = this.options;
+            var options = this.options,
+                $nomore = $('#fans-nomore');
             _.extend(options, opt);
             options.loadmore = true;
+            if (!$nomore.hasClass('hide')) {
+                $nomore.addClass('hide');
+            }
             this.renderTable();
         },
         renderTable: function() {
@@ -96,6 +100,37 @@ define(function(require, exports, module) {
             h.push('</select></th><th>审核内容</th><th>审核结果</th><th>错误类型</th><th>消息时间</th></tr></thead><tbody id="msgs-table">');
             h.push('</tbody></table>');
             h.push('<div id="fans-nomore" class="mock-nomore hide">没有更多数据</div>');
+            h.push('<div class="modal fade" id="msg-ad-modal" tabindex="-1" role="dialog" aria-hidden="true">');
+            h.push('<div class="modal-dialog">');
+            h.push('<div class="modal-content">');
+            h.push('<div class="modal-header">');
+            h.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+            h.push('<h4 class="modal-title" id="myModalLabel">广告位</h4>');
+            h.push('</div>');
+            h.push('<div class="modal-body">');
+            h.push('<table class="table table-bordered mock-upload-table mock-aditem"><tbody>');
+            h.push('<tr><td>广告图</td><td><div class="upload-img-preivew ad-img-preivew"></div></td></tr>');
+            h.push('<tr><td>广告跳转链接</td><td></td></tr>');
+            h.push('<tr><td>有效期</td><td></td></tr>');
+            h.push('</tbody></table>');
+            h.push('</div>');
+            h.push('</div>');
+            h.push('</div>');
+            h.push('</div>');
+            h.push('</div>');
+            h.push('<div class="modal fade" id="msg-raw-modal" tabindex="-1" role="dialog" aria-hidden="true">');
+            h.push('<div class="modal-dialog">');
+            h.push('<div class="modal-content">');
+            h.push('<div class="modal-header">');
+            h.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+            h.push('<h4 class="modal-title" id="myModalLabel">资讯</h4>');
+            h.push('</div>');
+            h.push('<div class="modal-body">');
+            h.push('<div class="mock-title">吐槽能量池</div>');
+            h.push('<div>UI请参考#rawedit, 仅查看，不可编辑。</div>')
+            h.push('</div>');
+            h.push('</div>');
+            h.push('</div>');
             h.push('</div>');
             h.push('</div>');
             this.element.append(h.join(''));
@@ -123,7 +158,13 @@ define(function(require, exports, module) {
                     h.push('</td><td>');
                     switch (msg.type) {
                         case 1:
-                            h.push('<a data-id="' + msg.id + '">' + msg.title + '</a>');
+                            h.push('<a class="msg-raw-view" data-id="' + msg.id + '"  data-toggle="modal" data-target="#msg-raw-modal">' + msg.title + '</a>');
+                            break;
+                        case 2:
+                            h.push('<div class="ad-img-preivew msg-ad-view" data-id="' + msg.id + '"  data-toggle="modal" data-target="#msg-ad-modal"><img src="' + msg.title + '"/></div>');
+                            break;
+                        case 3:
+                            h.push(msg.title);
                     }
                     h.push('</td><td>' + (msg.isok == 0 ? '通过' : '拒绝') + '</td><td class="error">' + msg.reason + '</td><td>' + _util.dateFormat(msg.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
                 });
@@ -144,7 +185,7 @@ define(function(require, exports, module) {
         _bindEvents: function() {
             this._on(this.element, {
                 'click li.tab-nav-item': this._goPage,
-                'change #msg-type-filter': this._filterMsgs,
+                'change #msg-type-filter': this._filterMsgs
             });
         },
         _bindWindowEvent: function() {

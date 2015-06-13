@@ -50,7 +50,7 @@ define(function(require, exports, module) {
             h.push('<ul class="tabs-period">');
             h.push('<li class="tab-period-item tab-period-item-selected">最近7天</li>');
             h.push('<li class="tab-period-item">最近14天</li>');
-            h.push('<li classw="tab-period-item">最近30天</li>');
+            h.push('<li class="tab-period-item">最近30天</li>');
             h.push('<li><input type="text" class="form-control traf-period-date"/>至<input type="text" class="form-control traf-period-date"/></li>')
             h.push('</ul>');
             h.push('<div id="trafuser-figure"></div>');
@@ -154,7 +154,8 @@ define(function(require, exports, module) {
                 .append('g')
                 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-            d3.json('../../data/user.json', function(error, data) {
+            // d3.json('../../data/user.json', function(error, data) {
+            d3.json('/mis/video/mockcs/data/user.json', function(error, data) {
                 if (error) throw error;
 
                 color.domain(d3.keys(data[0]).filter(function(key) {

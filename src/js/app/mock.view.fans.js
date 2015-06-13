@@ -8,7 +8,7 @@ define(function(require, exports, module) {
         options: {
             message: 'http://uil.shahe.baidu.com:8050/umis/message/pullmsg?&fn=?',
             type: 1,
-            ps: 5,
+            ps: 10,
             loadmore: true
         },
         _create: function() {
@@ -23,9 +23,13 @@ define(function(require, exports, module) {
             this._createWrapperElem();
         },
         reRender: function(opt) {
-            var options = this.options;
+            var options = this.options,
+                $nomore = $('#msgs-nomore');
             _.extend(options, opt);
             options.loadmore = true;
+            if (!$nomore.hasClass('hide')) {
+                $nomore.addClass('hide');
+            }
             this.renderTable();
         },
         renderTable: function() {
@@ -91,7 +95,7 @@ define(function(require, exports, module) {
             h.push('<table class="table table-bordered table-hover">');
             h.push('<thead><tr><th>粉丝头像</th><th>粉丝昵称</th><th>关注时间</th></tr></thead><tbody id="fans-table">');
             h.push('</tbody></table>');
-            h.push('<div id="fans-nomore" class="mock-nomore hide">没有更多数据</div>');
+            h.push('<div id="msgs-nomore" class="mock-nomore hide">没有更多数据</div>');
             h.push('</div>');
             this.element.append(h.join(''));
             this.renderTable();
@@ -99,7 +103,7 @@ define(function(require, exports, module) {
         _createTableElem: function(data) {
             var options = this.options,
                 h = [],
-                $nomore = $('#fans-nomore');
+                $nomore = $('#msgs-nomore');
             if (!_.isEmpty(data)) {
                 _.each(data, function(item, index) {
                     var fan = $.parseJSON(item.content);
