@@ -579,12 +579,6 @@
       border-bottom: 1px solid #e7e7eb;
       padding-left: 0;
   }
-  
-  .tabs-period-date {
-      display: inline-block;
-      width: 180px;
-  }
-  
   .tab-nav-item {
       float: left;
       line-height: 37px;
@@ -766,4 +760,8 @@
   .traf-overall-ad {
       width: 200px;
       margin-bottom: 20px;
+  }
+.traf-period-date {
+      display: inline-block;
+      width: 120px;
   }

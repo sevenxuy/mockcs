@@ -48,7 +48,7 @@ define(function(require, exports, module) {
             h.push('<li class="tab-period-item tab-period-item-selected">最近7天</li>');
             h.push('<li class="tab-period-item">最近14天</li>');
             h.push('<li class="tab-period-item">最近30天</li>');
-            h.push('<li><input type="text" class="form-control tabs-period-date"/>至<input type="text" class="form-control tabs-period-date"/></li>')
+            h.push('<li><input type="text" class="form-control traf-period-date"/>至<input type="text" class="form-control traf-period-date"/></li>')
             h.push('</ul>');
             h.push('<div class="traf-overall-item traf-overall-ad"><div class="traf-count">120000</div><div>总点击数</div></div>');
             h.push('<div id="trafuser-figure">Figure</div>');
@@ -65,6 +65,11 @@ define(function(require, exports, module) {
             h.push('</div>');
             this.element.append(h.join(''));
             this.renderContent();
+            this.element.find('input.traf-period-date').datetimepicker({
+                format: 'Y-m-d',
+                timepicker: false,
+                lang: 'ch'
+            });
         },
         _updateDetailElem: function(data) {
             var options = this.options,

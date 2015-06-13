@@ -97,7 +97,8 @@ define(function(require, exports, module) {
             this.element.append(h.join(''));
             $('#upload-content').jqte();
             $('#upload-uptime').datetimepicker({
-                format: 'Y-m-d H:i'
+                format: 'Y-m-d H:i',
+                lang: 'ch'
             });
             if (this.element.hasClass('hide')) {
                 this.element.removeClass('hide').addClass('current');
@@ -202,7 +203,8 @@ define(function(require, exports, module) {
             $('#upload-type').trigger('change');
             $('#upload-content').jqte();
             $('#upload-uptime').datetimepicker({
-                format: 'Y-m-d H:i'
+                format: 'Y-m-d H:i',
+                lang: 'ch'
             });
             if (this.element.hasClass('hide')) {
                 this.element.removeClass('hide').addClass('current');
