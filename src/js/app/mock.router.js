@@ -46,8 +46,14 @@ define(function(require, exports, module) {
             'ads/(:type)': 'ads',
             'ads/(:type)/': 'ads',
             'ads/(:type)/(:pn)': 'ads',
+            'trafuser': 'trafuser',
+            'trafuser/(:stype)': 'trafuser',
+            'trafuser/(:stype)/': 'trafuser',
+            'trafuser/(:stype)/(:pn)': 'trafuser',
             'trafad': 'trafad',
-            'trafuser': 'trafuser'
+            'trafad/(:stype)': 'trafad',
+            'trafad/(:stype)/': 'trafad',
+            'trafad/(:stype)/(:pn)': 'trafad',
         }
     });
 
@@ -206,22 +212,36 @@ define(function(require, exports, module) {
         showNav();
     });
 
-    router.on('route:trafad', function() {
-        $('div.current').removeClass('current').addClass('hide');
-        if ($('#trafad').data('widgetCreated')) {
-            $('#trafad').trafad('reRender');
+    router.on('route:trafuser', function(stype, pn) {
+        var opt = {
+            stype: stype || '0',
+            pn: pn || 0
+        }
+        if ($('#trafuser').hasClass('hide')) {
+            $('div.current').removeClass('current').addClass('hide');
+            $('#trafuser').removeClass('hide').addClass('current');
+        }
+        if ($('#trafuser').data('widgetCreated')) {
+            $('#trafuser').trafuser('reRender', opt);
         } else {
-            $('#trafad').trafad();
+            $('#trafuser').trafuser(opt);
         }
         showNav();
     });
 
-    router.on('route:trafuser', function() {
-        $('div.current').removeClass('current').addClass('hide');
-        if ($('#trafuser').data('widgetCreated')) {
-            $('#trafuser').trafuser('reRender');
+    router.on('route:trafad', function(stype, pn) {
+        var opt = {
+            stype: stype || '0',
+            pn: pn || 0
+        }
+        if ($('#trafad').hasClass('hide')) {
+            $('div.current').removeClass('current').addClass('hide');
+            $('#trafad').removeClass('hide').addClass('current');
+        }
+        if ($('#trafad').data('widgetCreated')) {
+            $('#trafad').trafad('reRender', opt);
         } else {
-            $('#trafuser').trafuser();
+            $('#trafad').trafad(opt);
         }
         showNav();
     });

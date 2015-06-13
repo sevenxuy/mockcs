@@ -363,7 +363,7 @@
   
   .msg-notify-item {
       min-width: 250px;
-      width: 46%;
+      width: 49%;
       height: 100px;
       padding: 25px;
       color: #fff;
@@ -571,12 +571,18 @@
       margin-top: 20px;
   }
   
-  .tabs-nav {
+  .tabs-nav,
+  .tabs-period {
       list-style: none;
       height: 40px;
       line-height: 40px;
       border-bottom: 1px solid #e7e7eb;
       padding-left: 0;
+  }
+  
+  .tabs-period-date {
+      display: inline-block;
+      width: 180px;
   }
   
   .tab-nav-item {
@@ -592,6 +598,29 @@
       outline: 0;
       padding: 0 20px;
       cursor: pointer;
+  }
+  
+  .tabs-period li {
+      float: left;
+      line-height: 37px;
+      cursor: pointer;
+      display: block;
+      text-decoration: none;
+      outline: 0;
+      padding: 0 10px;
+      margin: 0 1px;
+      color: #ea6363;
+      cursor: pointer;
+  }
+  
+  .tabs-period > .tab-period-item:hover,
+  .tabs-period > .tab-period-item-selected {
+      display: block;
+      text-decoration: none;
+      outline: 0;
+      cursor: pointer;
+      background: #ea6363;
+      color: #fff;
   }
   
   .tab-nav-item:hover {
@@ -685,4 +714,56 @@
   
   .modal-content {
       width: 750px;
+  }
+  
+  .mce-panel {
+      border: 1px solid #e7e7eb !important;
+  }
+  /*traffic analytics*/
+  
+  .traf-count {
+      font-size: 32px;
+  }
+  
+  .traf-count-up,
+  .traf-count-down {
+      padding-left: 10px;
+  }
+  
+  .traf-count-up {
+      color: #3fb838;
+  }
+  
+  .traf-count-down {
+      color: red;
+  }
+  
+  .traf-overall {
+      list-style: none;
+      display: -webkit-box;
+      display: -moz-box;
+      margin: 0 0 20px;
+      padding: 0;
+  }
+  
+  .traf-overall-item {
+      background: #ea6363;
+      color: #fff;
+      text-align: center;
+      padding: 10px 0;
+      -webkit-box-flex: 1;
+      -moz-box-flex: 1;
+  }
+  
+  .traf-overall-item:first-child {
+      margin-right: 10px;
+  }
+  
+  .traf-overall-item:last-child {
+      margin-left: 10px;
+  }
+  
+  .traf-overall-ad {
+      width: 200px;
+      margin-bottom: 20px;
   }
