@@ -12,26 +12,42 @@ define(function(require, module, exports) {
             if (this.options.data) {
                 var data = this.options.data;
                 var i;
-                var template = 
-                '<%for(var i=0;i<data.length;i++){%>'+
-                    '<li class="tab-nav-item" data-key="<%=data[i].key%>"><a href="#mocks/<%=data[i].key%>"><%=data[i].value%></a></li>'+
-                '<%}%>';
-                var html = _.template(template)({data:data});
+                var template =
+                    '<%for(var i=0;i<data.length;i++){%>' +
+                    '<li class="tab-nav-item" data-key="<%=data[i].key%>"><a href="#mocks/<%=data[i].key%>"><%=data[i].value%></a></li>' +
+                    '<%}%>';
+                var html = _.template(template)({
+                    data: data
+                });
                 this.element.html(html);
-                var currentHash = window.location.hash;
-                if(currentHash){
-                    this.element.find('a[href="'+currentHash+'"]').parent().addClass("tab-nav-item-selected");
+                
+                this.reSelect();
+                if (this.events) {
+                    this._on(this.events);
                 }
             }
-            if (this.events) {
-                this._on(this.events);
+        },
+        reSelect: function reSelect() {
+            var currentHash = window.location.hash;
+            if (currentHash) {
+                this.element.find('.tab-nav-item').removeClass('tab-nav-item-selected')
+                var achors = this.element.find("a");
+                for (var i = 0; i < achors.length; i++) {
+                    var href = achors[i].getAttribute("href");
+                    var strRegex = '^' + href + '$|^' + href + '\/';
+                    var regex = new RegExp(strRegex);
+                    if (regex.test(location.hash)) {
+                        $(achors[i]).parent().addClass("tab-nav-item-selected");
+                        break;
+                    }
+                }
             }
         },
-        select: function(key) {
-            if(this.onselect){
-                this.onselect(key);    
+        select: function select(key) {
+            if (this.onselect) {
+                this.onselect(key);
             }
-            
+
         },
         onselect: function(key) {}
     };

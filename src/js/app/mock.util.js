@@ -156,7 +156,7 @@ define(function(require, exports, module) {
 
 
         if (!host) {
-            if (/^localhost:\d{4}|^webapp.shahe.baidu.com$/.test(location.host)) {
+            if (/^localhost:\d{4}|^uil.shahe.baidu.com:\d{4}|^webapp.shahe.baidu.com$/.test(location.host)) {
                 host = config.env.shahe;
             } else {
                 host = config.env.cbs;
@@ -166,9 +166,17 @@ define(function(require, exports, module) {
 
         //add parameters
         if (obj.params) {
-            var parameters = [];
+            var parameters = [],
+                defaultParam = {
+                    cuid: '80000000000000000000000000000000|0',
+                    ua: 'bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2',
+                    fn: "?"
+                };
             for (var field in obj.params) {
-                parameters.push(field + "=" + obj.params[field]);
+                defaultParam[field] = obj.params[field];
+            }
+            for (var field in defaultParam) {
+                parameters.push(field + "=" + defaultParam[field]);
             }
             parameters.length && (url += "?" + parameters.join("&"));
         }

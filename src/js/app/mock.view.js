@@ -42,18 +42,15 @@ define(function(require, exports, module) {
                 data = new FormData(),
                 img = event.target.files[0],
                 $imgbox = $(event.target).closest('div.upload-img-box'),
-                $tx = $imgbox.find('textarea.upload-img-tx'),
-                $preview = $imgbox.children('div.upload-img-preivew');
+                $tx = $imgbox.find('input.upload-img-tx'),
+                $spanerror = $tx.parent().find('.errorinfo').hide().html('');
 
             if (!img) {
                 return false;
             }
             //image can only be png, jpeg or gif.
             if (!_.contains(['image/png', 'image/jpeg', 'image/gif'], img.type)) {
-                notify({
-                    tmpl: 'error',
-                    text: '请检查图片格式，只能上传png, jpeg, gif格式的图片。'
-                });
+                $spanerror.html('请检查图片格式，只能上传png, jpeg, gif格式的图片。');
                 return false;
             }
             // 如果图片尺寸大于100K， 就按照60的质量进行压缩
@@ -79,18 +76,17 @@ define(function(require, exports, module) {
                     var newsrc = res.data;
                     $tx.val(newsrc);
                     autosize($tx);
-
                     var newImg = new Image(),
                         w, h;
                     newImg.onload = function() {
                         h = newImg.height;
                         w = newImg.width;
-
                         self._checkImgSize($tx, w, h);
 
                         if (bNeedCompress) {
                             self._compressImg($tx, newsrc, w, h);
                         }
+
                         $tx.trigger('change');
                     }
                     newImg.src = newsrc;

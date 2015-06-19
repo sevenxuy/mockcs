@@ -13,7 +13,7 @@ define(function(require, exports, module) {
             h.push('<li class="submenu-item" data-link="#rawedit">原始内容上传</li>');
             h.push('<li class="submenu-item" data-link="#homepage">个人主页设置</li>');
             h.push('<li class="submenu-item" data-link="#ad">广告位编辑</li>');
-            h.push('<li class="submenu-item" data-link="#mocks">快速吐槽</li>');
+            h.push('<li class="submenu-item" data-link="#mocks/me">快速吐槽</li>');
             h.push('</ul>');
             h.push('</li>');
             h.push('<li class="menu-item">');

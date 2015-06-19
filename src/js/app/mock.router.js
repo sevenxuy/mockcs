@@ -22,9 +22,12 @@ define(function(require, exports, module) {
             'homepage': 'homepage',
             'homepage/': 'homepage',
             'homepage/(:pn)': 'homepage',
-            'mocks': 'mockme',
-            'mocks/(me)': 'mockme',
+            'mocks/me': 'mocksquare',
+            'mocks/me/(:status)/(:pn)': 'mocksquare',
+            'mocks/me/(:status)/(:id)/(:pn)': 'mocksquare',
             'mocks/square': 'mocksquare',
+            'mocks/square/(:status)/(:pn)': 'mocksquare',
+            'mocks/square/(:status)/(:id)/(:pn)': 'mocksquare',
             'msg': 'msg',
             'msgs': 'msgs',
             'msgs/(:status)': 'msgs',
@@ -85,23 +88,45 @@ define(function(require, exports, module) {
     });
 
     router.on('route:mockme', function() {
-        $('div.current').removeClass('current').addClass('hide');
-        if ($('#mockme').data('widgetCreated')) {
-            $('#mockme').mockme('reRender');
-
+         $('div.current').removeClass('current').addClass('hide');
+        var opts = {
+            pageStatus: {
+                status: arguments[0] == "expand" ? "expand" : "unexpand",
+            }
+        };
+        if (opts.pageStatus.status == "expand") {
+            opts.pageStatus.itemid = arguments.length > 1 ? arguments[1] : 0;
+            opts.pageStatus.pn = arguments.length > 2 ? arguments[2] : 0;
         } else {
-            $('#mockme').mockme();
+            opts.pageStatus.pn = arguments.length > 1 ? arguments[1] : 0;
+        }
+
+        if ($('#mocksquare').data('widgetCreated')) {
+            $('#mocksquare').mocksquare('reRender', opts);
+        } else {
+            $('#mocksquare').mocksquare(opts);
         }
         showNav();
     });
 
     router.on('route:mocksquare', function() {
         $('div.current').removeClass('current').addClass('hide');
-        if ($('#mocksquare').data('widgetCreated')) {
-            $('#mocksquare').mocksquare('reRender');
-
+        var opts = {
+            pageStatus: {
+                status: arguments[0] == "expand" ? "expand" : "unexpand",
+            }
+        };
+        if (opts.pageStatus.status == "expand") {
+            opts.pageStatus.itemid = arguments.length > 1 ? arguments[1] : 0;
+            opts.pageStatus.pn = arguments.length > 2 ? arguments[2] : 0;
         } else {
-            $('#mocksquare').mocksquare();
+            opts.pageStatus.pn = arguments.length > 1 ? arguments[1] : 0;
+        }
+
+        if ($('#mocksquare').data('widgetCreated')) {
+            $('#mocksquare').mocksquare('reRender', opts);
+        } else {
+            $('#mocksquare').mocksquare(opts);
         }
         showNav();
     });

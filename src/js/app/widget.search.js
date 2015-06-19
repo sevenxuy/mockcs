@@ -3,11 +3,12 @@ define(function(require, module, exports) {
     search widget
     * @module
     */
-    var _widget = {
+    $.widget("widget.search", {
         options: {
             "placeholder": "按关键字搜索",
             "className": "form-control mock-search"
         },
+        defaultElement:'<div class="mock-search-box"></div>',
         $input: {},
         $searchButton: {},
         _create: function() {
@@ -16,9 +17,6 @@ define(function(require, module, exports) {
             if(this.events){
                 this._on(this.events);
             }
-        },
-        alert:function(){
-            alert("123123123");
         },
         events: {
             "keyup": function() {
@@ -30,7 +28,6 @@ define(function(require, module, exports) {
         },
         onKeyUp: function() {},
         onKeyDown: function() {}
-    };
-    $.widget("widget.search", _widget);
+    });
     module.exports = $.widget.search;
 });

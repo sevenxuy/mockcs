@@ -12,3 +12,4 @@ define(["mock.util", "mock.view.titleBarPagecontent", "widget.search"], function
   });
   return $.mock.mockme;
 });
+
