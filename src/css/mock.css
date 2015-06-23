@@ -808,6 +808,11 @@ span.errorinfo{
       border-width: 0px;
   }
 
+  .h40{height:40px;}
+
+  .fr{float:right;}
+  .fl{float:left;}
+
   .ml0{margin-left:0px;}
   .ml5{margin-left:5px;}
 
@@ -825,4 +830,9 @@ span.errorinfo{
     float:left;
     width:200px;
   }
-
+#homepage_settop .modal-dialog{
+    width:300px;
+}
+#homepage_settop .modal-dialog .modal-content{
+    width:300px;
+}

@@ -6,7 +6,7 @@ define(function(require, exports, module) {
 
     $.widget('mock.msgs', _view, {
         options: {
-            message: 'http://uil.shahe.baidu.com:8050/umis/message/pullmsg?&fn=?',
+            message: 'http://uil.shahe.baidu.com:8050/uil/message/pullmsg?&fn=?',
             type: 2,
             ps: 10
         },

@@ -2,14 +2,30 @@ define(function(require, exports, module) {
     'use strict';
     var _view = require('mock.view'),
         _util = require('mock.util'),
-        notify = require('mock.plugin.notify');
+        notify = require('mock.plugin.notify'),
+        topAudiNewsUrl = function(id) {
+            return _util.getApiUrl({
+                "name": "topaudinews",
+                "params": {
+                    "id": id
+                }
+            });
+        },
+         topAudiNews = function(id) {
+            var squareInstance = this;
+            return $.ajax({
+                url: topAudiNewsUrl(id),
+                crossDomain: true,
+                dataType: 'jsonp',
+            }).done;
+        };
 
     $.widget('mock.raws', _view, {
         options: {
             getaudinewsbyvid: 'http://uil.shahe.baidu.com/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             audinewsdo: 'http://uil.shahe.baidu.com/mock/audinewsdo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             deleteaudinews: 'http://uil.shahe.baidu.com/mock/deleteaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            ps: 4,
+            ps: 100,
             tp_audit: 3
         },
         render: function(opt) {
@@ -56,7 +72,9 @@ define(function(require, exports, module) {
                 'click div.data-audit': this._auditRaw,
                 'click div.page_pre': this._preGoSiblingPage,
                 'click div.page_next': this._preGoSiblingPage,
-                'click div.page_go': this._preGoSiblingPage
+                'click div.page_go': this._preGoSiblingPage,
+                'click #raws-table input[name=adsettop]':this._setTop,
+                'click #adpage_settop .btn-primary':this._submitSetTop,
             });
         },
         _createWrapperElem: function() {
@@ -68,6 +86,7 @@ define(function(require, exports, module) {
             h.push('<li class="tab-nav-item" data-type="2"><a>已上线</a></li>');
             h.push('<li class="tab-nav-item" data-type="1"><a>待审核</a></li>');
             h.push('<li class="tab-nav-item" data-type="0"><a>已保存</a></li>');
+            h.push('<li class="tab-nav-item" data-type="4"><a>未通过审核</a></li>');
             h.push('<li class="tab-nav-item" data-type="3"><a>已删除</a></li>');
             h.push('</ul>');
             h.push('<div class="tabs-content">');
@@ -84,6 +103,25 @@ define(function(require, exports, module) {
             h.push('</div>');
             this.element.append(h.join(''));
             this.renderTable();
+            this.element.append(
+                '<div class="modal fade" id="adpage_settop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+                '<div class="modal-dialog" style="">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×' +
+                '</button>' +
+                '<h4 class="modal-title" id="myModalLabel">提示</h4>' +
+                '</div>' +
+                '<div class="modal-body">是否置顶该咨询</div>' +
+                '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>' +
+                '<button type="button" class="btn btn-primary">' +
+                '确认' +
+                '</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
         },
         _goSiblingPage: function(pn) {
             var router = new Backbone.Router;
@@ -96,6 +134,7 @@ define(function(require, exports, module) {
             var options = this.options;
             switch (options.type) {
                 case '0':
+                case '4':
                     return this._createSaveTable(data);
                     break;
                 case '1':
@@ -130,7 +169,7 @@ define(function(require, exports, module) {
             h.push('<tbody>');
             if (!_.isEmpty(data)) {
                 _.each(data, function(item, index) {
-                    h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><input type="checkbox"></td></tr>');
+                    h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><input name="adsettop" type="radio" data-toggle="modal" data-target="#adpage_settop"></td></tr>');
                 });
             } else {
                 h.push('<tr><td colspan="4">没有数据</td></tr>');
@@ -190,7 +229,36 @@ define(function(require, exports, module) {
                 }
             });
             return false;
-        }
+        },
+        _setTop: function(e) {
+            var title = $(e.currentTarget).closest('tr').find('td')[1].innerHTML;
+            this.element.find("#adpage_settop").find('modal-body').html('是否置顶' + title);
+        },
+        _submitSetTop: function(e) {
+            var currentTr = $('#raws-table').find('input[type=radio]:checked').closest('tr'),
+            tds = currentTr.find('td'),
+            id = tds[0].innerHTML,
+            title = tds[1].innerHTML;
+            topAudiNews(id)(function(result) {
+                var data = [];
+                if (!result.errno) {
+                    notify({
+                        text: title + '已置顶'
+                    });
+                    $(e.currentTarget).parent().find('button[data-dismiss=modal]').trigger('click');
+                    var trs = currentTr.parent().find('tr');
+                    if(trs.length > 0){
+                        currentTr[0].parentNode.insertBefore(currentTr[0], trs[0])
+                    }
+                } else {
+                    notify({
+                        tmpl: 'error',
+                        text: _title + '提交置顶失败'
+                    });
+                }
+            });
+
+        },
     });
     module.exports = $.mock.raws;
 });

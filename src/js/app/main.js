@@ -1,6 +1,6 @@
 require.config({
-    //baseUrl: '/js/app/',
-    baseUrl: '/mis/video/mockcs/js/app',
+    baseUrl: '/js/app/',
+    // baseUrl: '/mis/video/mockcs/js/app',
     paths: {
         'jquery': '../lib/jquery-1.9.1.min',
         'jquery.ui.widget': '../lib/jquery-ui.widget.min',
@@ -11,7 +11,7 @@ require.config({
         'te': '../lib/jquery-te-1.4.0.min',
         'md5': '../lib/jquery.md5',
         'd3': '../lib/d3.min',
-        'bootstrap':'bootstrap'
+        'bootstrap': 'bootstrap'
     },
     // Configure the dependencies, exports, and custom initialization
     shim: {
@@ -22,9 +22,9 @@ require.config({
         },
         'backbone': ['jquery', 'underscore'],
         'bootstraplib': ['jquery', 'jquery.ui.widget'],
-        'jquery.datetimepicker': ['jquery','jquery.ui.widget'],
+        'jquery.datetimepicker': ['jquery', 'jquery.ui.widget'],
         'te': ['jquery'],
         'md5': ['jquery']
-    },  
+    },
     deps: ['bootstrap']
 });

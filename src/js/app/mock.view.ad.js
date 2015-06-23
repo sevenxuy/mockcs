@@ -72,9 +72,9 @@ define(function(require, exports, module) {
             h.push('<div class="modal-body">');
             h.push('<table class="table table-bordered mock-upload-table mock-aditem"><tbody>');
             h.push('<tr><td>广告图*</td><td><div class="bg-warning">广告图片尺寸要求：宽720px，高140px。</div><div class="upload-img-box"><div class="upload-img">');
-            h.push('<textarea placeholder="广告图片链接" class="form-control upload-img-tx" id="ad-img"></textarea><div class="mock-btn mock-btn-red upload-img-btn">上传广告图</div><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div>');
-            h.push('<div class="upload-img-preivew ad-img-preivew"></div></div></td></tr>');
-            h.push('<tr><td>广告跳转链接*</td><td><textarea class="form-control upload-desc" cols="3" maxlength="100" id="ad-link"></textarea></td></tr>');
+            h.push('<span class="errorinfo" for="ad-img" style="display:none;"></span><div class="mock-btn mock-btn-red upload-img-btn">上传广告图</div><input placeholder="广告图片链接" class="form-control upload-img-tx  inlineb bgwhite" id="ad-img"/><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div>');
+            h.push('<div class="upload-img-preivew mt10 ml0 hide"></div></div></td></tr>');
+            h.push('<tr><td>广告跳转链接*</td><td><input class="form-control upload-desc" cols="3" maxlength="100" id="ad-link"/></td></tr>');
             h.push('<tr><td>有效期*</td><td><div id="ad-expire"></div></td></tr>');
             h.push('</tbody></table>');
             h.push('</div>');

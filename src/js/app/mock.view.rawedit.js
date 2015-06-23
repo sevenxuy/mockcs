@@ -16,6 +16,7 @@ define(function(require, exports, module) {
                         var self = this,
                             options = this.options;
                         _.extend(options, opt);
+                        self.routePath = 'raws/0';
                         if (options.id) {
                             $.ajax({
                                 url: options.getaudinews,
@@ -27,6 +28,7 @@ define(function(require, exports, module) {
                             }).done(function(res) {
                                 if (!res.errno) {
                                     self._createRawElem(res.data);
+                                    self.routePath = 'raws/'+res.data.state;
                                 } else {
                                     notify({
                                         tmpl: 'error',
@@ -499,9 +501,10 @@ define(function(require, exports, module) {
                             '</table>'+
                             '<div class="mock-center-box">'+
                                 '<div class="mock-btn mock-btn-red" id="upload-submit">保存</div>'+
-                                '<div class="mock-btn mock-btn-red" id="upload-saveandsubmit"  data-review="true>保存并提交</div>'+
+                                '<div class="mock-btn mock-btn-red" id="upload-saveandsubmit" data-review="true">保存并提交</div>'+
                             '</div>'+
                         '</div>');
+
                                 this.element.append(h.join(''));
                                 $('#upload-type').val(item.type);
                                 $('#upload-type').trigger('change');
@@ -665,6 +668,7 @@ define(function(require, exports, module) {
                                 }
                             },
                             _submitData: function(event) {
+                                var self = this;
                                 $('span[for=upload-title]').html('').hide();
                                 $('span[for=upload-desc]').html('').hide();
                                 $('span[for=upload-content]').html('').hide();
@@ -673,7 +677,7 @@ define(function(require, exports, module) {
                                 $("span[for=upload-uptime]").html('').hide();
                                 var needReview = $(event.currentTarget).attr("data-review");
                                 needReview = needReview == "true" ?  true:false;
-                                var routePath = 'raws/'+(+needReview);
+
                                 var options = this.options;
                                 var title = $('#upload-title').val().trim();
                                 var isValidate = true;
@@ -779,6 +783,7 @@ define(function(require, exports, module) {
                                     };
                                     if(needReview){
                                         sendData.shen = 1;
+                                        self.routePath = 'raws/1';
                                     }
 
                                     if (options.id) {
@@ -791,7 +796,7 @@ define(function(require, exports, module) {
                                         }).done(function(res) {
                                             if (!res.errno) {
                                                 var router = new Backbone.Router;
-                                                router.navigate(routePath, {
+                                                router.navigate(self.routePath, {
                                                     trigger: true
                                                 });
                                             } else {
@@ -810,7 +815,7 @@ define(function(require, exports, module) {
                                         }).done(function(res) {
                                             if (!res.errno) {
                                                 var router = new Backbone.Router;
-                                                router.navigate(routePath, {
+                                                router.navigate(self.routePath, {
                                                     trigger: true
                                                 });
                                             } else {

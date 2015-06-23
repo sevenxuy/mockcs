@@ -2,8 +2,51 @@ define(function(require, exports, module) {
     'use strict';
     var _view = require('mock.view'),
         notify = require('mock.plugin.notify'),
-        _util = require('mock.util');
-
+        _util = require('mock.util'),
+        getAddaudiuserUrl = function(desc) {
+            return _util.getApiUrl({
+                "name": "addaudiuser",
+                "params": {
+                    "desc": desc
+                }
+            });
+        },
+        topAudiNewsUrl = function(id) {
+            return _util.getApiUrl({
+                "name": "topaudinews",
+                "params": {
+                    "id": id
+                }
+            });
+        },
+        addaudiuser = function(desc) {
+            var squareInstance = this;
+            $.ajax({
+                url: getAddaudiuserUrl(desc),
+                crossDomain: true,
+                dataType: 'jsonp',
+            }).done(function(result) {
+                var data = [];
+                if (!result.errno) {
+                    notify({
+                        text: '提交简介成功，待审核'
+                    });
+                } else {
+                    notify({
+                        tmpl: 'error',
+                        text: '提交简介失败'
+                    });
+                }
+            });
+        },
+        topAudiNews = function(id) {
+            var squareInstance = this;
+            return $.ajax({
+                url: topAudiNewsUrl(id),
+                crossDomain: true,
+                dataType: 'jsonp',
+            }).done;
+        };
     $.widget('mock.homepage', _view, {
         options: {
             getaudinewsbyvid: 'http://uil.shahe.baidu.com/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
@@ -21,14 +64,46 @@ define(function(require, exports, module) {
             if (this.element.hasClass('hide')) {
                 this.element.removeClass('hide').addClass('current');
             }
+
         },
         _bindEvents: function() {
             this._on(this.element, {
-                'change #homnepage-desc': this._updateDesc,
                 'click div.page_pre': this._preGoSiblingPage,
                 'click div.page_next': this._preGoSiblingPage,
-                'click div.page_go': this._preGoSiblingPage
+                'click div.page_go': this._preGoSiblingPage,
+                'click .mock-submit': this._submitUserDesc,
+                'click input[name=settop]': this._setTop,
+                'click #homepage_settop .btn-primary': this._submitSetTop
             });
+        },
+        _setTop: function(e) {
+            var title = $(e.currentTarget).closest('tr').find('td')[1].innerHTML;
+            this.element.find("#homepage_settop").find('modal-body').html('是否置顶' + title);
+        },
+        _submitSetTop: function(e) {
+            var currentTr = $('#hp-rawonline').find('input[type=radio]:checked').closest('tr'),
+            tds = currentTr.find('td'),
+            id = tds[0].innerHTML,
+            title = tds[1].innerHTML;
+            topAudiNews(id)(function(result) {
+                var data = [];
+                if (!result.errno) {
+                    notify({
+                        text: title + '已置顶'
+                    });
+                    $(e.currentTarget).parent().find('button[data-dismiss=modal]').trigger('click');
+                    var trs = currentTr.parent().find('tr');
+                    if(trs.length > 0){
+                        currentTr[0].parentNode.insertBefore(currentTr[0], trs[0])
+                    }
+                } else {
+                    notify({
+                        tmpl: 'error',
+                        text: _title + '提交置顶失败'
+                    });
+                }
+            });
+
         },
         _createWrapperElem: function() {
             var h = [];
@@ -38,9 +113,10 @@ define(function(require, exports, module) {
             h.push('<table class="table table-bordered mock-upload-table"><tbody>');
             h.push('<tr><td>头像</td><td><div class="hp-avatar"><img src="./mockcs/img/hi.png"></div></td></tr>');
             h.push('<tr><td>名称</td><td>哆啦A梦</td></tr>');
-            h.push('<tr><td>个人简介</td><td><div class="mock-textarea-box"><textarea class="form-control upload-desc" cols="3" maxlength="100" id="homnepage-desc"></textarea></div></td>');
+            h.push('<tr><td>个人简介</td><td><div class="mock-textarea-box"><span class="errorinfo" for="homnepage-desc" style="display:none"></span><textarea class="form-control upload-desc" cols="3" maxlength="25" id="homnepage-desc"></textarea><span class="mock-input-tip">最多25个字符</span></div></td>');
             h.push('</tbody>');
             h.push('</table>');
+            h.push('<div class="operationbar h40"><button class="mock-btn mock-btn-red mock-submit border0 fr">确认提交</button></div>');
             h.push('<div class="mock-title">个人主页资讯列表</div>');
             h.push('<table class="table table-bordered table-hover" id="hp-rawonline">');
             h.push('</tbody></table>');
@@ -58,6 +134,25 @@ define(function(require, exports, module) {
         renderTable: function() {
             var self = this,
                 options = this.options;
+            self.element.append(
+                '<div class="modal fade" id="homepage_settop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+                '<div class="modal-dialog" style="">' +
+                '<div class="modal-content">' +
+                '<div class="modal-header">' +
+                '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×' +
+                '</button>' +
+                '<h4 class="modal-title" id="myModalLabel">提示</h4>' +
+                '</div>' +
+                '<div class="modal-body">是否置顶该咨询</div>' +
+                '<div class="modal-footer">' +
+                '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>' +
+                '<button type="button" class="btn btn-primary">' +
+                '确认' +
+                '</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
             this._updateWrapperElemStatus(options.type);
             $.ajax({
                 url: options.getaudinewsbyvid,
@@ -88,33 +183,13 @@ define(function(require, exports, module) {
             h.push('<tbody>');
             if (!_.isEmpty(data)) {
                 _.each(data, function(item, index) {
-                    h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><input type="checkbox"></td></tr>');
+                    h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><input name="settop" type="radio" data-toggle="modal" data-target="#homepage_settop"/></td></tr>');
                 });
             } else {
                 h.push('<tr><td colspan="4">没有数据</td></tr>');
             }
             h.push('</tbody>');
             return h.join('');
-        },
-        _updateDesc: function(event) {
-            var desc = _.escape($(event.target).val().trim());
-            $.ajax({
-                url: options.addaudiuser,
-                crossDomain: true,
-                dataType: 'jsonp',
-                type: 'GET',
-                data: {
-                    desc: desc
-                }
-            }).done(function(res) {
-                if (res.errno) {
-                    notify({
-                        tmpl: 'error',
-                        text: res.error
-                    });
-                }
-            });
-            return false;
         },
         _goSiblingPage: function(pn) {
             var router = new Backbone.Router;
@@ -123,6 +198,18 @@ define(function(require, exports, module) {
             });
             return false;
         },
+        _submitUserDesc: function(e) {
+            var $taDesc = this.element.find('#homnepage-desc'),
+                $errorInfo = $taDesc.parent().find('span.errorinfo[for=homnepage-desc]');
+
+            var val = $taDesc.val().trim()
+            if (val.length == 0) {
+                $errorInfo.show().html('请填写描述');
+            } else {
+                $errorInfo.hide().html('');
+                addaudiuser(val);
+            }
+        }
     });
     module.exports = $.mock.homepage;
 });
