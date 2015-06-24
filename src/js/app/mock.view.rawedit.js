@@ -221,7 +221,10 @@ define(function(require, exports, module) {
                                 $('#upload-content').jqte();
                                 $('#upload-uptime').datetimepicker({
                                     format: 'Y-m-d H:i',
-                                    lang: 'ch'
+                                    lang: 'ch',
+                                    yearStart: 2015,
+                                    yearEnd: 2020,
+                                    minDate: '-1970/01/01'
                                 });
                                 if (this.element.hasClass('hide')) {
                                     this.element.removeClass('hide').addClass('current');
@@ -336,7 +339,7 @@ define(function(require, exports, module) {
                                                             '</select>'+
                                                             '<div class="upload-pk hide" id="upload-pk">');
                                 if ((item.type == '1') && (!!item.ext) && (!_.isEmpty(JSON.parse(item.ext)))) {
-                                    ext = JSON.parse(JSON.parse(item.ext));
+                                    ext = JSON.parse(item.ext);
                                     h.push(
                                                                 '<div class="upload-pk-item">甲方文案 '+
                                                                     '<div class="mock-input-box">'+
@@ -511,7 +514,10 @@ define(function(require, exports, module) {
                                 $('#upload-content').jqte();
                                 $('#upload-uptime').datetimepicker({
                                     format: 'Y-m-d H:i',
-                                    lang: 'ch'
+                                    lang: 'ch',
+                                    yearStart: 2015,
+                                    yearEnd: 2020,
+                                    minDate: '-1970/01/01'
                                 });
                                 if (this.element.hasClass('hide')) {
                                     this.element.removeClass('hide').addClass('current');
