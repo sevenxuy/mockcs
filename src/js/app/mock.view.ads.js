@@ -147,7 +147,6 @@ define(function(require, exports, module) {
         _filterAds: function(event) {
             var selectedType = $(event.target).val(),
                 $ads = $('#ads-table').children('tbody');
-                console.log(selectedType);
             switch (selectedType) {
                 case '0':
                 case '1':
