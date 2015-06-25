@@ -857,3 +857,8 @@
   
   .Editor-editor {
       outline: none;
+  }
+  
+  #statusbar {
+      display: none;
+  }
