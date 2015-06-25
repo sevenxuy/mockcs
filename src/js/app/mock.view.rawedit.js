@@ -93,7 +93,7 @@ define(function(require, exports, module) {
                                     '<tr>'+
                                         '<td>主图</td>'+
                                         '<td>'+
-                                            '<div class="bg-warning">图片尺寸要求：宽度720px， 高度2048px。</div>'+
+                                            '<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。</div>'+
                                             '<div class="upload-img-box">'+
                                                 '<div class="upload-img">'+
                                                     '<span class="errorinfo" for="upload-img" style="display:none;"></span>'+
@@ -294,7 +294,7 @@ define(function(require, exports, module) {
                                                     '<tr>'+
                                                         '<td>主图</td>'+
                                                         '<td>'+
-                                                            '<div class="bg-warning">图片尺寸要求：宽度720px， 高度2048px。</div>'+
+                                                            '<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。</div>'+
                                                             '<div class="upload-img-box">'+
                                                                 '<div class="upload-img">');
                                 if (!!item.img) {
@@ -622,13 +622,13 @@ define(function(require, exports, module) {
                                         options.img_h = h;
                                     }
                                 }
-                                if (($tx.attr('id') == 'upload-img') && ((w != 720) || (h != 2048))) {
-                                    $spanerror.html('主图尺寸要求是：尺寸要求：宽度720px， 高度2048px。').show();
+                                if (($tx.attr('id') == 'upload-img') && ((w < 440) || (w > 780) || (h < 290) || (h > 2048))) {
+                                    $spanerror.html('主图尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。').show();
                                     $tx.val('');
                                     return false;
                                 }
                                 if ($tx.hasClass('upload-vote-img') && ((w != 200) || (h != 200))) {
-                                    $spanerror.html('投票观点配图要求是：尺寸要求：宽度720px， 高度2048px。').show();
+                                    $spanerror.html('投票观点配图要求是：尺寸要求：宽度200px， 高度200px。').show();
                                     $tx.val('');
                                     return false;
                                 }
