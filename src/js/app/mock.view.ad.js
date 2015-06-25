@@ -61,7 +61,7 @@ define(function(require, exports, module) {
             h.push('<li class="tab-nav-item" data-type="1"><a>详情页</a></li>');
             h.push('</ul>');
             h.push('<div class="tabs-content">');
-            h.push('<div class="mock-btn mock-btn-red mock-add" data-toggle="modal" data-target="#ad-modal-new">+ 新增</div>');
+            h.push('<div class="mock-btn mock-btn-red mock-add" data-toggle="modal" id="btnAddNewAd" data-target="#ad-modal-new">+ 新增</div>');
             h.push('<div class="modal fade" id="ad-modal-new" tabindex="-1" role="dialog" aria-hidden="true">');
             h.push('<div class="modal-dialog">');
             h.push('<div class="modal-content">');
@@ -72,10 +72,10 @@ define(function(require, exports, module) {
             h.push('<div class="modal-body">');
             h.push('<table class="table table-bordered mock-upload-table mock-aditem"><tbody>');
             h.push('<tr><td>广告图*</td><td><div class="bg-warning">广告图片尺寸要求：宽720px，高140px。</div><div class="upload-img-box"><div class="upload-img">');
-            h.push('<span class="errorinfo" for="ad-img" style="display:none;"></span><div class="mock-btn mock-btn-red upload-img-btn">上传广告图</div><input placeholder="广告图片链接" class="form-control upload-img-tx  inlineb bgwhite" id="ad-img"/><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div>');
+            h.push('<span class="errorinfo" for="ad-img" style="display:none;"></span><div class="mock-btn mock-btn-red upload-img-btn">上传广告图</div><input placeholder="广告图片链接" class="form-control upload-img-tx inlineb bgwhite" id="ad-img" readonly="readonly"/><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div>');
             h.push('<div class="upload-img-preivew mt10 ml0 hide"></div></div></td></tr>');
-            h.push('<tr><td>广告跳转链接*</td><td><input class="form-control upload-desc" cols="3" maxlength="100" id="ad-link"/></td></tr>');
-            h.push('<tr><td>有效期*</td><td><div id="ad-expire"></div></td></tr>');
+            h.push('<tr><td>广告跳转链接*</td><td><span class="errorinfo" for="ad-link"></span><input class="form-control upload-desc" cols="3" maxlength="100" id="ad-link"/></td></tr>');
+            h.push('<tr><td>有效期*</td><td><span class="errorinfo" for="ad-expire"></span><div id="ad-expire"></div></td></tr>');
             h.push('</tbody></table>');
             h.push('</div>');
             h.push('<div class="modal-footer">');
@@ -125,13 +125,23 @@ define(function(require, exports, module) {
                 'click li.tab-nav-item': this._goPage,
                 'click div.upload-img-btn': this._triggerUploadImg,
                 'change input[type=file]': this._uploadImg,
-                'change textarea.upload-img-tx': this._previewImg,
+                'change input.upload-img-tx': this._previewImg,
                 'click button.data-save': this._saveAd,
                 'click div.data-audit': this._auditAd,
                 'click div.page_pre': this._preGoSiblingPage,
                 'click div.page_next': this._preGoSiblingPage,
-                'click div.page_go': this._preGoSiblingPage
+                'click div.page_go': this._preGoSiblingPage,
+                'click #btnAddNewAd': this._clickNewAd,
             });
+        },
+        _clickNewAd: function() {
+            var dialog = this.element.find('#ad-modal-new')
+            dialog.find('#ad-img').val('');
+            dialog.find('span[for=ad-img]').empty().hide();
+            dialog.find('#ad-link').val('');
+            dialog.find('#ad-expire .mock-add-expire')[0].selectedIndex = 0;
+            dialog.find('.upload-img-preivew').empty().addClass('hide');
+            dialog.find('.upload-img-preivew').parent().find('input[type=file]').val('');
         },
         _goSiblingPage: function(pn) {
             var router = new Backbone.Router;
@@ -149,87 +159,100 @@ define(function(require, exports, module) {
             return false;
         },
         _checkImgSize: function($tx, w, h) {
+            var spanerror = $tx.parent().find('span[for=' + $tx[0].id + ']');
             if ($tx.hasClass('upload-img-tx') && ((w != 720) || (h != 140))) {
-                notify({
-                    tmpl: 'error',
-                    text: '广告图片尺寸要求：宽720px，高140px。'
-                });
+                spanerror.show().html('广告图片尺寸要求：宽720px，高140px。').show();
                 $tx.val('');
                 return false;
+            } else {
+                spanerror.empty().hide();
             }
         },
         _previewImg: function(event) {
             var $tx = $(event.target),
                 $imgbox = $tx.closest('div.upload-img-box'),
                 imgsrc = $tx.val().trim(),
-                $preview = $imgbox.children('div.upload-img-preivew');
+                $preview = $imgbox.children('div.upload-img-preivew'),
+                $spanerror = $imgbox.children('span[for=ad-img]');
             if (!!imgsrc) {
                 if (imgsrc.match(/\.(jpeg|jpg|gif|png)$/)) {
+                    if ($spanerror.html() == '') {
+                        $spanerror.empty().hide();
+                    }
+                    $preview.removeClass("hide");
                     $preview.empty().append('<img src="' + imgsrc + '"/>');
                 } else {
-                    notify({
-                        tmpl: 'error',
-                        text: '请检查图片格式，只能上传png, jpeg, gif格式的图片。'
-                    });
+                    $spanerror.show().html('请检查图片格式，只能上传png, jpeg, gif格式的图片。');
                 }
             }
         },
         _saveAd: function(event) {
             var self = this,
                 options = this.options,
-                img = $('#ad-img').val().trim();
+                img = $('#ad-img').val().trim(),
+                $dialog = $('#ad-modal-new'),
+                $errorAdImg = $('span[for=ad-img]'),
+                $errorAdLink = $('span[for=ad-link]'),
+                $errorExpire = $('span[for=ad-expire]'),
+                isValidate = true;
             if (!img.length) {
-                notify({
-                    tmpl: 'error',
-                    text: '请上传广告图片。'
-                });
-                return false;
+                $errorAdImg.show().html('请上传广告图片。');
+                isValidate = false;
+            } else {
+                if ($errorAdImg.html() == '请上传广告图片。') {
+                    $errorAdImg.empty().hide();
+                }
+                if ($errorAdImg.html() != '') {
+                    isValidate = false;
+                }
             }
             var link = $('#ad-link').val().trim();
             if (!link.length) {
-                notify({
-                    tmpl: 'error',
-                    text: '请输入广告链接。'
-                });
-                return false;
-            }
-            var expire = $('#ad-expire').children('select').val();
-            if (!expire) {
-                notify({
-                    tmpl: 'error',
-                    text: '请选择有效期。'
-                });
-                return false;
+                $errorAdLink.show().html('请输入广告链接。');
+                isValidate = false;
+            } else {
+                $errorAdLink.hide().empty();
             }
 
-            $.ajax({
-                url: options.addaudiad,
-                crossDomain: true,
-                dataType: 'jsonp',
-                data: {
-                    img: img,
-                    link: link,
-                    expire: expire,
-                    stype: options.stype,
-                    stime: Date.now()
-                }
-            }).done(function(res) {
-                if (!res.errno) {
-                    var id = res.data.id;
-                    $('#ad-table').prepend(self._createItemElem({
-                        id: id,
+            var expire = $('#ad-expire').children('select').val();
+            if (!expire) {
+                $errorExpire.show().html('请选择有效期。');
+                isValidate = false;
+            } else {
+                $errorExpire.empty().hide();
+            }
+            if (isValidate) {
+                $.ajax({
+                    url: options.addaudiad,
+                    crossDomain: true,
+                    dataType: 'jsonp',
+                    data: {
                         img: img,
                         link: link,
-                        expire: expire
-                    }));
-                    self.element.find('button.data-cancel').trigger('click');
-                } else {
-                    notify({
-                        tmpl: 'error',
-                        text: res.error
-                    });
-                }
-            });
+                        expire: expire,
+                        stype: options.stype,
+                        stime: Date.now()
+                    }
+                }).done(function(res) {
+                    if (!res.errno) {
+                        var id = res.data.id;
+                        $('#ad-table').prepend(self._createItemElem({
+                            id: id,
+                            img: img,
+                            link: link,
+                            expire: expire,
+                            stime: parseInt(new Date().getTime()/1000)
+                        }));
+                        self.element.find('button.data-cancel').trigger('click');
+                    } else {
+                        notify({
+                            tmpl: 'error',
+                            text: res.error
+                        });
+                    }
+                });
+            }
+
         },
         _auditAd: function(event) {
             var options = this.options,

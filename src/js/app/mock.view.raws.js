@@ -104,7 +104,7 @@ define(function(require, exports, module) {
             this.element.append(h.join(''));
             this.renderTable();
             this.element.append(
-                '<div class="modal fade" id="adpage_settop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+                '<div class="modal fade shortmsg" id="adpage_settop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
                 '<div class="modal-dialog" style="">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header">' +
@@ -112,7 +112,7 @@ define(function(require, exports, module) {
                 '</button>' +
                 '<h4 class="modal-title" id="myModalLabel">提示</h4>' +
                 '</div>' +
-                '<div class="modal-body">是否置顶该咨询</div>' +
+                '<div class="modal-body">是否置顶该资讯</div>' +
                 '<div class="modal-footer">' +
                 '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>' +
                 '<button type="button" class="btn btn-primary">' +

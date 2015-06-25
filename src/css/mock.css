@@ -830,9 +830,28 @@ span.errorinfo{
     float:left;
     width:200px;
   }
-#homepage_settop .modal-dialog{
+.shortmsg .modal-dialog{
     width:300px;
 }
-#homepage_settop .modal-dialog .modal-content{
+.shortmsg .modal-dialog .modal-content{
     width:300px;
+}
+
+i.pass{
+    font-style:normal;
+    color:rgb(34,177,76);
+}
+
+i.failed{
+    font-style:normal;
+    color:#cf2826;
+}
+
+i.wait{
+    font-style:normal;
+    color:rgb(255,201,14);
+}
+
+.mock-btn[disabled]{
+  background-color:#ccc
 }
