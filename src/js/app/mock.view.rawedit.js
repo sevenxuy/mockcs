@@ -218,7 +218,7 @@ define(function(require, exports, module) {
                             '</div>'+
                         '</div>'); 
                             this.element.append(h.join(''));
-                                $('#upload-content').Editor();  
+                                $('#upload-content').Editor(); 
                                 $('#upload-uptime').datetimepicker({
                                     format: 'Y-m-d H:i',
                                     lang: 'ch',
@@ -326,7 +326,7 @@ define(function(require, exports, module) {
                                                         '<td>正文*</td>'+
                                                         '<td>'+
                                                             '<span class="errorinfo" for="upload-content" style="display:none;"></span>'+
-                                                            '<textarea id="upload-content" class="form-control">' + item.content + '</textarea>'+
+                                                            '<textarea id="upload-content" class="form-control"></textarea>'+
                                                         '</td>'+
                                                     '</tr>'+
                                                     '<tr>'+
@@ -512,6 +512,7 @@ define(function(require, exports, module) {
                                 $('#upload-type').val(item.type);
                                 $('#upload-type').trigger('change');
                                 $('#upload-content').Editor();
+                                $('#upload-content').Editor('setText', item.content); 
                                 $('#upload-uptime').datetimepicker({
                                     format: 'Y-m-d H:i',
                                     lang: 'ch',
