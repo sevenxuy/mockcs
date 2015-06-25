@@ -29,6 +29,7 @@ define(function(require, exports, module) {
             'mocks/square/(:status)/(:pn)': 'mocksquare',
             'mocks/square/(:status)/(:id)/(:pn)': 'mocksquare',
             'msg': 'msg',
+            'msg/(:pn)': 'msg',
             'msgs': 'msgs',
             'msgs/(:status)': 'msgs',
             'msgs/(:status)/': 'msgs',
@@ -131,14 +132,27 @@ define(function(require, exports, module) {
         showNav();
     });
 
-    router.on('route:msg', function() {
+    router.on('route:msg', function(pn) {
         $('div.current').removeClass('current').addClass('hide');
-        if ($('#msg').data('widgetCreated')) {
-            $('#msg').msg('reRender');
+        // if ($('#msg').data('widgetCreated')) {
+        //     $('#msg').msg('reRender');
 
-        } else {
-            $('#msg').msg();
+        // } else {
+        //     $('#msg').msg();
+        // }
+        var opt = {
+            pn: pn || 0
         }
+        if ($('#msg').hasClass('hide')) {
+            $('div.current').removeClass('current').addClass('hide');
+            $('#msg').removeClass('hide').addClass('current');
+        }
+        if ($('#msg').data('widgetCreated')) {
+            $('#msg').msg('reRender', opt);
+        } else {
+            $('#msg').msg(opt);
+        }
+
         showNav();
     });
 

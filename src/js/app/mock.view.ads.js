@@ -68,6 +68,7 @@ define(function(require, exports, module) {
             h.push('<li class="tab-nav-item" data-type="2"><a>已上线</a></li>');
             h.push('<li class="tab-nav-item" data-type="1"><a>待审核</a></li>');
             h.push('<li class="tab-nav-item" data-type="0"><a>已保存</a></li>');
+            h.push('<li class="tab-nav-item" data-type="4"><a>未通过审核</a></li>');
             h.push('<li class="tab-nav-item" data-type="3"><a>已删除</a></li>');
             h.push('</ul>');
             h.push('<div class="tabs-content">');
@@ -88,6 +89,7 @@ define(function(require, exports, module) {
             var options = this.options;
             switch (options.type) {
                 case '0':
+                case '4':
                     return this._createSaveTable(data);
                     break;
                 case '1':
@@ -108,7 +110,7 @@ define(function(require, exports, module) {
                     h.push('<tr data-type="' + item.type + '"><td>' + item.id + '</td><td>' + (item.type == 0 ? '个人主页' : '详情页') + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"/></div></td><td>' + item.link + '</td><td>' + item.expire + '天</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><div class="mock-btn mock-btn-red  mock-btn-s data-audit" data-id="' + item.id + '">提交</div></td></tr>');
                 });
             } else {
-                h.push('<tr><td colspan="6">没有数据</td></tr>');
+                h.push('<tr><td colspan="7">没有数据</td></tr>');
             }
             h.push('</tbody>');
             return h.join('');

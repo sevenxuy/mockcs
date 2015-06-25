@@ -467,7 +467,7 @@
   }
   
   .mock-textarea-box .mock-input-tip {
-      bottom:0px;
+      bottom: 0px;
   }
   
   .upload-img-box {
@@ -507,12 +507,13 @@
       max-height: 96%;
   }
   
-  .mock-textarea-box{
-        width: 100% !important;
+  .mock-textarea-box {
+      width: 100% !important;
   }
+  
   textarea.upload-desc {
       width: 100% !important;
-      height:75px;
+      height: 75px;
   }
   
   .bg-warning {
@@ -768,53 +769,91 @@
       margin-top: -21px;
       text-align: center;
   }
-
+  
   .msg-raw-view,
   .msg-ad-view {
       cursor: pointer !important;
   }
-
-span.errorinfo{
-    display: block;
-    font-size:12px;
-    color:red;
-    clear: both;
-}
-
-.border0 {
-      border-width: 0px;
-  }
-
-  .h40{height:40px;}
-
-  .fr{float:right;}
-  .fl{float:left;}
-
-  .ml0{margin-left:0px;}
-  .ml5{margin-left:5px;}
-
-  .mt10{margin-top:10px;}
-
-  .inlineb{display: inline-block;}
-  .bgwhite{background-color: #fff}
-
-  .mock-search-box{
-    float:left;
-    height:40px;
+  
+  span.errorinfo {
+      display: block;
+      font-size: 12px;
+      color: red;
+      clear: both;
   }
   
-  .mock-search{
-    float:left;
-    width:200px;
+  .border0 {
+      border-width: 0px;
   }
-#homepage_settop .modal-dialog{
-    width:300px;
-}
-#homepage_settop .modal-dialog .modal-content{
-    width:300px;
-}
-
-/*textarea*/
-.Editor-editor{
-  outline: none;
-}
+  
+  .h40 {
+      height: 40px;
+  }
+  
+  .fr {
+      float: right;
+  }
+  
+  .fl {
+      float: left;
+  }
+  
+  .ml0 {
+      margin-left: 0px;
+  }
+  
+  .ml5 {
+      margin-left: 5px;
+  }
+  
+  .mt10 {
+      margin-top: 10px;
+  }
+  
+  .inlineb {
+      display: inline-block;
+  }
+  
+  .bgwhite {
+      background-color: #fff
+  }
+  
+  .mock-search-box {
+      float: left;
+      height: 40px;
+  }
+  
+  .mock-search {
+      float: left;
+      width: 200px;
+  }
+  
+  .shortmsg .modal-dialog {
+      width: 300px;
+  }
+  
+  .shortmsg .modal-dialog .modal-content {
+      width: 300px;
+  }
+  
+  i.pass {
+      font-style: normal;
+      color: rgb(34, 177, 76);
+  }
+  
+  i.failed {
+      font-style: normal;
+      color: #cf2826;
+  }
+  
+  i.wait {
+      font-style: normal;
+      color: rgb(255, 201, 14);
+  }
+  
+  .mock-btn[disabled] {
+      background-color: #ccc;
+  }
+  
+  .Editor-editor {
+      outline: none;

@@ -3,6 +3,7 @@ define(function(require, exports, module) {
     var _view = require('mock.view'),
         notify = require('mock.plugin.notify'),
         _util = require('mock.util'),
+        _currentDes = '',
         getAddaudiuserUrl = function(desc) {
             return _util.getApiUrl({
                 "name": "addaudiuser",
@@ -21,23 +22,11 @@ define(function(require, exports, module) {
         },
         addaudiuser = function(desc) {
             var squareInstance = this;
-            $.ajax({
+            return $.ajax({
                 url: getAddaudiuserUrl(desc),
                 crossDomain: true,
                 dataType: 'jsonp',
-            }).done(function(result) {
-                var data = [];
-                if (!result.errno) {
-                    notify({
-                        text: '提交简介成功，待审核'
-                    });
-                } else {
-                    notify({
-                        tmpl: 'error',
-                        text: '提交简介失败'
-                    });
-                }
-            });
+            }).done;
         },
         topAudiNews = function(id) {
             var squareInstance = this;
@@ -51,6 +40,7 @@ define(function(require, exports, module) {
         options: {
             getaudinewsbyvid: 'http://uil.shahe.baidu.com/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             addaudiuser: 'http://uil.shahe.baidu.com/mock/addaudiuser?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            getmyuserlist: 'http://uil.shahe.baidu.com/mock/getmyuserlist?pn=0&ps=10&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             type: 2, //raw online
             ps: 4
         },
@@ -73,18 +63,26 @@ define(function(require, exports, module) {
                 'click div.page_go': this._preGoSiblingPage,
                 'click .mock-submit': this._submitUserDesc,
                 'click input[name=settop]': this._setTop,
-                'click #homepage_settop .btn-primary': this._submitSetTop
+                'click #homepage_settop .btn-primary': this._submitSetTop,
+                'keyup #homnepage-desc': this._onDescChange
             });
         },
         _setTop: function(e) {
             var title = $(e.currentTarget).closest('tr').find('td')[1].innerHTML;
             this.element.find("#homepage_settop").find('modal-body').html('是否置顶' + title);
         },
+        _onDescChange: function() {
+            if ($('#homnepage-desc').val() == _currentDes) {
+                this.element.find('#btnSubmitDes').attr('disabled', 'disabled');
+            } else {
+                this.element.find('#btnSubmitDes').removeAttr('disabled')
+            }
+        },
         _submitSetTop: function(e) {
             var currentTr = $('#hp-rawonline').find('input[type=radio]:checked').closest('tr'),
-            tds = currentTr.find('td'),
-            id = tds[0].innerHTML,
-            title = tds[1].innerHTML;
+                tds = currentTr.find('td'),
+                id = tds[0].innerHTML,
+                title = tds[1].innerHTML;
             topAudiNews(id)(function(result) {
                 var data = [];
                 if (!result.errno) {
@@ -93,13 +91,14 @@ define(function(require, exports, module) {
                     });
                     $(e.currentTarget).parent().find('button[data-dismiss=modal]').trigger('click');
                     var trs = currentTr.parent().find('tr');
-                    if(trs.length > 0){
+                    if (trs.length > 0) {
                         currentTr[0].parentNode.insertBefore(currentTr[0], trs[0])
                     }
                 } else {
+                    $(e.currentTarget).parent().find('button[data-dismiss=modal]').trigger('click');
                     notify({
                         tmpl: 'error',
-                        text: _title + '提交置顶失败'
+                        text: title + '提交置顶失败'
                     });
                 }
             });
@@ -113,10 +112,12 @@ define(function(require, exports, module) {
             h.push('<table class="table table-bordered mock-upload-table"><tbody>');
             h.push('<tr><td>头像</td><td><div class="hp-avatar"><img src="./mockcs/img/hi.png"></div></td></tr>');
             h.push('<tr><td>名称</td><td>哆啦A梦</td></tr>');
+            h.push('<tr style="display:none;"><td>状态</td><td id="myStatus"></td></tr>');
+            h.push('<tr style="display:none;"><td>修改时间</td><td id="mySubmitTime"></td></tr>');
             h.push('<tr><td>个人简介</td><td><div class="mock-textarea-box"><span class="errorinfo" for="homnepage-desc" style="display:none"></span><textarea class="form-control upload-desc" cols="3" maxlength="25" id="homnepage-desc"></textarea><span class="mock-input-tip">最多25个字符</span></div></td>');
             h.push('</tbody>');
             h.push('</table>');
-            h.push('<div class="operationbar h40"><button class="mock-btn mock-btn-red mock-submit border0 fr">确认提交</button></div>');
+            h.push('<div class="operationbar h40"><button class="mock-btn mock-btn-red mock-submit border0 fr" id="btnSubmitDes" disabled="disabled">确认提交</button></div>');
             h.push('<div class="mock-title">个人主页资讯列表</div>');
             h.push('<table class="table table-bordered table-hover" id="hp-rawonline">');
             h.push('</tbody></table>');
@@ -135,7 +136,7 @@ define(function(require, exports, module) {
             var self = this,
                 options = this.options;
             self.element.append(
-                '<div class="modal fade" id="homepage_settop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+                '<div class="modal fade shortmsg" id="homepage_settop" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
                 '<div class="modal-dialog" style="">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header">' +
@@ -143,7 +144,7 @@ define(function(require, exports, module) {
                 '</button>' +
                 '<h4 class="modal-title" id="myModalLabel">提示</h4>' +
                 '</div>' +
-                '<div class="modal-body">是否置顶该咨询</div>' +
+                '<div class="modal-body">是否置顶该资讯</div>' +
                 '<div class="modal-footer">' +
                 '<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>' +
                 '<button type="button" class="btn btn-primary">' +
@@ -154,6 +155,7 @@ define(function(require, exports, module) {
                 '</div>' +
                 '</div>');
             this._updateWrapperElemStatus(options.type);
+            this._getLastestMyInfo();
             $.ajax({
                 url: options.getaudinewsbyvid,
                 crossDomain: true,
@@ -200,15 +202,80 @@ define(function(require, exports, module) {
         },
         _submitUserDesc: function(e) {
             var $taDesc = this.element.find('#homnepage-desc'),
-                $errorInfo = $taDesc.parent().find('span.errorinfo[for=homnepage-desc]');
+                $errorInfo = $taDesc.parent().find('span.errorinfo[for=homnepage-desc]'),
+                $btnSubmit = this.element.find('#btnSubmitDes'),
+                $status = this.element.find('#myStatus'),
+                $stime = this.element.find('#mySubmitTime');
 
             var val = $taDesc.val().trim()
             if (val.length == 0) {
                 $errorInfo.show().html('请填写描述');
             } else {
                 $errorInfo.hide().html('');
-                addaudiuser(val);
+                addaudiuser(val)(function(result) {
+                    var data = [];
+                    if (!result.errno) {
+                        $status.html('<i class="wait">待审核</i>');
+                        $stime.html(_util.dateFormat((new Date()).getTime(), 'yyyy-MM-dd hh:mm'));
+                         $btnSubmit.attr('disabled', 'disabled');
+                        notify({
+                            text: '提交简介成功，待审核'
+                        });
+                    } else {
+                        notify({
+                            tmpl: 'error',
+                            text: '提交简介失败'
+                        });
+                    }
+                });
             }
+        },
+        _getLastestMyInfo: function() {
+            var self = this;
+            $.ajax({
+                url: self.options.getmyuserlist,
+                crossDomain: true,
+                dataType: 'jsonp',
+                data: {
+                    pn: self.options.pn,
+                    ps: self.options.ps
+                }
+            }).done(function(res) {
+                var $myStatus = self.element.find('#myStatus'),
+                    $mySubmitTime = self.element.find('#mySubmitTime'),
+                    $myDesc = self.element.find('#homnepage-desc');
+                    if (!res.errno) {
+                        if (res.data.length > 0) {
+                            $myStatus.parent().show();
+                            $mySubmitTime.parent().show();
+                            switch (res.data[0].state) {
+                                case '0':
+                                    $myStatus.html('<i class="wait">待审核<\/i>');
+                                    break;
+                                case '1':
+                                    $myStatus.html('<i class="failed">拒绝<\/i>');
+                                    break;
+                                case '2':
+                                    $myStatus.html('<i class="pass">通过<\/i>');
+                                    break;
+                            }
+                            $mySubmitTime.html(_util.dateFormat(+(res.data[0].stime) * 1000, 'yyyy-MM-dd hh:mm'));
+                            $myDesc.val(res.data[0].desc);
+                            _currentDes = res.data[0].desc;
+                        } else {
+                            $myStatus.parent().hide();
+                            $mySubmitTime.parent().hide();
+                            $myDesc.val('');
+                        }
+                    } else {
+                        $myStatus.parent().hide();
+                        $mySubmitTime.parent().hide();
+                        notify({
+                            tmpl: 'error',
+                            text: res.error
+                        })
+                    }
+            });
         }
     });
     module.exports = $.mock.homepage;
