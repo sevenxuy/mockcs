@@ -248,25 +248,25 @@ You should have received a copy of the GNU General Public License along with thi
 						}).append($('<div/>',{ //Left input Container Div
 							id :"tblInputsLeft"+idExtn,
 							class:"col-xs-12 col-sm-6 col-md-6 col-lg-6"
-							}).append($('<label/>',{ for:"tblRows"+idExtn,	text:"Rows"}
+							}).append($('<label/>',{ for:"tblRows"+idExtn,	text:"行数"}
 							)).append($('<input/>',{
 								id:"tblRows"+idExtn,
 								type:"text",
 								class:"form-control form-control-width",
 								value:2
-							})).append($('<label/>',{ for:"tblColumns"+idExtn,	text:"Columns"}
+							})).append($('<label/>',{ for:"tblColumns"+idExtn,	text:"列数"}
 							)).append($('<input/>',{
 								id:"tblColumns"+idExtn,
 								type:"text",
 							 	class:"form-control form-control-width",
 							 	value:2
-							})).append($('<label/>',{ for:"tblWidth"+idExtn, text:"Width"}
+							})).append($('<label/>',{ for:"tblWidth"+idExtn, text:"宽度"}
 							)).append($('<input/>',{
 								id:"tblWidth"+idExtn,
 								type:"text",
 								class:"form-control form-control-width",
 								value:400
-							})).append($('<label/>',{ for:"tblHeight"+idExtn, text:"Height"}
+							})).append($('<label/>',{ for:"tblHeight"+idExtn, text:"高度"}
 							)).append($('<input/>',{ 
 								id:"tblHeight"+idExtn,
 								type:"text",
@@ -275,25 +275,25 @@ You should have received a copy of the GNU General Public License along with thi
 						).append($('<div/>',{ //Right input Container Div
 							id :"tblInputsRight"+idExtn,
 							class:"col-xs-12 col-sm-6 col-md-6 col-lg-6"
-							}).append($('<label/>',{ for:"tblAlign"+idExtn, text:"Alignment"}
+							}).append($('<label/>',{ for:"tblAlign"+idExtn, text:"对齐方式"}
 							)).append($('<select/>',{ id:"tblAlign"+idExtn, class:"form-control form-control-width"}
-								).append($('<option/>',{ text:"Choose", value:""}
-								)).append($('<option/>',{ text:"Left", value:"left"}
-								)).append($('<option/>',{ text:"Center", value:"center"}
-								)).append($('<option/>',{ text:"Right",	value:"right"}))
-							).append($('<label/>',{	for:"tblBorder"+idExtn, text:"Border size"}
+								).append($('<option/>',{ text:"选择", value:""}
+								)).append($('<option/>',{ text:"左对齐", value:"left"}
+								)).append($('<option/>',{ text:"居中对齐", value:"center"}
+								)).append($('<option/>',{ text:"右对齐",	value:"right"}))
+							).append($('<label/>',{	for:"tblBorder"+idExtn, text:"边框"}
 							)).append($('<input/>',{ 
 								id:"tblBorder"+idExtn,
 								type:"text",
 								class:"form-control form-control-width",
 								value:1
-							})).append($('<label/>',{ for:"tblCellspacing"+idExtn,	text:"Cell spacing"}
+							})).append($('<label/>',{ for:"tblCellspacing"+idExtn,	text:"单元格间距"}
 							)).append($('<input/>',{
 								id:"tblCellspacing"+idExtn,
 								type:"text", 
 								class:"form-control form-control-width",
 								value:1
-							})).append($('<label/>',{ for:"tblCellpadding"+idExtn,	text:"Cell padding"}
+							})).append($('<label/>',{ for:"tblCellpadding"+idExtn,	text:"单元格填充"}
 							)).append($('<input/>',{
 								id:"tblCellpadding"+idExtn,
 								type:"text",
@@ -576,7 +576,7 @@ You should have received a copy of the GNU General Public License along with thi
 													var paletteDiv    = $('<div/>',{id:"colorpellete"});
 													var palette       = $('<ul />',{id:"color_ui"}).append($('<li />').css({"width":"145px","display":"Block","height":"25px"}).html('<div>字体颜色</div>'));
 													var bgPalletteDiv = $('<div/>',{id:"bg_colorpellete"});
-													var bgPallette    = $('<ul />',{id:"bgcolor_ui"}).append($('<li />').css({"width":"145px","display":"Block","height":"25px"}).html('<div>背景颜色</div>'));
+													var bgPallette    = $('<ul />',{id:"bgcolor_ui"}).append($('<li />').css({"width":"145px","display":"Block","height":"25px"}).html('<div>字体背景</div>'));
 													if(editor.data("colorBtn")){
 														flag = 1;
 														editor.data("colorBtn",null);
@@ -716,8 +716,9 @@ You should have received a copy of the GNU General Public License along with thi
 						   					"modalId": "InsertLink", 
 											"icon":"fa fa-link", 
 											// "tooltip": "Insert Link", 
-											"tooltip": "插入链接",
-											"modalHeader": "Insert Hyperlink",
+											"tooltip": "插入超链接",
+											// "modalHeader": "Insert Hyperlink",
+											"modalHeader": "插入超链接",
 											"modalBody": $('<div/>',{   class:"form-group"
 																	}).append($('<div/>',{
 																		id :"errMsg"
@@ -725,7 +726,7 @@ You should have received a copy of the GNU General Public License along with thi
 																		type:"text",
 																		id:"inputText",
 																		class:"form-control form-control-link ",
-																		placeholder:"Text to Display",
+																		placeholder:"显示的文字",
 																	})).append($('<input/>',{
 																		type:"text",
 																		id:"inputUrl",
@@ -798,7 +799,7 @@ You should have received a copy of the GNU General Public License along with thi
 													}
 												}
 												else{
-													methods.showMessage.apply(this,["imgErrMsg","Please select an image"]);
+													methods.showMessage.apply(this,["imgErrMsg","请选中要插入的图片。"]);
 													return false;
 												}
 												$("#InsertImage").modal("hide");
@@ -810,7 +811,8 @@ You should have received a copy of the GNU General Public License along with thi
 											"icon":"fa fa-table", 
 											// "tooltip": "Insert Table", 
 											"tooltip": "插入表格",
-											"modalHeader": "Insert Table",
+											// "modalHeader": "Insert Table",
+											"modalHeader": "插入表格",
 											"modalBody":methods.tableWidget.apply(this),
 											"beforeLoad":function(){ 													
 												$('#tblForm').each (function(){ this.reset(); });																																	

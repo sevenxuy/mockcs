@@ -854,6 +854,7 @@
   .mock-btn[disabled] {
       background-color: #ccc;
   }
+  /*text editor begins*/
   
   .Editor-editor {
       outline: none;
@@ -874,3 +875,13 @@
       background: #f1f1f2 !important;
       background-image: none !important;
   }
+  
+  .dropdown-menu>li>a:hover {
+      background: #ea6363 !important;
+  }
+  
+  .btn-success {
+      background-color: #ea6363 !important;
+      border-color: #ea6363 !important;
+  }
+  /*text editor ends*/
