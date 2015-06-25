@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <title>百度浏览器吐槽开放平台</title>
   <link rel="stylesheet" href="{%$resourceloc%}/video/mockcs/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{%$resourceloc%}/video/mockcs/css/jquery-te-1.4.0.css">
+  <link rel="stylesheet" href="{%$resourceloc%}/video/mockcs/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{%$resourceloc%}/video/mockcs/css/default.css">
+  <link rel="stylesheet" href="{%$resourceloc%}/video/mockcs/css/editor.css"/>
   <link rel="stylesheet" href="{%$resourceloc%}/video/mockcs/css/jquery.datetimepicker.css">
   <link rel="stylesheet" href="{%$resourceloc%}/video/mockcs/css/mock.css">
   <style>

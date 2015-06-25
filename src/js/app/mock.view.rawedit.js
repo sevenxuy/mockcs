@@ -218,7 +218,7 @@ define(function(require, exports, module) {
                             '</div>'+
                         '</div>'); 
                             this.element.append(h.join(''));
-                                $('#upload-content').jqte();
+                                $('#upload-content').Editor();  
                                 $('#upload-uptime').datetimepicker({
                                     format: 'Y-m-d H:i',
                                     lang: 'ch',
@@ -511,7 +511,7 @@ define(function(require, exports, module) {
                                 this.element.append(h.join(''));
                                 $('#upload-type').val(item.type);
                                 $('#upload-type').trigger('change');
-                                $('#upload-content').jqte();
+                                $('#upload-content').Editor();
                                 $('#upload-uptime').datetimepicker({
                                     format: 'Y-m-d H:i',
                                     lang: 'ch',
@@ -709,7 +709,7 @@ define(function(require, exports, module) {
 
                                 var img = $('#upload-img').val().trim();
 
-                                var content = $('#upload-content').val().trim();
+                                var content = $('#upload-content').Editor('getText');
                                 if (!content.length) {
                                     isValidate = false;
                                     $('span[for=upload-content]').html('请输入正文。').show();

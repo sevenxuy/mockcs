@@ -8,14 +8,14 @@ require.config({
         'backbone': '../lib/backbone-min',
         'bootstraplib': '../lib/bootstrap.min',
         'jquery.datetimepicker': '../lib/jquery.datetimepicker',
-        'te': '../lib/jquery-te-1.4.0.min',
+        'editor': '../lib/editor',
         'md5': '../lib/jquery.md5',
         'd3': '../lib/d3.min',
         'bootstrap': 'bootstrap'
     },
     // Configure the dependencies, exports, and custom initialization
     shim: {
-        'mock': ['jquery', 'jquery.ui.widget', 'underscore', 'backbone', 'bootstraplib', 'jquery.datetimepicker', 'te', 'md5', 'd3'],
+        'mock': ['jquery', 'jquery.ui.widget', 'underscore', 'backbone', 'bootstraplib', 'jquery.datetimepicker', 'editor', 'md5', 'd3'],
         'jquery.ui.widget': ['jquery'],
         'underscore': {
             exports: '_'
@@ -23,7 +23,7 @@ require.config({
         'backbone': ['jquery', 'underscore'],
         'bootstraplib': ['jquery', 'jquery.ui.widget'],
         'jquery.datetimepicker': ['jquery', 'jquery.ui.widget'],
-        'te': ['jquery'],
+        'editor': ['jquery', 'bootstraplib'],
         'md5': ['jquery']
     },
     deps: ['bootstrap']
