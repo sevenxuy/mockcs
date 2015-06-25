@@ -139,7 +139,7 @@ define(function(require, exports, module) {
                                             '<div class="upload-vote-item">'+
                                                 '<div class="mock-input-box">'+
                                                     '<span class="errorinfo" for="" style="display:none;"></span>'+
-                                                    '<input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符">'+
+                                                    '<input type="text" maxlength="20" class="form-control upload-vote-title" placeholder="若配图限6字符">'+
                                                     '<span class="mock-input-tip">最多20字符</span>'+
                                                 '</div>'+
                                                 '<div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>'+
@@ -150,17 +150,17 @@ define(function(require, exports, module) {
                                                             '<span class="errorinfo" for="upload-vote-img" style="display:none;"></span>'+
                                                             '<div class="mock-btn mock-btn-red upload-img-btn">上传图片</div>'+
                                                             '<div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div>'+
-                                                            '<input placeholder="图片链接"  type="text"  class="form-control upload-img-tx upload-vote-img"/>'+
+                                                            '<input type="text" placeholder="图片链接" class="form-control upload-img-tx inlineb bgwhite upload-vote-img" readonly="readonly">'+
                                                             '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide"/>'+
                                                         '</div>'+
-                                                        '<div class="upload-img-preivew"></div>'+
+                                                        '<div class="upload-img-preivew mt10 ml0 hide"></div>'+
                                                     '</div>'+
                                                     '</div>'+
                                                 '</div>'+
                                                 '<div class="upload-vote-item">'+
                                                     '<div class="mock-input-box">'+
                                                         '<span class="errorinfo" for="" style="display:none;"></span>'+
-                                                        '<input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符">'+
+                                                        '<input type="text" maxlength="20" class="form-control upload-vote-title" placeholder="若配图限6字符">'+
                                                         '<span class="mock-input-tip">最多20字符</span>'+
                                                     '</div>'+
                                                     '<div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>'+
@@ -171,17 +171,17 @@ define(function(require, exports, module) {
                                                                 '<span class="errorinfo" for="upload-vote-img" style="display:none;"></span>'+
                                                                 '<div class="mock-btn mock-btn-red upload-img-btn">上传图片</div>'+
                                                                 '<div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div>'+
-                                                                '<input placeholder="图片链接"  type="text"  class="form-control upload-img-tx upload-vote-img"/>'+
+                                                                '<input type="text" placeholder="图片链接" class="form-control upload-img-tx inlineb bgwhite upload-vote-img" readonly="readonly">'+
                                                                 '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide">'+
                                                             '</div>'+
-                                                            '<div class="upload-img-preivew"></div>'+
+                                                            '<div class="upload-img-preivew mt10 ml0 hide"></div>'+
                                                         '</div>'+
                                                     '</div>'+
                                                 '</div>'+
                                                 '<div class="upload-vote-item">'+
                                                 '<div class="mock-input-box">'+
                                                     '<span class="errorinfo" for="" style="display:none;"></span>'+
-                                                    '<input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符"/>'+
+                                                    '<input type="text" maxlength="20" class="form-control upload-vote-title" placeholder="若配图限6字符"/>'+
                                                     '<span class="mock-input-tip">最多20字符</span>'+
                                                 '</div>'+
                                                 '<div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>'+
@@ -192,10 +192,10 @@ define(function(require, exports, module) {
                                                             '<span class="errorinfo" for="upload-vote-img" style="display:none;"></span>'+
                                                             '<div class="mock-btn mock-btn-red upload-img-btn">上传图片</div>'+
                                                             '<div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div>'+
-                                                            '<input placeholder="图片链接"  type="text"  class="form-control upload-img-tx upload-vote-img" style="resize: vertical;"/>'+
+                                                            '<input type="text" placeholder="图片链接" class="form-control upload-img-tx inlineb bgwhite upload-vote-img" readonly="readonly">'+
                                                             '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide">'+
                                                         '</div>'+
-                                                        '<div class="upload-img-preivew"></div>'+
+                                                        '<div class="upload-img-preivew mt10 ml0 hide"></div>'+
                                                     '</div>'+
                                                 '</div>'+
                                             '</div>'+
@@ -221,7 +221,10 @@ define(function(require, exports, module) {
                                 $('#upload-content').jqte();
                                 $('#upload-uptime').datetimepicker({
                                     format: 'Y-m-d H:i',
-                                    lang: 'ch'
+                                    lang: 'ch',
+                                    yearStart: 2015,
+                                    yearEnd: 2020,
+                                    minDate: '-1970/01/01'
                                 });
                                 if (this.element.hasClass('hide')) {
                                     this.element.removeClass('hide').addClass('current');
@@ -265,10 +268,10 @@ define(function(require, exports, module) {
                                     h.push(
                                                                 '<div class="mock-btn mock-btn-red upload-img-btn inlineb">上传广场图</div>'+
                                                                     '<span class="errorinfo" for="upload-simg" style="display:none;"></span>'+
-                                                                    '<input type="text" placeholder="图片链接"  type="text"  class="form-control upload-img-tx inlineb bgwhite" id="upload-simg"/>'+
+                                                                    '<input type="text" placeholder="图片链接" class="form-control upload-img-tx inlineb bgwhite" id="upload-simg" readonly="readonly">'+
                                                                     '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide">'+
                                                                 '</div>'+
-                                                                '<div class="upload-img-preivew  ml0 mt10"></div>');
+                                                                '<div class="upload-img-preivew ml0 mt10 hide"></div>');
                                 }
                                 h.push(
                                                             '</div>'+
@@ -298,7 +301,7 @@ define(function(require, exports, module) {
                                     h.push(
                                                                     '<div class="mock-btn mock-btn-red upload-img-btn inlineb">上传主图</div>'+
                                                                         '<span class="errorinfo" for="upload-img" style="display:none;"></span>'+
-                                                                        '<input placeholder="图片链接"  type="text"  class="form-control upload-img-tx bgwhite inlineb" id="upload-img" value="' + item.img + '">'+
+                                                                        '<input type="text" placeholder="图片链接" class="form-control upload-img-tx inlineb bgwhite" readonly="readonly" id="upload-img" value="' + item.img + '"/>'+
                                                                         '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide">'+
                                                                     '</div>'+
                                                                     '<div class="upload-img-preivew ml0 mt10">'+
@@ -308,10 +311,10 @@ define(function(require, exports, module) {
                                     h.push(
                                                                     '<div class="mock-btn mock-btn-red upload-img-btn inlineb">上传主图</div>'+
                                                                         '<span class="errorinfo" for="upload-img" style="display:none;"></span>'+
-                                                                        '<input placeholder="图片链接"  type="text"  class="form-control upload-img-tx bgwhite inlineb" id="upload-img" style="resize: vertical;" value="' + item.img + '"/>'+
+                                                                        '<input type="text" placeholder="图片链接" class="form-control upload-img-tx inlineb bgwhite" readonly="readonly" id="upload-img"/>'+
                                                                         '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide">'+
                                                                     '</div>'+
-                                                                    '<div class="upload-img-preivew ml0 mt10">'+
+                                                                    '<div class="upload-img-preivew mt10 ml0 hide">'+
                                                                     '</div>');
                                 }
                                 h.push(
@@ -336,7 +339,7 @@ define(function(require, exports, module) {
                                                             '</select>'+
                                                             '<div class="upload-pk hide" id="upload-pk">');
                                 if ((item.type == '1') && (!!item.ext) && (!_.isEmpty(JSON.parse(item.ext)))) {
-                                    ext = JSON.parse(JSON.parse(item.ext));
+                                    ext = JSON.parse(item.ext);
                                     h.push(
                                                                 '<div class="upload-pk-item">甲方文案 '+
                                                                     '<div class="mock-input-box">'+
@@ -374,13 +377,13 @@ define(function(require, exports, module) {
                                                         '<div class="upload-vote hide" id="upload-vote">'+
                                                             '<div class="upload-vote-box" id="upload-vote-box">');
                                 if ((item.type == '2') && (!!item.ext) && (!_.isEmpty(JSON.parse(item.ext)))) {
-                                    ext = JSON.parse(JSON.parse(item.ext));
+                                    ext = JSON.parse(item.ext);
                                     _.each(ext, function(vote, index) {
                                         h.push(
                                                                 '<div class="upload-vote-item">'+
                                                                     '<div class="mock-input-box">'+
                                                                         '<span class="errorinfo" for="" style="display:none;"></span>'+
-                                                                        '<input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符" value="' + vote.title + '">'+
+                                                                        '<input type="text" maxlength="20" class="form-control upload-vote-title" placeholder="若配图限6字符" value="' + vote.title + '">'+
                                                                         '<span class="mock-input-tip">最多20字符</span>'+
                                                                     '</div>'+
                                                                 '<div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>');
@@ -393,7 +396,7 @@ define(function(require, exports, module) {
                                                                             '<span class="errorinfo" for="upload-vote-img" style="display:none;"></span>'+
                                                                             '<div class="mock-btn mock-btn-red upload-img-btn">上传图片</div>'+
                                                                             '<div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div>'+
-                                                                            '<input placeholder="图片链接"  type="text"  class="form-control upload-img-tx upload-vote-img" style="resize: vertical;" value="'+vote.img+'"/>'+
+                                                                            '<input placeholder="图片链接"  type="text"  class="form-control upload-img-tx upload-vote-img" value="'+vote.img+'"/>'+
                                                                             '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide"/>'+
                                                                         '</div>'+
                                                                         '<div class="upload-img-preivew">'+
@@ -408,10 +411,10 @@ define(function(require, exports, module) {
                                                                             '<span class="errorinfo" for="upload-vote-img" style="display:none;"></span>'+
                                                                             '<div class="mock-btn mock-btn-red upload-img-btn">上传图片</div>'+
                                                                             '<div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div>'+
-                                                                            '<input placeholder="图片链接"  type="text"  class="form-control upload-img-tx upload-vote-img" style="resize: vertical;"/>'+
+                                                                            '<input placeholder="图片链接"  type="text"  class="form-control upload-img-tx upload-vote-img" />'+
                                                                             '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide">'+
                                                                         '</div>'+
-                                                                        '<div class="upload-img-preivew"></div>'+
+                                                                        '<div class="upload-img-preivew mt10 ml0 hide"></div>'+
                                                                     '</div>');
                                         }
                                         h.push(
@@ -437,7 +440,7 @@ define(function(require, exports, module) {
                                                                             '<input placeholder="图片链接" class="form-control upload-img-tx upload-vote-img"/>'+
                                                                             '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide"/>'+
                                                                         '</div>'+
-                                                                        '<div class="upload-img-preivew">'+
+                                                                        '<div class="upload-img-preivew mt10 ml0 hide">'+
                                                                         '</div>'+
                                                                     '</div>');
                                     h.push(
@@ -446,7 +449,7 @@ define(function(require, exports, module) {
                                     h.push(
                                                         '<div class="upload-vote-item">'+
                                                             '<div class="mock-input-box">'+
-                                                                '<input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符"/>'+
+                                                                '<input type="text" maxlength="20" class="form-control upload-vote-title" placeholder="若配图限6字符"/>'+
                                                                 '<span class="mock-input-tip">最多20字符</span>'+
                                                             '</div>'+
                                                             '<div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>'+
@@ -460,13 +463,13 @@ define(function(require, exports, module) {
                                                                         '<input placeholder="图片链接" class="form-control upload-img-tx upload-vote-img" />'+
                                                                         '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide"/>'+
                                                                     '</div>'+
-                                                                '<div class="upload-img-preivew"></div>'+
+                                                                '<div class="upload-img-preivew mt10 ml0 hide"></div>'+
                                                             '</div>'+
                                                         '</div>'+
                                                     '</div>'+
                                                     '<div class="upload-vote-item">'+
                                                         '<div class="mock-input-box">'+
-                                                            '<input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符"/>'+
+                                                            '<input type="text" maxlength="20" class="form-control upload-vote-title" placeholder="若配图限6字符"/>'+
                                                             '<span class="mock-input-tip">最多20字符</span>'+
                                                         '</div>'+
                                                     '<div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>'+
@@ -480,7 +483,7 @@ define(function(require, exports, module) {
                                                             '<input placeholder="图片链接" class="form-control upload-img-tx upload-vote-img"/>'+
                                                             '<input type="file" accept="image/gif, image/jpeg, image/png" class="hide"/>'+
                                                         '</div>'+
-                                                    '<div class="upload-img-preivew">'+
+                                                    '<div class="upload-img-preivew mt10 ml0 hide">'+
                                                 '</div>'+
                                             '</div>'+
                                         '</div>'+
@@ -511,7 +514,10 @@ define(function(require, exports, module) {
                                 $('#upload-content').jqte();
                                 $('#upload-uptime').datetimepicker({
                                     format: 'Y-m-d H:i',
-                                    lang: 'ch'
+                                    lang: 'ch',
+                                    yearStart: 2015,
+                                    yearEnd: 2020,
+                                    minDate: '-1970/01/01'
                                 });
                                 if (this.element.hasClass('hide')) {
                                     this.element.removeClass('hide').addClass('current');
@@ -583,7 +589,7 @@ define(function(require, exports, module) {
                                 var h = [];
                                 h.push('<div class="upload-vote-item">'+
                                                     '<div class="mock-input-box">'+
-                                                        '<input type="text" maxlength="20" class="form-control" placeholder="若配图限6字符">'+
+                                                        '<input type="text" maxlength="20" class="form-control upload-vote-title" placeholder="若配图限6字符">'+
                                                         '<span class="mock-input-tip">最多20字符</span>'+
                                                         '</div><div class="mock-btn mock-btn-red upload-vote-item-addimg">+ 添加图片</div>'+
                                                         '<div class="upload-img-box-wrapper hide">'+
@@ -591,11 +597,11 @@ define(function(require, exports, module) {
                                                         '<div class="upload-img-box">'+
                                                             '<div class="upload-img">'+
                                                                 '<span class="errorinfo" for="upload-vote-img" style="display:none;"></span>'+
-                                                                '<div class="mock-btn mock-btn-red">上传图片</div>'+
+                                                                '<div class="mock-btn mock-btn-red upload-img-btn">上传图片</div>'+
                                                                 '<div class="mock-btn mock-btn-red upload-vote-item-clearimg">- 移除该图片</div>'+
-                                                                '<input placeholder="图片链接" type="text" class="form-control upload-vote-img"/>'+
+                                                                '<input type="text" placeholder="图片链接" class="form-control upload-img-tx inlineb bgwhite upload-vote-img" readonly="readonly">'+
                                                                 '<input type="file" class="hide">'+
-                                                                '</div><div class="upload-img-preivew">'+
+                                                                '</div><div class="upload-img-preivew mt10 ml0 hide">'+
                                                             '</div>'+
                                                         '</div>'+
                                                     '</div>'+
@@ -606,13 +612,15 @@ define(function(require, exports, module) {
                             _checkImgSize: function($tx, w, h) {
                                 var $spanerror = $tx.parent().find('.errorinfo');
                                 var options = this.options;
-                                if (($tx.attr('id') == 'upload-simg') && ((w < 640) || (h > 1080) || (w / h > 2) || (w / h < 1))) {
-                                    $spanerror.html('广场图尺寸要求是：最小宽度640px， 最大高度1080px，宽高比在1~2之间，最佳宽高比是3:2。').show();
-                                    $tx.val('');
-                                    return false;
-                                } else {
-                                    options.img_w = w;
-                                    options.img_h = h;
+                                if($tx.attr('id') == 'upload-simg'){
+                                    if ((w < 640) || (h > 1080) || (w / h > 2) || (w / h < 1)) {
+                                        $spanerror.html('广场图尺寸要求是：最小宽度640px， 最大高度1080px，宽高比在1~2之间，最佳宽高比是3:2。').show();
+                                        $tx.val('');
+                                        return false;
+                                    } else {
+                                        options.img_w = w;
+                                        options.img_h = h;
+                                    }
                                 }
                                 if (($tx.attr('id') == 'upload-img') && ((w != 720) || (h != 2048))) {
                                     $spanerror.html('主图尺寸要求是：尺寸要求：宽度720px， 高度2048px。').show();
@@ -638,7 +646,7 @@ define(function(require, exports, module) {
                                         $preview.empty().append('<img src="' + imgsrc + '"/>');
                                         if ($tx.hasClass('upload-vote-img')) {
                                             var $voteitem = $tx.closest('div.upload-vote-item'),
-                                                $input = $voteitem.find('input[type=text]'),
+                                                $input = $voteitem.find('input.upload-vote-title'),
                                                 desc = $input.val().trim(),
                                                 $tip = $voteitem.find('span.mock-input-tip');
                                             if (!!desc) {
@@ -647,7 +655,8 @@ define(function(require, exports, module) {
                                             $input.attr({
                                                 'maxlength': 6
                                             });
-                                            $spanerror.html('最多6字符').show();
+                                            $tip.html('最多6字符');
+                                            // $spanerror.html('最多6字符').show();
                                         }
                                         $preview.removeClass("hide");
                                     } else {
@@ -656,13 +665,14 @@ define(function(require, exports, module) {
                                 } else {
                                     if ($tx.hasClass('upload-vote-img')) {
                                         var $voteitem = $tx.closest('div.upload-vote-item'),
-                                            $input = $voteitem.find('input[type=text]'),
+                                            $input = $voteitem.find('input.upload-vote-title'),
                                             $tip = $voteitem.find('span.mock-input-tip');
                                         if (!desc) {
                                             $input.attr({
                                                 'maxlength': 20
                                             });
-                                            $spanerror.html('最多20字符').show();
+                                            $tip.html('最多20字符');
+                                            // $spanerror.html('最多20字符').show();
                                         }
                                     }
                                 }
@@ -736,8 +746,8 @@ define(function(require, exports, module) {
                                         ext = [];
                                         $('#upload-vote-box').children('div.upload-vote-item').each(function() {
                                             var
-                                                title = $(this).find('input[type=text]').val().trim(),
-                                                img = $(this).find('textarea').val().trim();
+                                                title = $(this).find('input.upload-vote-title').val().trim(),
+                                                img = $(this).find('input.upload-vote-img').val().trim();
                                             if (!!title) {
                                                 ext.push({
                                                     title: title,
