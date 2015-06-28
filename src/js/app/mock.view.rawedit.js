@@ -715,9 +715,10 @@ define(function(require, exports, module) {
                                 if (!content.length) {
                                     isValidate = false;
                                     $('span[for=upload-content]').html('请输入正文。').show();
-                                } else {
-                                    content = _.escape(content);
                                 }
+                                // } else {
+                                //     content = _.escape(content);
+                                // }
 
                                 var type = $('#upload-type').val();
                                 var ext;
