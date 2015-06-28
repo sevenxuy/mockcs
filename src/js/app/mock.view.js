@@ -49,7 +49,7 @@ define(function(require, exports, module) {
                 return false;
             }
             //image can only be png, jpeg or gif.
-            if (!_.contains(['image/png', 'image/jpeg', 'image/gif'], img.type)) {
+            if (!img.type.match('image.*') || !img.name.match(/(?:gif|jpg|png|jpeg)$/)) {
                 $spanerror.html('请检查图片格式，只能上传png, jpeg, gif格式的图片。');
                 return false;
             }
