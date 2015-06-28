@@ -116,7 +116,7 @@ You should have received a copy of the GNU General Public License along with thi
             //Class for Widget Handling the upload of Files
             var row = $('<div/>', {
                 "class": "row"
-            }).append($('<div/>', {
+            }).append('<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。</div>').append($('<div/>', {
                 id: "imgErrMsg"
             }));
             var container = $('<div/>', {
@@ -211,12 +211,10 @@ You should have received a copy of the GNU General Public License along with thi
                     // multiple: "multiple"
             });
             var chooseFromLocalBtn = $('<div class="mock-btn mock-btn-red upload-img-btn inlineb">上传图片</div>');
-            var chooseFromLocalTip = $('<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。</div>');
             chooseFromLocalBtn.on('click', function(event) {
                 chooseFromLocal.trigger('click');
             });
             chooseFromLocal.on('change', handleFileSelect);
-            uploadImageBar.append(chooseFromLocalTip);
             uploadImageBar.append(chooseFromLocalBtn);
             uploadImageBar.append(chooseFromLocal);
             var imageFromLinkBar = $("<div/>", {
@@ -238,27 +236,55 @@ You should have received a copy of the GNU General Public License along with thi
             }).html("确定").click(function() {
                 var url = $('#imageURL').val();
                 if (url == '') {
-                    methods.showMessage.apply(this, ["imgErrMsg", "Please enter image url"]);
+                    methods.showMessage.apply(this, ["imgErrMsg", "请输入图片链接。"]);
                     return false;
                 }
-                var li = $('<li/>', {
-                    class: "span6 col-xs-12 col-sm-6 col-md-3 col-lg-3"
-                });
-                var a = $('<a/>', {
-                    href: "javascript:void(0)",
-                    class: "thumbnail"
-                });
-                var image = $('<img/>', {
-                    src: url,
-                }).error(function() {
-                    methods.showMessage.apply(this, ["imgErrMsg", "Invalid image url"]);
+
+                if (!url.match(/(?:gif|jpg|png|jpeg)$/)) { //Process only Images
+                    methods.showMessage.apply(this, ["imgErrMsg", "图片类型无效。"]);
+                    $("#imageURL").val("");
                     return false;
-                }).load(function() {
-                    $(this).appendTo(a).click(function() {
-                        $('#imageList').data('current', $(this).attr('src'));
+                }
+                var bNeedCompress = false;
+                if ((url).match(/\.gif$/i)) {
+                    // GIF一定需要压缩， 为了获取到第一帧
+                    bNeedCompress = true;
+                }
+                //check image size
+                var newImg = new Image(),
+                    w, h;
+                newImg.onload = function() {
+                    h = newImg.height;
+                    w = newImg.width;
+                    if ((w < 440) || (w > 780) || (h < 290) || (h > 2048)) {
+                        methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。"]);
+                        $("#imageURL").val("");
+                        return false;
+                    }
+                    if (bNeedCompress) {
+                        var key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + newsrc);
+                        newsrc = 'http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + newsrc;
+                    }
+                    var li = $('<li/>', {
+                        class: "span6 col-xs-12 col-sm-6 col-md-3 col-lg-3"
                     });
-                    li.append(a).appendTo($('#imageList'));
-                });
+                    var a = $('<a/>', {
+                        href: "javascript:void(0)",
+                        class: "thumbnail"
+                    });
+                    var image = $('<img/>', {
+                        src: url,
+                    }).error(function() {
+                        methods.showMessage.apply(this, ["imgErrMsg", "图片链接无效。"]);
+                        return false;
+                    }).load(function() {
+                        $(this).appendTo(a).click(function() {
+                            $('#imageList').data('current', $(this).attr('src'));
+                        });
+                        li.append(a).appendTo($('#imageList'));
+                    });
+                }
+                newImg.src = url;
             }).appendTo($("<span/>", {
                 class: "input-group-btn form-control-button-right"
             }).appendTo(getImageURL));
@@ -426,17 +452,17 @@ You should have received a copy of the GNU General Public License along with thi
 
         init: function(options) {
             var fonts = {
-                // "Sans serif"	 : "arial,helvetica,sans-serif",
-                // "Serif"	 	 : "times new roman,serif",
-                // "Wide"	 	 : "arial black,sans-serif",
-                // "Narrow"	 	 : "arial narrow,sans-serif",
+                // "Sans serif"  : "arial,helvetica,sans-serif",
+                // "Serif"       : "times new roman,serif",
+                // "Wide"        : "arial black,sans-serif",
+                // "Narrow"      : "arial narrow,sans-serif",
                 // "Comic Sans MS": "comic sans ms,sans-serif",
                 // "Courier New"  : "courier new,monospace",
-                // "Garamond"	 : "garamond,serif",
-                // "Georgia"	 	 : "georgia,serif",
-                // "Tahoma" 		 : "tahoma,sans-serif",
+                // "Garamond"    : "garamond,serif",
+                // "Georgia"         : "georgia,serif",
+                // "Tahoma"          : "tahoma,sans-serif",
                 // "Trebuchet MS" : "trebuchet ms,sans-serif",
-                // "Verdana" 	 : "verdana,sans-serif"
+                // "Verdana"     : "verdana,sans-serif"
                 "宋体": "宋体",
                 "微软雅黑": "Microsoft YaHei",
                 "Sans serif": "arial,helvetica,sans-serif",
@@ -463,11 +489,11 @@ You should have received a copy of the GNU General Public License along with thi
             };
 
             var fontsizes = {
-                // "Small"	:"2",
+                // "Small"  :"2",
                 // "Normal":"3",
                 // "Medium":"4",
-                // "Large"	:"5",
-                // "Huge"	:"6" 
+                // "Large"  :"5",
+                // "Huge"   :"6" 
                 "小号": "2",
                 "正常": "3",
                 "中号": "4",
@@ -1526,17 +1552,17 @@ You should have received a copy of the GNU General Public License along with thi
             $(this).data("statusBar", statusBar);
             var editor_Content = this;
             /*if(settings['status_bar']){
-				editor.keyup(function(event){
-					var wordCount = methods.getWordCount.apply(editor_Content);
-					var charCount = methods.getCharCount.apply(editor_Content);
-					$(editor_Content).data("statusBar").html('<div class="label">'+'Words : '+wordCount+'</div>');
-					$(editor_Content).data("statusBar").append('<div class="label">'+'Characters : '+charCount+'</div>');
-            	});
-	        }*/
+                editor.keyup(function(event){
+                    var wordCount = methods.getWordCount.apply(editor_Content);
+                    var charCount = methods.getCharCount.apply(editor_Content);
+                    $(editor_Content).data("statusBar").html('<div class="label">'+'Words : '+wordCount+'</div>');
+                    $(editor_Content).data("statusBar").append('<div class="label">'+'Characters : '+charCount+'</div>');
+                });
+            }*/
 
 
             for (var item in menuItems) {
-                if (!settings[item]) { //if the display is not set to true for the button in the settings.	       		
+                if (!settings[item]) { //if the display is not set to true for the button in the settings.              
                     if (settings[item] in menuGroups) {
                         for (var each in menuGroups[item]) {
                             settings[each] = false;
@@ -1563,7 +1589,7 @@ You should have received a copy of the GNU General Public License along with thi
                 }
             }
 
-            //For contextmenu	       	
+            //For contextmenu           
             $(document.body).mousedown(function(event) {
                 var target = $(event.target);
                 if (!target.parents().andSelf().is('#context-menu')) { // Clicked outside
@@ -1870,7 +1896,7 @@ You should have received a copy of the GNU General Public License along with thi
         },
 
         createModal: function(modalId, modalHeader, modalBody, onSave) {
-            //Create a Modal for the button.		
+            //Create a Modal for the button.        
             var modalTrigger = $('<a/>', {
                 href: "#" + modalId,
                 role: "button",
@@ -2030,7 +2056,7 @@ You should have received a copy of the GNU General Public License along with thi
             $(this).data("source-mode", !flag);
             var editor = $(this).data('editor');
             var content;
-            if (flag == 0) { //Convert text to HTML			
+            if (flag == 0) { //Convert text to HTML         
                 content = document.createTextNode(editor.html());
                 editor.empty();
                 editor.attr('contenteditable', false);
