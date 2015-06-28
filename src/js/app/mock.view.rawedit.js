@@ -94,7 +94,7 @@ define(function(require, exports, module) {
                                     '<tr>'+
                                         '<td>主图</td>'+
                                         '<td>'+
-                                            '<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。</div>'+
+                                            '<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。</div>'+
                                             '<div class="upload-img-box">'+
                                                 '<div class="upload-img">'+
                                                     '<span class="errorinfo" for="upload-img" style="display:none;"></span>'+
