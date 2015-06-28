@@ -143,7 +143,6 @@ You should have received a copy of the GNU General Public License along with thi
             });
             handleFileSelect = function(evt) {
                 var file = evt.target.files[0];
-                console.log(file);
                 if (!file.type.match('image.*') || !file.name.match(/(?:gif|jpg|png|jpeg)$/)) { //Process only Images
                     methods.showMessage.apply(this, ["imgErrMsg", "Invalid file type"]);
                     return false;
@@ -182,7 +181,6 @@ You should have received a copy of the GNU General Public License along with thi
                                 var key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + newsrc);
                                 newsrc = 'http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + newsrc;
                             }
-
                             var li = $('<li/>', {
                                 class: "col-xs-12 col-sm-6 col-md-3 col-lg-3"
                             });
@@ -198,7 +196,6 @@ You should have received a copy of the GNU General Public License along with thi
                             li.append(a).appendTo($('#imageList'));
                         }
                         newImg.src = newsrc;
-
                     } else {
                         notify({
                             tmpl: 'error',
@@ -211,12 +208,12 @@ You should have received a copy of the GNU General Public License along with thi
             var chooseFromLocal = $('<input/>', {
                 type: "file",
                 class: "hide"
-                // multiple: "multiple"
+                    // multiple: "multiple"
             });
             var chooseFromLocalBtn = $('<div class="mock-btn mock-btn-red upload-img-btn inlineb">上传图片</div>');
             var chooseFromLocalTip = $('<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。</div>');
-            chooseFromLocalBtn.on('click', function(event){
-            	chooseFromLocal.trigger('click');
+            chooseFromLocalBtn.on('click', function(event) {
+                chooseFromLocal.trigger('click');
             });
             chooseFromLocal.on('change', handleFileSelect);
             uploadImageBar.append(chooseFromLocalTip);
