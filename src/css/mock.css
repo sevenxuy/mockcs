@@ -810,7 +810,7 @@
   }
   
   .bgwhite {
-      background-color: #fff
+      background-color: #fff !important;
   }
   
   .mock-search-box {
@@ -853,6 +853,7 @@
   
   .Editor-editor {
       outline: none;
+      width: 830px;
   }
   
   #statusbar {
