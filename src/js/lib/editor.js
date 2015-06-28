@@ -173,7 +173,7 @@ You should have received a copy of the GNU General Public License along with thi
                             h = newImg.height;
                             w = newImg.width;
                             if ((w < 440) || (w > 780) || (h < 290) || (h > 2048)) {
-                                methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。"]);
+                                methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。"]);
                                 $("#uploadImageBar :input").val("");
                                 return false;
                             }
@@ -203,7 +203,6 @@ You should have received a copy of the GNU General Public License along with thi
                         });
                     }
                 }).fail(function() {});
-                return false;
             }
             var chooseFromLocal = $('<input/>', {
                 type: "file",
@@ -257,13 +256,13 @@ You should have received a copy of the GNU General Public License along with thi
                     h = newImg.height;
                     w = newImg.width;
                     if ((w < 440) || (w > 780) || (h < 290) || (h > 2048)) {
-                        methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。"]);
+                        methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。"]);
                         $("#imageURL").val("");
                         return false;
                     }
                     if (bNeedCompress) {
-                        var key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + newsrc);
-                        newsrc = 'http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + newsrc;
+                        var key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + url);
+                        url = 'http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + url;
                     }
                     var li = $('<li/>', {
                         class: "span6 col-xs-12 col-sm-6 col-md-3 col-lg-3"
@@ -1201,7 +1200,7 @@ You should have received a copy of the GNU General Public License along with thi
                         methods.restoreSelection.apply(this);
                         if ($('#imageList').data('current')) {
                             if (navigator.userAgent.match(/MSIE/i)) {
-                                var imageStr = '<img src="' + $('#imageList').data('current') + '"/>'
+                                var imageStr = '<img src="' + $('#imageList').data('current') + '" />'
                                 methods.restoreSelection.apply(this, [imageStr, 'html'])
                             } else {
                                 document.execCommand('insertimage', false, $('#imageList').data('current'));

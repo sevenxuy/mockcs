@@ -295,7 +295,7 @@ define(function(require, exports, module) {
                                                     '<tr>'+
                                                         '<td>主图</td>'+
                                                         '<td>'+
-                                                            '<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。</div>'+
+                                                            '<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。</div>'+
                                                             '<div class="upload-img-box">'+
                                                                 '<div class="upload-img">');
                                 if (!!item.img) {
@@ -625,7 +625,7 @@ define(function(require, exports, module) {
                                     }
                                 }
                                 if (($tx.attr('id') == 'upload-img') && ((w < 440) || (w > 780) || (h < 290) || (h > 2048))) {
-                                    $spanerror.html('主图尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。').show();
+                                    $spanerror.html('主图尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。').show();
                                     $tx.val('');
                                     return false;
                                 }
