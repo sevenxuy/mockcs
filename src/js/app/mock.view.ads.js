@@ -2,12 +2,12 @@ define(function(require, exports, module) {
     'use strict';
     var _view = require('mock.view'),
         notify = require('mock.plugin.notify'),
-        _util = require('mock.util');
-
+        _util = require('mock.util'),
+        apihost = 'http://'+_util.getApiHost();
     $.widget('mock.ads', _view, {
         options: {
-            getmyadlist: 'http://uil.shahe.baidu.com/mock/getmyadlist?&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            audiaddo: 'http://uil.shahe.baidu.com/mock/audiaddo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            getmyadlist: apihost+'/mock/getmyadlist?&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            audiaddo: apihost+'/mock/audiaddo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             ps: 4,
             tp_audit: 3
         },

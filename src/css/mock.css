@@ -2,6 +2,7 @@
       font-family: 'Helvetica Neue', 'Hiragino Sans GB', 'Microsoft YaHei', 黑体, Arial, sans-serif;
       margin: 0;
       border-top: 4px solid #ea6363;
+      min-width:1024px;
   }
   
   .mock-header,
@@ -50,20 +51,13 @@
       width: 100%;
       height: 400px;
       display: inline-block;
+      background-image:url('../img/bg.png');
+      background-repeat: no-repeat;
+      background-size:contain;
+      background-position: left center;
+      background-color:rgb(154,218,206);
   }
   
-  .slideshow > div {
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      right: 0px;
-      bottom: 0px;
-  }
-  
-  .slideshow > div > img {
-      width: 100%;
-      height: 100%;
-  }
   
   .mock-loginbox {
       width: 316px;
@@ -73,67 +67,68 @@
       margin-left: 60%;
       background: #fafafa url(../img/hibg.png) no-repeat right bottom;
       background-size: 100px 100px;
+      padding:35px 35px 20px 35px;
+      font-size:12px;
   }
-  
-  .mock-login-inbox {
-      padding: 25px 35px 20px;
+
+  .mock-loginbox p.pass-form-item{
+    margin:0px;
+    
   }
-  
-  .mock-login-hilogo {
-      height: 51px;
-      background: #f6f6f6 url(../img/hilogo.png) no-repeat;
-      background-size: 118px 51px;
-      border-radius: 4px;
+
+  .mock-loginbox p.pass-form-item-userName, .mock-loginbox p.pass-form-item-password{
+        border:1px solid #e7e7eb;
+        display:block;
+        height:37px;
+        overflow: hidden;
+        background-color: #fff;
+        background-repeat:no-repeat;
+        background-position: 10px center;
   }
-  
-  .mock-login-input {
-      position: relative;
-      padding: 3px 0 3px 44px;
-      border: 1px solid #e7e7eb;
-      margin-top: -1px;
-      background: #fff
+
+  .mock-loginbox p.pass-form-item-userName{
+    border-bottom:0px;
+    background-image:url('../img/username.png');
+
   }
-  
-  .icon-login {
-      position: absolute;
-      left: 15px;
-      top: 50%;
-      margin-top: -11px;
-      width: 16px;
-      height: 18px;
-      vertical-align: middle;
-      display: inline-block;
+  .mock-loginbox p.pass-form-item-password{
+    background-image:url('../img/pwd.png');
   }
-  
-  .icon-un {
-      background: url(../img/username.png) no-repeat;
+
+.mock-loginbox p.pass-form-item-userName input, .mock-loginbox p.pass-form-item-password input{
+        height:37px;
+        border:0px;
+        width: 200px;
+        margin-left:46px;
+        outline: 0px;
+        background-color:#fff !important;
   }
-  
-  .icon-pwd {
-      background: url(../img/pwd.png) no-repeat;
+
+  .mock-loginbox .pass-form-item-submit{
+    padding-top:20px;
+    height:55px;
   }
-  
-  .mock-login-input input {
-      border: 0;
-      outline: 0;
-      padding: 11px 0;
-      vertical-align: middle;
-      width: 100%;
+
+  .mock-loginbox .pass-form-item-submit .pass-button{
+    width: 120px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    color: #fff;
+    background: #ea6363;
+    margin-right: 5px;
+    cursor: pointer;
+    border:0px;
+    border-radius:4px;
+    font-size:16px;
   }
-  
-  .mock-forgetpwd {
-      font-size: 13px;
-      margin-bottom: 10px;
-      margin-top: 10px;
+
+  .mock-loginbox .pass-form-item-submit .pass-button:hover{
+    background-color: rgb(215,53,49);
   }
-  
-  .mock-keep {
-      display: inline-block;
-  }
-  
-  .mock-forgetpwd {
-      display: inline-block;
-      float: right;
+
+  .mock-loginbox p.pass-form-item-userName label, .mock-loginbox p.pass-form-item-password label{
+        display:none;
   }
   
   .mock-btn {
@@ -159,7 +154,7 @@
   
   .mock-btn-red:hover,
   .mock-btn-login:hover {
-      background: #d73531;
+      background-color: #d73531;
   }
   
   .mock-btn-register {
@@ -315,12 +310,12 @@
   }
   
   .submenu-item:hover {
-      background: #f5f5f5;
+      background-color: #f5f5f5;
   }
   
   .submenu-item-active,
   .submenu-item-active:hover {
-      background: #ea6363;
+      background-color: #ea6363;
       color: #fff;
   }
   
@@ -594,7 +589,7 @@
       text-decoration: none;
       outline: 0;
       cursor: pointer;
-      background: #ea6363;
+      background-color: #ea6363;
       color: #fff;
   }
   
@@ -629,7 +624,7 @@
   }
   
   .btn-primary:hover {
-      background: #d73531;
+      background-color: #d73531;
       border: 1px solid #d73531;
   }
   
@@ -741,7 +736,7 @@
   
   .traf-period-date {
       display: inline-block;
-      width: 120px;
+      width: 130px;
   }
   /*visual figure*/
   
@@ -877,11 +872,25 @@
   }
   
   .dropdown-menu>li>a:hover {
-      background: #ea6363 !important;
+      background-color: #ea6363 !important;
   }
   
   .btn-success {
       background-color: #ea6363 !important;
       border-color: #ea6363 !important;
   }
-  /*text editor ends*/
+
+.submenu-item i{
+  display:block;float:right;font-style:normal;height:20px;min-width:20px;text-align:center;line-height:20px;border-radius:15px;background-color:#aaa;margin-top:8px;margin-right:5px;
+  font-size:10px;
+  color:#fff;
+}
+
+ .mock-btn-search{
+    padding-left:32px;
+    background-image:url('../img/search.png');
+    background-repeat:no-repeat;
+    background-position: 14px center;
+    padding-right: 14px;
+    width: auto;
+ }

@@ -1,6 +1,6 @@
 require.config({
-    baseUrl: '/js/app/',
-    // baseUrl: '/mis/video/mockcs/js/app',
+     baseUrl: './js/app/',
+    //baseUrl: '/mis/video/mockcs/js/app',
     paths: {
         'jquery': '../lib/jquery-1.9.1.min',
         'jquery.ui.widget': '../lib/jquery-ui.widget.min',

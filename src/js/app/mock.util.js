@@ -182,4 +182,14 @@ define(function(require, exports, module) {
         }
         return url;
     };
+
+    exports.getApiHost = function getApiHost() {
+        var host = null;
+        if (/^localhost:\d{4}|^uil.shahe.baidu.com:\d{4}|^webapp.shahe.baidu.com$/.test(location.host)) {
+            host = config.env.shahe;
+        } else {
+            host = config.env.cbs;
+        }
+        return host;
+    };
 });

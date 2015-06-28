@@ -2,11 +2,13 @@ define(function(require, exports, module) {
     'use strict';
     var _view = require('mock.view'),
         notify = require('mock.plugin.notify'),
-        _util = require('mock.util');
-
+        _util = require('mock.util'),
+        _updateNewMessage = null,
+        _updateFansMessage = null,
+        apihost = 'http://'+_util.getApiHost();
     $.widget('mock.msg', _view, {
         options: {
-            message: 'http://uil.shahe.baidu.com:8050/uil/message/pullmsg?&fn=?',
+            message: apihost+'/message/pullmsg?&fn=?',
             type: 2,
             ps: 10
         },
@@ -15,6 +17,20 @@ define(function(require, exports, module) {
             this._bindEvents();
             this._bindWindowEvent();
             this.element.data('widgetCreated', true);
+            var self = this;
+            if(_updateFansMessage === null){
+                _updateFansMessage = function(num){
+                    self.element.find('.msg-notify-box .msg-notify-funs').html(num);
+                }
+                this.getGlobalObject().callNewFansMethods.push(_updateFansMessage);
+            }
+            if(_updateNewMessage === null){
+                _updateNewMessage = function(num){
+                    self.element.find('.msg-notify-box .msg-notify-msgs').html(num);
+                }
+                this.getGlobalObject().callNewMessageMethods.push(_updateNewMessage);
+            }
+            
         },
         render: function(opt) {
             var options = this.options;
@@ -88,8 +104,8 @@ define(function(require, exports, module) {
             h.push('<div class="page-content">');
             h.push('<div class="tabs-content">');
             h.push('<div class="msg-notify-box">');
-            h.push('<div class="msg-notify-item"><div class="msg-notify-msgs">1000</div><div class="msg-notify-title">新消息</div></div>');
-            h.push('<div class="msg-notify-item"><div class="msg-notify-funs">1000</div><div class="msg-notify">总粉丝数</div></div>');
+            h.push('<div class="msg-notify-item"><div class="msg-notify-msgs">0</div><div class="msg-notify-title">新消息</div></div>');
+            h.push('<div class="msg-notify-item"><div class="msg-notify-funs">0</div><div class="msg-notify">总粉丝数</div></div>');
             h.push('</div>');
             h.push('<table class="table table-bordered table-hover">');
             h.push('<thead><tr><th><select class="form-control" id="msg-type-filter">');

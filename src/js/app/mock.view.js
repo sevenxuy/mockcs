@@ -2,7 +2,64 @@ define(function(require, exports, module) {
     'use strict';
 
     var notify = require('mock.plugin.notify'),
-        autosize = require('mock.plugin.autosize.min');
+        autosize = require('mock.plugin.autosize.min'),
+        util = require('mock.util'),
+        updateFransCount = null,
+        updateMessageCount = null,
+        globalObject = {
+            callNewMessageMethods: [],
+            callNewFansMethods: []
+        },
+        /**
+        获得新消息的总数的api地址
+        * @function
+        * @param {int} type - 2:message 1:fans
+        * @param {int} status - 0:已读 1:未读
+        */
+        getMessageCountUrl = function(type, status) {
+            return util.getApiUrl({
+                name: 'getcount',
+                path: 'message',
+                params: {
+                    type: type,
+                    status: status
+                }
+            });
+        },
+        getNewMessagesCount = function() {
+            $.ajax({
+                url: getMessageCountUrl(2, 1),
+                crossDomain: true,
+                dataType: 'jsonp',
+            }).done(function(result) {
+                if (!result.errno) {
+                    var i;
+                    for (i = 0; i < globalObject.callNewMessageMethods.length; i++) {
+                        globalObject.callNewMessageMethods[i](+result.data);
+                    }
+                }
+            });
+        },
+        getNewFansCount = function() {
+            $.ajax({
+                url: getMessageCountUrl(1, 1),
+                crossDomain: true,
+                dataType: 'jsonp',
+            }).done(function(result) {;
+                if (!result.errno) {
+                    var i;
+                    for (i = 0; i < globalObject.callNewFansMethods.length; i++) {
+                        globalObject.callNewFansMethods[i](+result.data);
+                    }
+                }
+            });
+        },
+        getInfoLoop = function() {
+            getNewMessagesCount();
+            getNewFansCount();
+        };
+    setInterval(getInfoLoop, 60000);
+    getInfoLoop();
 
     $.widget('mock.view', {
         options: {
@@ -22,6 +79,9 @@ define(function(require, exports, module) {
         reRender: function() {
             this.element.addClass('hide').empty();
             this.render();
+        },
+        getGlobalObject: function() {
+            return globalObject;
         },
         _bindEvents: function() {},
         _createElem: function() {},
@@ -166,7 +226,21 @@ define(function(require, exports, module) {
             }
             return false;
         },
-        _goSiblingPage: function(pn) {}
+        _goSiblingPage: function(pn) {},
+        showError: function(result) {
+            if (result.errno != 0) {
+                var errorMsg = result.error
+                switch (result.errno) {
+                    case 10:
+                        errorMsg = "尊敬的用户，您的帐户没有大V权限。";
+                        break;
+                }
+                notify({
+                    tmpl: 'error',
+                    text: errorMsg
+                });
+            }
+        }
     });
     module.exports = $.mock.view;
 });

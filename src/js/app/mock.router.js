@@ -63,7 +63,17 @@ define(function(require, exports, module) {
 
     var router = new AppRouter;
 
+    var goToLogin = function() {
+        // if (!$userinfo || !$userinfo.bduss) {
+        //     window.location.hash = '#login'
+        //     return;
+        // }
+    }
     router.on('route:login', function() {
+        if ($userinfo && $userinfo.bduss) {
+            window.location.hash = '#msg';
+            return;
+        }
         $('div.current').removeClass('current').addClass('hide');
         if ($('#login').data('widgetCreated')) {
             $('#login').login('reRender');
@@ -73,6 +83,7 @@ define(function(require, exports, module) {
     });
 
     router.on('route:homepage', function(status, pn) {
+        goToLogin();
         var opt = {
             pn: pn || 0
         }
@@ -89,7 +100,8 @@ define(function(require, exports, module) {
     });
 
     router.on('route:mockme', function() {
-         $('div.current').removeClass('current').addClass('hide');
+        goToLogin();
+        $('div.current').removeClass('current').addClass('hide');
         var opts = {
             pageStatus: {
                 status: arguments[0] == "expand" ? "expand" : "unexpand",
@@ -111,6 +123,7 @@ define(function(require, exports, module) {
     });
 
     router.on('route:mocksquare', function() {
+        goToLogin();
         $('div.current').removeClass('current').addClass('hide');
         var opts = {
             pageStatus: {
@@ -133,13 +146,8 @@ define(function(require, exports, module) {
     });
 
     router.on('route:msg', function(pn) {
+        goToLogin();
         $('div.current').removeClass('current').addClass('hide');
-        // if ($('#msg').data('widgetCreated')) {
-        //     $('#msg').msg('reRender');
-
-        // } else {
-        //     $('#msg').msg();
-        // }
         var opt = {
             pn: pn || 0
         }
@@ -157,6 +165,7 @@ define(function(require, exports, module) {
     });
 
     router.on('route:msgs', function(status, pn) {
+        goToLogin();
         var opt = {
             status: status || '1',
             pn: pn || 0
@@ -174,6 +183,7 @@ define(function(require, exports, module) {
     });
 
     router.on('route:fans', function(status, pn) {
+        goToLogin();
         var opt = {
             status: status || '1',
             pn: pn || 0
@@ -191,6 +201,7 @@ define(function(require, exports, module) {
     });
 
     router.on('route:rawedit', function(id) {
+        goToLogin();
         var opt = {
             id: id
         }
@@ -204,6 +215,7 @@ define(function(require, exports, module) {
     });
 
     router.on('route:raws', function(type, pn) {
+        goToLogin();
         var opt = {
             type: type || '2',
             pn: pn || 0
@@ -222,6 +234,7 @@ define(function(require, exports, module) {
     });
 
     router.on('route:ad', function(stype, pn) {
+        goToLogin();
         var opt = {
             stype: stype || '0',
             pn: pn || 0
@@ -257,6 +270,7 @@ define(function(require, exports, module) {
     });
 
     router.on('route:trafuser', function(stype, pn) {
+        goToLogin();
         var opt = {
             stype: stype || '0',
             pn: pn || 0
@@ -274,6 +288,7 @@ define(function(require, exports, module) {
     });
 
     router.on('route:trafad', function(stype, pn) {
+        goToLogin();
         var opt = {
             stype: stype || '0',
             pn: pn || 0

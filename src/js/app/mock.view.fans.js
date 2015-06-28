@@ -2,11 +2,12 @@ define(function(require, exports, module) {
     'use strict';
     var _view = require('mock.view'),
         notify = require('mock.plugin.notify'),
-        _util = require('mock.util');
+        _util = require('mock.util'),
+        apihost = 'http://'+_util.getApiHost();
 
     $.widget('mock.fans', _view, {
         options: {
-            message: 'http://uil.shahe.baidu.com:8050/uil/message/pullmsg?&fn=?',
+            message: apihost+'/message/pullmsg?&fn=?',
             type: 1,
             ps: 10,
             loadmore: true

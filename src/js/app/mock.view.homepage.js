@@ -4,6 +4,7 @@ define(function(require, exports, module) {
         notify = require('mock.plugin.notify'),
         _util = require('mock.util'),
         _currentDes = '',
+        apihost = 'http://'+_util.getApiHost(),
         getAddaudiuserUrl = function(desc) {
             return _util.getApiUrl({
                 "name": "addaudiuser",
@@ -38,9 +39,9 @@ define(function(require, exports, module) {
         };
     $.widget('mock.homepage', _view, {
         options: {
-            getaudinewsbyvid: 'http://uil.shahe.baidu.com/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            addaudiuser: 'http://uil.shahe.baidu.com/mock/addaudiuser?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            getmyuserlist: 'http://uil.shahe.baidu.com/mock/getmyuserlist?pn=0&ps=10&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            getaudinewsbyvid: apihost+'/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            addaudiuser: apihost+'/mock/addaudiuser?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            getmyuserlist: apihost+'/mock/getmyuserlist?pn=0&ps=10&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             type: 2, //raw online
             ps: 4
         },
@@ -106,12 +107,21 @@ define(function(require, exports, module) {
         },
         _createWrapperElem: function() {
             var h = [];
+
+            var imgBase64Url = '',
+                currentUserName = '';
+            if(window.$userinfo){
+                if(window.$userinfo.uc)
+                imgBase64Url = "http://himg.baidu.com/sys/portraitl/item/"+window.$userinfo.uc;
+                if(window.$userinfo.uname)
+                currentUserName = window.$userinfo.uname;
+            }
             h.push('<div class="mock-hd">个人主页设置</div>');
             h.push('<div class="page-content">');
             h.push('<div class="mock-title">公开信息</div>');
             h.push('<table class="table table-bordered mock-upload-table"><tbody>');
-            h.push('<tr><td>头像</td><td><div class="hp-avatar"><img src="./mockcs/img/hi.png"></div></td></tr>');
-            h.push('<tr><td>名称</td><td>哆啦A梦</td></tr>');
+            h.push('<tr><td>头像</td><td><div class="hp-avatar"><img src="'+imgBase64Url+'"></div></td></tr>');
+            h.push('<tr><td>名称</td><td>'+currentUserName+'</td></tr>');
             h.push('<tr style="display:none;"><td>状态</td><td id="myStatus"></td></tr>');
             h.push('<tr style="display:none;"><td>修改时间</td><td id="mySubmitTime"></td></tr>');
             h.push('<tr><td>个人简介</td><td><div class="mock-textarea-box"><span class="errorinfo" for="homnepage-desc" style="display:none"></span><textarea class="form-control upload-desc" cols="3" maxlength="25" id="homnepage-desc"></textarea><span class="mock-input-tip">最多25个字符</span></div></td>');

@@ -4,13 +4,14 @@ define(function(require, exports, module) {
             var _view = require('mock.view'),
                 _util = require('mock.util'),
                 notify = require('mock.plugin.notify'),
-                autosize = require('mock.plugin.autosize.min');
+                autosize = require('mock.plugin.autosize.min'),
+                apihost = 'http://'+_util.getApiHost();
 
             $.widget('mock.rawedit', _view, {
                     options: {
-                        addaudinews: 'http://uil.shahe.baidu.com/mock/addaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-                        updateaudinews: 'http://uil.shahe.baidu.com/mock/updateaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-                        getaudinews: 'http://uil.shahe.baidu.com/mock/getaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?'
+                        addaudinews: apihost+'/mock/addaudinews',
+                        updateaudinews: apihost+'/mock/updateaudinews',
+                        getaudinews: apihost+'/mock/getaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?'
                     },
                     render: function(opt) {
                         var self = this,
@@ -21,7 +22,7 @@ define(function(require, exports, module) {
                             $.ajax({
                                 url: options.getaudinews,
                                 crossDomain: true,
-                                dataType: 'jsonp',
+                                dataType: 'json',
                                 data: {
                                     id: options.id
                                 }
@@ -787,22 +788,30 @@ define(function(require, exports, module) {
                                         content: content,
                                         type: type,
                                         uptime: uptime,
-                                        ext: ext
+                                        ext: ext,
+                                        bs:window.$userinfo.bduss
                                     },
-                                    sendData = {
-                                        data:JSON.stringify(rawdata)
-                                    };
-                                    if(needReview){
-                                        sendData.shen = 1;
-                                        self.routePath = 'raws/1';
-                                    }
+                                    sendData = {};
 
+
+                                    if(needReview){
+                                        rawdata.shen = 1;
+                                        self.routePath = 'raws/1';
+                                        sendData.shen = 1;
+                                    }
+                                    sendData.data = JSON.stringify(rawdata);
+                                    
                                     if (options.id) {
+                                        var apiUrl = options.updateaudinews;
+                                        needReview && (apiUrl = apiUrl+"?shen=1");
                                         sendData.id = options.id;
+                                        sendData.ua = 'bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2';
+                                        sendData.cuid = '80000000000000000000000000000000|0',
                                         $.ajax({
-                                            url: options.updateaudinews,
+                                            url: apiUrl,
+                                            type:'POST',
                                             crossDomain: true,
-                                            dataType: 'jsonp',
+                                            dataType: 'json',
                                             data: sendData
                                         }).done(function(res) {
                                             if (!res.errno) {
@@ -811,17 +820,19 @@ define(function(require, exports, module) {
                                                     trigger: true
                                                 });
                                             } else {
-                                                notify({
-                                                    tmpl: 'error',
-                                                    text: res.error
-                                                });
+                                                self.showError(res);
                                             }
                                         }).fail(function(res) {});
                                     } else {
+                                        var apiUrl = options.addaudinews;
+                                        needReview && (apiUrl = apiUrl+"?shen=1");
+                                        sendData.ua = 'bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2';
+                                        sendData.cuid = '80000000000000000000000000000000|0',
                                         $.ajax({
-                                            url: options.addaudinews,
+                                            url: apiUrl,
+                                            type:'POST',
                                             crossDomain: true,
-                                            dataType: 'jsonp',
+                                            dataType: 'json',
                                             data: sendData
                                         }).done(function(res) {
                                             if (!res.errno) {
@@ -830,10 +841,7 @@ define(function(require, exports, module) {
                                                     trigger: true
                                                 });
                                             } else {
-                                                notify({
-                                                    tmpl: 'error',
-                                                    text: res.error
-                                                });
+                                                self.showError(res);
                                             }
                                         }).fail(function(res) {});
                                     }

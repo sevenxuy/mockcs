@@ -3,6 +3,7 @@ define(function(require, exports, module) {
     var _view = require('mock.view'),
         _util = require('mock.util'),
         notify = require('mock.plugin.notify'),
+        apihost = 'http://'+_util.getApiHost(),
         topAudiNewsUrl = function(id) {
             return _util.getApiUrl({
                 "name": "topaudinews",
@@ -22,9 +23,9 @@ define(function(require, exports, module) {
 
     $.widget('mock.raws', _view, {
         options: {
-            getaudinewsbyvid: 'http://uil.shahe.baidu.com/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            audinewsdo: 'http://uil.shahe.baidu.com/mock/audinewsdo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            deleteaudinews: 'http://uil.shahe.baidu.com/mock/deleteaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            getaudinewsbyvid: apihost+'/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            audinewsdo: apihost+'/mock/audinewsdo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            deleteaudinews: apihost+'/mock/deleteaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             ps: 100,
             tp_audit: 3
         },
