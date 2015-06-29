@@ -720,7 +720,7 @@ define(function(require, exports, module) {
                                     content = content.replace(/<(\/(ul|ol|div|table))>/ig, '</p>');
                                     content = content.replace(/<li>/ig, '- ');
                                     content = content.replace(/<(\/(li|tr))>/ig, '<br>');
-                                    content = content.replace(/<(((\/)?(thead|tbody|tfoot))|tr|td|(\/(th|td))|hr(\/)?)>/ig, '');
+                                    content = content.replace(/<(((\/)?(thead|tbody|tfoot))|tr|td|span|(\/(th|td|span))|hr(\/)?)>/ig, '');
                                     content = content.replace(/<(td|th)>/ig, ' ');
                                 }
 
@@ -781,7 +781,10 @@ define(function(require, exports, module) {
                                     isValidate = false;
                                     $("span[for=upload-uptime]").html('请选择上线时间。').show();
                                 } else {
-                                    uptime = Math.floor(Date.parse(uptime) / 1000);
+                                    uptime = uptime +':00';
+                                    uptime = uptime.split('-').join('/');
+                                    uptime = new Date(uptime);
+                                    uptime = uptime.getTime() / 1000;
                                 }
                                 if(isValidate){
                                     var rawdata = {
