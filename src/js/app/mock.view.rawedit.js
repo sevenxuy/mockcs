@@ -715,10 +715,15 @@ define(function(require, exports, module) {
                                 if (!content.length) {
                                     isValidate = false;
                                     $('span[for=upload-content]').html('请输入正文。').show();
+                                }else{
+                                    content = content.replace(/<(ul|ol|div|table)>/ig, '<p>');
+                                    content = content.replace(/<(\/(ul|ol|div|table))>/ig, '</p>');
+                                    content = content.replace(/<li>/ig, '- ');
+                                    content = content.replace(/<(\/(li|tr))>/ig, '<br>');
+                                    content = content.replace(/<(((\/)?(thead|tbody|tfoot))|tr|td|(\/(th|td))|hr(\/)?)>/ig, '');
+                                    content = content.replace(/<(td|th)>/ig, ' ');
                                 }
-                                // } else {
-                                //     content = _.escape(content);
-                                // }
+
 
                                 var type = $('#upload-type').val();
                                 var ext;
