@@ -116,7 +116,7 @@ You should have received a copy of the GNU General Public License along with thi
             //Class for Widget Handling the upload of Files
             var row = $('<div/>', {
                 "class": "row"
-            }).append('<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px，不超过100K。</div>').append($('<div/>', {
+            }).append('<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。</div>').append($('<div/>', {
                 id: "imgErrMsg"
             }));
             var container = $('<div/>', {
@@ -191,7 +191,7 @@ You should have received a copy of the GNU General Public License along with thi
                             var image = $('<img/>', {
                                 src: newsrc
                             }).appendTo(a).click(function() {
-                                $('#imageList').data('current', $(this).attr('src'));
+                                $('#imageList').data('current', '<img src="' + $(this).attr('src') + '" style="width:' + w + 'px;height:' + h + 'px;"/>');
                             });
                             li.append(a).appendTo($('#imageList'));
                         }
@@ -272,13 +272,13 @@ You should have received a copy of the GNU General Public License along with thi
                         class: "thumbnail"
                     });
                     var image = $('<img/>', {
-                        src: url,
+                        src: url
                     }).error(function() {
                         methods.showMessage.apply(this, ["imgErrMsg", "图片链接无效。"]);
                         return false;
                     }).load(function() {
                         $(this).appendTo(a).click(function() {
-                            $('#imageList').data('current', $(this).attr('src'));
+                            $('#imageList').data('current', '<img src="' + $(this).attr('src') + '" style="width:' + w + 'px;height:' + h + 'px;"/>');
                         });
                         li.append(a).appendTo($('#imageList'));
                     });
@@ -1198,12 +1198,12 @@ You should have received a copy of the GNU General Public License along with thi
                     },
                     "onSave": function() {
                         methods.restoreSelection.apply(this);
+                        console.log($('#imageList').data('current'));
                         if ($('#imageList').data('current')) {
                             if (navigator.userAgent.match(/MSIE/i)) {
-                                var imageStr = '<img src="' + $('#imageList').data('current') + '" />'
-                                methods.restoreSelection.apply(this, [imageStr, 'html'])
+                                methods.restoreSelection.apply(this, [$('#imageList').data('current'), 'html']);
                             } else {
-                                document.execCommand('insertimage', false, $('#imageList').data('current'));
+                                document.execCommand('insertHTML', false, $('#imageList').data('current'));
                             }
                         } else {
                             methods.showMessage.apply(this, ["imgErrMsg", "请选中要插入的图片。"]);
