@@ -65,7 +65,7 @@ define(function(require, exports, module) {
                                     '<tr>'+
                                             '<td>广场图</td>'+
                                             '<td>'+
-                                                '<div class="bg-warning">图片尺寸要求：最小宽度640px， 最大高度1080px，宽高比在1~2之间， 最佳宽高比是3:2。</div>'+
+                                                '<div class="bg-warning">图片尺寸要求：最小宽度 440px，最大宽度：780px；最小高度 290px；最大高度：1024px。</div>'+
                                                 '<div class="upload-img-box">'+
                                                     '<div class="upload-img">'+
                                                         '<span class="errorinfo" for="upload-simg" style="display:none;"></span>'+
@@ -252,7 +252,7 @@ define(function(require, exports, module) {
                                                 '<tr>'+
                                                     '<td>广场图</td>'+
                                                     '<td>'+
-                                                        '<div class="bg-warning">图片尺寸要求：最小宽度640px， 最大高度1080px，宽高比在1~2之间， 最佳宽高比是3:2。</div>'+
+                                                        '<div class="bg-warning">图片尺寸要求：最小宽度 440px，最大宽度：780px；最小高度 290px；最大高度：1024px。</div>'+
                                                         '<div class="upload-img-box">'+
                                                             '<div class="upload-img">');
                                 if (!!item.simg) {
@@ -615,8 +615,8 @@ define(function(require, exports, module) {
                                 var $spanerror = $tx.parent().find('.errorinfo');
                                 var options = this.options;
                                 if($tx.attr('id') == 'upload-simg'){
-                                    if ((w < 640) || (h > 1080) || (w / h > 2) || (w / h < 1)) {
-                                        $spanerror.html('广场图尺寸要求是：最小宽度640px， 最大高度1080px，宽高比在1~2之间，最佳宽高比是3:2。').show();
+                                    if ((w < 440) || w > 780 || h < 290 || h > 1024) {
+                                        $spanerror.html('图片尺寸要求：最小宽度 440px，最大宽度：780px；最小高度 290px；最大高度：1024px。').show();
                                         $tx.val('');
                                         return false;
                                     } else {
@@ -696,8 +696,6 @@ define(function(require, exports, module) {
                                 if (!title.length) {
                                     isValidate = false;
                                     $('span[for=upload-title]').html('请输入标题。').show();
-                                } else {
-                                    title = _.escape(title);
                                 }
 
                                 var simg = $('#upload-simg').val().trim();
@@ -705,8 +703,6 @@ define(function(require, exports, module) {
                                 if (!desc.length) {
                                     isValidate = false;
                                     $('span[for=upload-desc]').html('请输入摘要。').show();
-                                } else {
-                                    desc = _.escape(desc);
                                 }
 
                                 var img = $('#upload-img').val().trim();
@@ -723,7 +719,6 @@ define(function(require, exports, module) {
                                     content = content.replace(/<(((\/)?(thead|tbody|tfoot))|tr|td|span|(\/(th|td|span))|hr(\/)?)>/ig, '');
                                     content = content.replace(/<(td|th)>/ig, ' ');
                                 }
-
 
                                 var type = $('#upload-type').val();
                                 var ext;
