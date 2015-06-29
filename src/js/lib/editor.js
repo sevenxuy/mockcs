@@ -1174,6 +1174,7 @@ You should have received a copy of the GNU General Public License along with thi
                         }
                         $(editorObj).data("editor").find('a[href="' + targetURL + '"]').each(function() {
                             $(this).attr("target", "_blank");
+                            $(this).wrap( "<p></p>" );
                         });
                         $(".alert").alert("close");
                         $("#InsertLink").modal("hide");
