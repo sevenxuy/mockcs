@@ -712,12 +712,14 @@ define(function(require, exports, module) {
                                     isValidate = false;
                                     $('span[for=upload-content]').html('请输入正文。').show();
                                 }else{
-                                    content = content.replace(/<(ul|ol|div|table)>/ig, '<p>');
-                                    content = content.replace(/<(\/(ul|ol|div|table))>/ig, '</p>');
-                                    content = content.replace(/<li>/ig, '- ');
+                                    content = content.replace(/<(ul|ol|div|table|cite).*?/ig, '<p');
+                                    content = content.replace(/<(\/(ul|ol|div|table|cite))>/ig, '</p>');
                                     content = content.replace(/<(\/(li|tr))>/ig, '<br>');
-                                    content = content.replace(/<(((\/)?(thead|tbody|tfoot))|tr|td|span|(\/(th|td|span))|hr(\/)?)>/ig, '');
+                                    content = content.replace(/<(((\/)?(thead|tbody|tfoot))|(tr|td|span|li).*?|(\/(th|td|span))|hr(\/)?|iframe.*iframe)>/ig, '');
                                     content = content.replace(/<(td|th)>/ig, ' ');
+                                    content = content.replace(/<(h1|h2|h3|h4|h5|h6|p|a).*?>/ig, '<$1>');
+                                    content = content.replace(/.(class|width|height|font|alt|data.*?)=".*?"/ig, '');
+                                    content = content.replace(/\s?(margin|padding|line-height|outline|vertical-align|display|(list|font|border|max|min|background|text).*?|style=""):.*?;/ig, '');
                                 }
 
                                 var type = $('#upload-type').val();
