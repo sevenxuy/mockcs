@@ -8,7 +8,7 @@ define(function(require, exports, module) {
         options: {
             getmyadlist: apihost+'/mock/getmyadlist?&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             audiaddo: apihost+'/mock/audiaddo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            ps: 4,
+            ps: 100,
             tp_audit: 3
         },
         render: function(opt) {
@@ -107,7 +107,7 @@ define(function(require, exports, module) {
 
             if (!_.isEmpty(data)) {
                 _.each(data, function(item, index) {
-                    h.push('<tr data-type="' + item.type + '"><td>' + item.id + '</td><td>' + (item.type == 0 ? '个人主页' : '详情页') + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"/></div></td><td>' + item.link + '</td><td>' + item.expire + '天</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><div class="mock-btn mock-btn-red  mock-btn-s data-audit" data-id="' + item.id + '">提交</div></td></tr>');
+                    h.push('<tr data-type="' + item.type + '"><td>' + item.id + '</td><td>' + (item.type == 0 ? '个人主页' : '详情页') + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"/></div></td><td class="wordbreakall">' + item.link + '</td><td>' + item.expire + '天</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><div class="mock-btn mock-btn-red  mock-btn-s data-audit" data-id="' + item.id + '">提交</div></td></tr>');
                 });
             } else {
                 h.push('<tr><td colspan="7">没有数据</td></tr>');
@@ -121,7 +121,7 @@ define(function(require, exports, module) {
             h.push('<tbody>');
             if (!_.isEmpty(data)) {
                 _.each(data, function(item, index) {
-                    h.push('<tr data-type="' + item.type + '"><td>' + item.id + '</td><td>' + (item.type == 0 ? '个人主页' : '详情页') + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"/></div></td><td>' + item.link + '</td><td>' + item.expire + '天</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
+                    h.push('<tr data-type="' + item.type + '"><td>' + item.id + '</td><td>' + (item.type == 0 ? '个人主页' : '详情页') + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"/></div></td><td class="wordbreakall">' + item.link + '</td><td>' + item.expire + '天</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
                 });
             } else {
                 h.push('<tr><td colspan="6">没有数据</td></tr>');

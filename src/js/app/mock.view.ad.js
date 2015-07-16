@@ -10,7 +10,7 @@ define(function(require, exports, module) {
             getmyadlist: apihost+'/mock/getmyadlist?&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             audiaddo: apihost+'/mock/audiaddo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             type: 0, //saved ad list
-            ps: 4,
+            ps: 100,
             tp_audit: 3
         },
         render: function(opt) {
@@ -75,7 +75,7 @@ define(function(require, exports, module) {
             h.push('<span class="errorinfo" for="ad-img" style="display:none;"></span><div class="mock-btn mock-btn-red upload-img-btn">上传广告图</div><input placeholder="广告图片链接" class="form-control upload-img-tx inlineb bgwhite" id="ad-img" readonly="readonly"/><input type="file" accept="image/gif, image/jpeg, image/png" class="hide"></div>');
             h.push('<div class="upload-img-preivew mt10 ml0 hide"></div></div></td></tr>');
             h.push('<tr><td>广告跳转链接*</td><td><span class="errorinfo" for="ad-link"></span><input class="form-control upload-desc" cols="3" maxlength="100" id="ad-link"/></td></tr>');
-            h.push('<tr><td>有效期*</td><td><span class="errorinfo" for="ad-expire"></span><div id="ad-expire"></div></td></tr>');
+            h.push('<tr><td>有效期(天)*</td><td><span class="errorinfo" for="ad-expire"></span><div id="ad-expire"></div></td></tr>');
             h.push('</tbody></table>');
             h.push('</div>');
             h.push('<div class="modal-footer">');
@@ -118,7 +118,7 @@ define(function(require, exports, module) {
             return h.join('');
         },
         _createItemElem: function(item) {
-            return '<tr><td>' + item.id + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"></div></td><td>' + item.link + '</td><td>' + item.expire + '天</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><div class="mock-btn mock-btn-red  mock-btn-s data-audit" data-id="' + item.id + '">提交</div></td></tr>';
+            return '<tr><td>' + item.id + '</td><td><div class="ad-img-preivew"><img src="' + item.img + '"></div></td><td class="wordbreakall">' + item.link + '</td><td>' + item.expire + '天</td><td>' + _util.dateFormat(item.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><div class="mock-btn mock-btn-red  mock-btn-s data-audit" data-id="' + item.id + '">提交</div></td></tr>';
         },
         _bindEvents: function() {
             this._on(this.element, {
@@ -139,7 +139,7 @@ define(function(require, exports, module) {
             dialog.find('#ad-img').val('');
             dialog.find('span[for=ad-img]').empty().hide();
             dialog.find('#ad-link').val('');
-            dialog.find('#ad-expire .mock-add-expire')[0].selectedIndex = 0;
+            dialog.find('#ad-expire .mock-add-expire')[0].selectedIndex = 1;
             dialog.find('.upload-img-preivew').empty().addClass('hide');
             dialog.find('.upload-img-preivew').parent().find('input[type=file]').val('');
         },

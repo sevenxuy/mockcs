@@ -3,7 +3,7 @@ define(function(require, exports, module) {
     var _view = require('mock.view'),
         _util = require('mock.util'),
         notify = require('mock.plugin.notify'),
-        apihost = 'http://'+_util.getApiHost(),
+        apihost = 'http://' + _util.getApiHost(),
         topAudiNewsUrl = function(id) {
             return _util.getApiUrl({
                 "name": "topaudinews",
@@ -12,7 +12,7 @@ define(function(require, exports, module) {
                 }
             });
         },
-         topAudiNews = function(id) {
+        topAudiNews = function(id) {
             var squareInstance = this;
             return $.ajax({
                 url: topAudiNewsUrl(id),
@@ -23,9 +23,10 @@ define(function(require, exports, module) {
 
     $.widget('mock.raws', _view, {
         options: {
-            getaudinewsbyvid: apihost+'/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            audinewsdo: apihost+'/mock/audinewsdo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            deleteaudinews: apihost+'/mock/deleteaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            getaudinewsbyvid: apihost + '/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            audinewsdo: apihost + '/mock/audinewsdo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            deleteaudinews: apihost + '/mock/deleteaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            getaudinews: apihost + '/mock/getaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             ps: 100,
             tp_audit: 3
         },
@@ -74,8 +75,9 @@ define(function(require, exports, module) {
                 'click div.page_pre': this._preGoSiblingPage,
                 'click div.page_next': this._preGoSiblingPage,
                 'click div.page_go': this._preGoSiblingPage,
-                'click #raws-table input[name=adsettop]':this._setTop,
-                'click #adpage_settop .btn-primary':this._submitSetTop,
+                'click #raws-table input[name=adsettop]': this._setTop,
+                'click #adpage_settop .btn-primary': this._submitSetTop,
+                'click a.raw-view': this._showRawModal
             });
         },
         _createWrapperElem: function() {
@@ -99,6 +101,23 @@ define(function(require, exports, module) {
             h.push('<div class="mock-btn mock-btn-white page_next hide">&gt;</div>');
             h.push('<input type="text" class="form-control goto_page">');
             h.push('<div class="mock-btn mock-btn-white page_go">跳转</div>');
+            h.push('</div>');
+            h.push('</div>');
+            h.push('</div>');
+            h.push('<div class="modal fade" id="raw-modal" tabindex="-1" role="dialog" aria-hidden="true">');
+            h.push('<div class="modal-dialog">');
+            h.push('<div class="modal-content">');
+            h.push('<div class="modal-header">');
+            h.push('<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>');
+            h.push('<h4 class="modal-title" id="myModalLabel">资讯</h4>');
+            h.push('</div>');
+            h.push('<div class="modal-body">');
+            h.push('<div id="raw-modal-loading" class="mock-loading"><div class="mock-loadingico"></div><span>正在加载 ...</span></div>');
+            h.push('<div id="raw-modal-content"></div>');
+            h.push('</div>');
+            h.push('<div class="modal-footer">');
+            h.push('<button type="button" class="btn btn-default data-cancel" data-dismiss="modal">关闭</button>');
+            h.push('</div>');
             h.push('</div>');
             h.push('</div>');
             h.push('</div>');
@@ -153,7 +172,7 @@ define(function(require, exports, module) {
             h.push('<tbody>');
             if (!_.isEmpty(data)) {
                 _.each(data, function(item, index) {
-                    h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td>');
+                    h.push('<tr><td>' + item.id + '</td><td><a class="raw-view" data-id="' + item.id + '"  data-toggle="modal" data-target="#raw-modal">' + item.title + '</a></td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td>');
                     h.push('<div class="mock-btn mock-btn-red  mock-btn-s data-audit" data-id="' + item.id + '">提交</div>');
                     h.push('<div class="mock-btn mock-btn-red  mock-btn-s data-edit" data-id="' + item.id + '">修改</div>');
                     h.push('</td></tr>');
@@ -170,7 +189,7 @@ define(function(require, exports, module) {
             h.push('<tbody>');
             if (!_.isEmpty(data)) {
                 _.each(data, function(item, index) {
-                    h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><input name="adsettop" type="radio" data-toggle="modal" data-target="#adpage_settop"></td></tr>');
+                    h.push('<tr><td>' + item.id + '</td><td><a class="raw-view" data-id="' + item.id + '"  data-toggle="modal" data-target="#raw-modal">' + item.title + '</a></td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td><td><input name="adsettop" type="radio" data-toggle="modal" data-target="#adpage_settop"></td></tr>');
                 });
             } else {
                 h.push('<tr><td colspan="4">没有数据</td></tr>');
@@ -184,7 +203,7 @@ define(function(require, exports, module) {
             h.push('<tbody>');
             if (!_.isEmpty(data)) {
                 _.each(data, function(item, index) {
-                    h.push('<tr><td>' + item.id + '</td><td>' + item.title + '</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
+                    h.push('<tr><td>' + item.id + '</td><td><a class="raw-view" data-id="' + item.id + '"  data-toggle="modal" data-target="#raw-modal">' + item.title + '</a></td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
                 });
             } else {
                 h.push('<tr><td colspan="3">没有数据</td></tr>');
@@ -237,9 +256,9 @@ define(function(require, exports, module) {
         },
         _submitSetTop: function(e) {
             var currentTr = $('#raws-table').find('input[type=radio]:checked').closest('tr'),
-            tds = currentTr.find('td'),
-            id = tds[0].innerHTML,
-            title = tds[1].innerHTML;
+                tds = currentTr.find('td'),
+                id = tds[0].innerHTML,
+                title = tds[1].innerHTML;
             topAudiNews(id)(function(result) {
                 var data = [];
                 if (!result.errno) {
@@ -248,7 +267,7 @@ define(function(require, exports, module) {
                     });
                     $(e.currentTarget).parent().find('button[data-dismiss=modal]').trigger('click');
                     var trs = currentTr.parent().find('tr');
-                    if(trs.length > 0){
+                    if (trs.length > 0) {
                         currentTr[0].parentNode.insertBefore(currentTr[0], trs[0])
                     }
                 } else {
@@ -260,6 +279,86 @@ define(function(require, exports, module) {
             });
 
         },
+        _showRawModal: function(event) {
+            $('#raw-modal-content').empty();
+            if ($('#raw-modal-loading').hasClass('hide')) {
+                $('#raw-modal-loading').removeClass('hide');
+            }
+            var self = this,
+                options = this.options,
+                $a = $(event.target),
+                id = $a.attr('data-id');
+            $.ajax({
+                url: options.getaudinews,
+                crossDomain: true,
+                dataType: 'json',
+                data: {
+                    id: id
+                }
+            }).done(function(res) {
+                if (!res.errno) {
+                    self._createRawModalContentElem(res.data);
+                } else {
+                    notify({
+                        tmpl: 'error',
+                        text: res.error
+                    });
+                }
+            });
+        },
+        _createRawModalContentElem: function(item) {
+            var h = [];
+            h.push('<div class="mock-title">吐槽能量池</div>');
+            h.push('<table class="table table-bordered mock-upload-table"><tbody>');
+            h.push('<tr><td>标题</td><td>' + item.title + '</td></tr>');
+            if (!!item.simg) {
+                h.push('<tr><td>广场图</td><td><div class="upload-img-preivew mt10 ml0 hide"><img src="' + item.simg + '"></div></td></tr>');
+            }
+            h.push('<tr><td>摘要</td><td>' + item.desc + '</td></tr>');
+            h.push('</tbody></table>');
+            h.push('<div class="mock-title">吐槽放大镜</div>');
+            h.push('<table class="table table-bordered mock-upload-table"><tbody>');
+            if (!!item.img) {
+                h.push('<tr><td>主图</td><td><div class="upload-img-preivew mt10 ml0 hide"><img src="' + item.simg + '"></div></td></tr>');
+            }
+            h.push('<tr><td>正文</td><td>' + _.unescape(item.content) + '</td></tr>');
+            h.push('<tr><td>内容类型</td><td>');
+            switch (item.type) {
+                case '0':
+                    h.push('<div>资讯</div>');
+                    break;
+                case '1':
+                    h.push('<div>PK</div>');
+                    if ((!!item.ext) && (!_.isEmpty(JSON.parse(item.ext)))) {
+                        var ext = JSON.parse(item.ext);
+                        h.push('<div class="upload-pk">');
+                        h.push('<div class="upload-pk-item">甲方文案: ' + ext[0]['title'] + '</div>');
+                        h.push('<div class="upload-pk-item">乙方文案: ' + ext[1]['title'] + '</div>');
+                        h.push('</div>');
+                    }
+                    break;
+                case '2':
+                    h.push('<div>投票</div>');
+                    if ((!!item.ext) && (!_.isEmpty(JSON.parse(item.ext)))) {
+                        var ext = JSON.parse(item.ext);
+                        h.push('<div class="upload-vote-box">');
+                        _.each(ext, function(vote, index) {
+                            h.push('<div class="upload-vote-item">' + vote.title + '</div>');
+                            if (!!vote.img) {
+                                h.push('<div class="upload-img-preivew"><img src="' + vote.img + '"/></div>');
+                            }
+                        });
+                        h.push('</div>');
+                    }
+                    break;
+            }
+            h.push('</td></tr>');
+            h.push('<tr><td>上线时间</td><td>' + _util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
+            h.push('</tbody></table>');
+            h.push('');
+            $('#raw-modal-loading').addClass('hide');
+            $('#raw-modal-content').append(h.join(''));
+        }
     });
     module.exports = $.mock.raws;
 });

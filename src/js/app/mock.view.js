@@ -10,6 +10,7 @@ define(function(require, exports, module) {
             callNewMessageMethods: [],
             callNewFansMethods: []
         },
+        apihost = 'http://' + util.getApiHost(),
         /**
         获得新消息的总数的api地址
         * @function
@@ -35,7 +36,7 @@ define(function(require, exports, module) {
                 if (!result.errno) {
                     var i;
                     for (i = 0; i < globalObject.callNewMessageMethods.length; i++) {
-                        globalObject.callNewMessageMethods[i](+result.data);
+                        globalObject.callNewMessageMethods[i](+result.data?(+result.data):0);
                     }
                 }
             });
@@ -64,6 +65,8 @@ define(function(require, exports, module) {
     $.widget('mock.view', {
         options: {
             uploadfile: '/umis/pushc/uploadfile',
+            getaudinews: apihost + '/mock/getaudinews?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            getaudiadinfo: apihost + '/mock/getaudiadinfo?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?'
         },
         _create: function() {
             this.render();
@@ -109,8 +112,8 @@ define(function(require, exports, module) {
                 return false;
             }
             //image can only be png, jpeg or gif.
-            if (!img.type.match('image.*') || !img.name.match(/(?:gif|jpg|png|jpeg)$/)) {
-                $spanerror.html('请检查图片格式，只能上传png, jpeg, gif格式的图片。');
+            if (!img.type.match('image.*') || !img.name.toLowerCase().match(/(?:gif|jpg|png|jpeg)$/)) {
+                $spanerror.html('图片格式错误，只能上传png, jpg, jpeg, gif格式的图片。');
                 return false;
             }
             // 如果图片尺寸大于100K， 就按照60的质量进行压缩
@@ -240,6 +243,125 @@ define(function(require, exports, module) {
                     text: errorMsg
                 });
             }
+        },
+        // for msgs and msg
+        _showRawModal: function(event) {
+            $('#msg-raw-modal-content').empty();
+            if ($('#msg-raw-modal-loading').hasClass('hide')) {
+                $('#msg-raw-modal-loading').removeClass('hide');
+            }
+            var self = this,
+                options = this.options,
+                $a = $(event.target),
+                id = $a.attr('data-id');
+            $.ajax({
+                url: options.getaudinews,
+                crossDomain: true,
+                dataType: 'json',
+                data: {
+                    id: id
+                }
+            }).done(function(res) {
+                if (!res.errno) {
+                    self._createRawModalContentElem(res.data);
+                } else {
+                    notify({
+                        tmpl: 'error',
+                        text: res.error
+                    });
+                }
+            });
+        },
+        _createRawModalContentElem: function(item) {
+            var h = [];
+            h.push('<div class="mock-title">吐槽能量池</div>');
+            h.push('<table class="table table-bordered mock-upload-table"><tbody>');
+            h.push('<tr><td>标题</td><td>' + item.title + '</td></tr>');
+            if (!!item.simg) {
+                h.push('<tr><td>广场图</td><td><div class="upload-img-preivew mt10 ml0 hide"><img src="' + item.simg + '"></div></td></tr>');
+            }
+            h.push('<tr><td>摘要</td><td>' + item.desc + '</td></tr>');
+            h.push('</tbody></table>');
+            h.push('<div class="mock-title">吐槽放大镜</div>');
+            h.push('<table class="table table-bordered mock-upload-table"><tbody>');
+            if (!!item.img) {
+                h.push('<tr><td>主图</td><td><div class="upload-img-preivew mt10 ml0 hide"><img src="' + item.simg + '"></div></td></tr>');
+            }
+            h.push('<tr><td>正文</td><td>' + _.unescape(item.content) + '</td></tr>');
+            h.push('<tr><td>内容类型</td><td>');
+            switch (item.type) {
+                case '0':
+                    h.push('<div>资讯</div>');
+                    break;
+                case '1':
+                    h.push('<div>PK</div>');
+                    if ((!!item.ext) && (!_.isEmpty(JSON.parse(item.ext)))) {
+                        var ext = JSON.parse(item.ext);
+                        h.push('<div class="upload-pk">');
+                        h.push('<div class="upload-pk-item">甲方文案: ' + ext[0]['title'] + '</div>');
+                        h.push('<div class="upload-pk-item">乙方文案: ' + ext[1]['title'] + '</div>');
+                        h.push('</div>');
+                    }
+                    break;
+                case '2':
+                    h.push('<div>投票</div>');
+                    if ((!!item.ext) && (!_.isEmpty(JSON.parse(item.ext)))) {
+                        var ext = JSON.parse(item.ext);
+                        h.push('<div class="upload-vote-box">');
+                        _.each(ext, function(vote, index) {
+                            h.push('<div class="upload-vote-item">' + vote.title + '</div>');
+                            if (!!vote.img) {
+                                h.push('<div class="upload-img-preivew"><img src="' + vote.img + '"/></div>');
+                            }
+                        });
+                        h.push('</div>');
+                    }
+                    break;
+            }
+            h.push('</td></tr>');
+            h.push('<tr><td>上线时间</td><td>' + util.dateFormat(item.uptime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
+            h.push('</tbody></table>');
+            h.push('');
+            $('#msg-raw-modal-loading').addClass('hide');
+            $('#msg-raw-modal-content').append(h.join(''));
+        },
+        _showAdModal: function(event) {
+            $('#msg-ad-modal-content').empty();
+            if ($('#msg-ad-modal-loading').hasClass('hide')) {
+                $('#msg-ad-modal-loading').removeClass('hide');
+            }
+            var self = this,
+                options = this.options,
+                $a = $(event.target).closest('div.msg-ad-view'),
+                id = $a.attr('data-id');
+            $.ajax({
+                url: options.getaudiadinfo,
+                crossDomain: true,
+                dataType: 'json',
+                data: {
+                    id: id
+                }
+            }).done(function(res) {
+                if (!res.errno) {
+                    self._createAdModalContentElem(res.data.info);
+                } else {
+                    notify({
+                        tmpl: 'error',
+                        text: res.error
+                    });
+                }
+            });
+        },
+        _createAdModalContentElem: function(item) {
+            var h = [];
+            h.push('<table class="table table-bordered mock-upload-table mock-aditem"><tbody>');
+            h.push('<tr><td>广告id</td><td>' + item.id + '</td></tr>');
+            h.push('<tr><td>广告图</td><td><div class="upload-img-preivew ad-img-preivew"><img src="' + item.img + '"></div></td></tr>');
+            h.push('<tr><td>广告跳转链接</td><td>' + item.link + '</td></tr>');
+            h.push('<tr><td>有效期(天)</td><td>' + item.expire + '</td></tr>');
+            h.push('</tbody></table>');
+            $('#msg-ad-modal-loading').addClass('hide');
+            $('#msg-ad-modal-content').append(h.join(''));
         }
     });
     module.exports = $.mock.view;

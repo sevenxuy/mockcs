@@ -50,8 +50,8 @@ define(function(require, exports, module) {
             }
             getTongjiNewsData(self.beginDate.getTime(), self.endDate.getTime(),stype)(function(result){
                 self._updateOverallElem(result.data.today);
-                self._updateDetailElem(result.data.tong);
-                // self._updateFigure(result);
+                self._updateDetailElem(stype == 0 ?result.data.tong :result.data.news);
+                self._updateFigure(result.data.tong);
             });
         },
         _createWrapperElem: function() {
@@ -82,7 +82,6 @@ define(function(require, exports, module) {
             '</li>'+
         '</ul>'+
         '<div id="trafuser-figure"></div>'+
-        '<div class="mock-title">详情数据</div>'+
         '<table class="table table-bordered" id="trafuser-detail">'+
         '</table>'+
     '</div>'+
@@ -115,11 +114,11 @@ define(function(require, exports, module) {
                 case '0': //个人主页
                 template =
 '<li class="traf-overall-item">'+
-    '<div>个人主页PV</div>'+
+    '<div>浏览量</div>'+
     '<div class="traf-count"><%=pv%></div>'+
 '</li>'+
 '<li class="traf-overall-item">'+
-    '<div>个人主页UV</div>'+
+    '<div>访问量</div>'+
     '<div class="traf-count"><%=uv%></div>'+
 '</li>'+
 '<li class="traf-overall-item">'+
@@ -130,11 +129,11 @@ define(function(require, exports, module) {
                 case '1': //原创吐槽内容
                 template =
 '<li class="traf-overall-item">'+
-    '<div>吐槽原创内容PV</div>'+
+    '<div>浏览量</div>'+
     '<div class="traf-count"><%=pv%></div>'+
 '</li>'+
 '<li class="traf-overall-item">'+
-    '<div>吐槽原创内容UV</div>'+
+    '<div>访问量</div>'+
     '<div class="traf-count"><%=uv%></div>'+
 '</li>'+
 '<li class="traf-overall-item">'+
@@ -143,7 +142,7 @@ define(function(require, exports, module) {
 '</li>';
                     break;
             }
-            $('#trafuser-overall').empty().append(_.template(template)(data));
+            this.element.find('#trafuser-overall').empty().append(_.template(template)(data));
         },
         _updateDetailElem: function(data) {
             var options = this.options,
@@ -156,11 +155,12 @@ define(function(require, exports, module) {
             switch (stype) {
                 case '0': //个人主页
                     template =
+                    '<caption>详情数据</caption>'+
                     '<thead>'+
                         '<tr>'+
                             '<th>日期</th>'+
-                            '<th>PV</th>'+
-                            '<th>UV</th>'+
+                            '<th>浏览量</th>'+
+                            '<th>访问量</th>'+
                             '<th>新增粉丝数</th>'+
                             '<th>总粉丝数</th>'+
                         '</tr>'+
@@ -179,12 +179,13 @@ define(function(require, exports, module) {
                     break;
                 case '1': //原创吐槽内容
                     template =
+                    '<caption>详情数据</caption>'+
                     '<thead>'+
                         '<tr>'+
-                            '<th>上线时间</th>'+
-                            '<th>PV</th>'+
-                            '<th>UV</th>'+
-                            '<th>吐槽数</th>'+
+                            '<th>日期</th>'+
+                            '<th>内容标题</th>'+
+                            '<th>浏览量</th>'+
+                            '<th>访问量</th>'+
                             '<th>参与数</th>'+
                         '</tr>'+
                     '</thead>'+
@@ -192,25 +193,25 @@ define(function(require, exports, module) {
                     '<%for(var i=0;i<data.length;i++){%>'+
                         '<tr>'+
                             '<td><%=format(data[i].date * 1000,"yyyy-MM-dd hh:mm")%></td>'+
+                            '<td><%=data[i].title%></td>'+
                             '<td><%=data[i].pv%></td>'+
                             '<td><%=data[i].uv%></td>'+
-                            '<td><%=data[i].tu%></td>'+
                             '<td><%=data[i].can%></td>'+
                         '</tr>'+
                     '<%}%>'+
                     '</tbody>'
                     break;
             }
-            $('#trafuser-detail').empty().append(_.template(template)(dataset));
+            this.element.find('#trafuser-detail').empty().append(_.template(template)(dataset));
         },
-        _updateFigure: function() {
+        _updateFigure: function(data) {
             //ref : http://bl.ocks.org/mbostock/3884955
-            $('#trafuser-figure').empty();
+            this.element.find('#trafuser-figure').empty();
             var margin = {
                     top: 20,
                     right: 80,
                     bottom: 30,
-                    left: 50
+                    left: 80
                 },
                 width = 960 - margin.left - margin.right,
                 height = 500 - margin.top - margin.bottom;
@@ -249,15 +250,13 @@ define(function(require, exports, module) {
                 .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
             // d3.json('../../data/user.json', function(error, data) {
-            d3.json('/mis/video/mockcs/data/user.json', function(error, data) {
-                if (error) throw error;
 
                 color.domain(d3.keys(data[0]).filter(function(key) {
                     return key !== 'date';
                 }));
 
                 data.forEach(function(d) {
-                    d.date = parseDate(d.date);
+                    d.date = new Date(d.date*1000);
                 });
 
                 var cities = color.domain().map(function(name) {
@@ -333,7 +332,7 @@ define(function(require, exports, module) {
                     .text(function(d) {
                         return d.name;
                     });
-            });
+            
         },
         _bindEvents: function() {
             this._on(this.element, {

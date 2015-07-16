@@ -19,6 +19,12 @@ define(function(require, exports, module) {
             if (this.element.hasClass('hide')) {
                 this.element.removeClass('hide').addClass('current');
             }
+            var staticpage = window.location.origin+'/umis/vip/index';
+            var successUrl = window.location.origin+'/umis/vip/index?r='+(new Date().getTime())+'#msg';
+            if(/tucao\.baidu\.com/.test(window.location.origin)){
+                staticpage = window.location.origin;
+                successUrl = window.location.origin+'?r='+(new Date().getTime())+'#msg';
+            }
             passport.use('login', {
                     tangram:true
                 }, function(apiMagic) {
@@ -26,8 +32,8 @@ define(function(require, exports, module) {
                     var domain
                     var loginInstance = new apiMagic.passport.login({
                         product: 'browser_andr',
-                        staticPage: window.location.origin+'/umis/vip/index',
-                        u: window.location.origin+'/umis/vip/index?r='+(new Date().getTime())+'#msg',
+                        staticPage: staticpage,
+                        u: successUrl,
                         charset: 'utf-8',
                         memberPass: true,
                         safeFlag: 0

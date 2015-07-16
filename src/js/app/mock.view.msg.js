@@ -5,12 +5,29 @@ define(function(require, exports, module) {
         _util = require('mock.util'),
         _updateNewMessage = null,
         _updateFansMessage = null,
-        apihost = 'http://'+_util.getApiHost();
+        apihost = 'http://' + _util.getApiHost(),
+        getGetCountUrl = function(){
+            return _util.getApiUrl({
+                "name": 'getcount',
+                "path": 'message',
+                "params": {
+                    "type": 1,
+                    "status": 0
+                }
+            });
+        },
+        getGetCountData = function(){
+            return $.ajax({
+                url: getGetCountUrl(),
+                crossDomain: true,
+                dataType: 'jsonp',
+            }).done;
+        };
     $.widget('mock.msg', _view, {
         options: {
-            message: apihost+'/message/pullmsg?&fn=?',
+            message: apihost + '/message/pullmsg?&fn=?',
             type: 2,
-            ps: 10
+            ps: 100
         },
         _create: function() {
             this.render();
@@ -18,24 +35,18 @@ define(function(require, exports, module) {
             this._bindWindowEvent();
             this.element.data('widgetCreated', true);
             var self = this;
-            if(_updateFansMessage === null){
-                _updateFansMessage = function(num){
-                    self.element.find('.msg-notify-box .msg-notify-funs').html(num);
-                }
-                this.getGlobalObject().callNewFansMethods.push(_updateFansMessage);
-            }
-            if(_updateNewMessage === null){
-                _updateNewMessage = function(num){
+            if (_updateNewMessage === null) {
+                _updateNewMessage = function(num) {
                     self.element.find('.msg-notify-box .msg-notify-msgs').html(num);
                 }
-                this.getGlobalObject().callNewMessageMethods.push(_updateNewMessage);
+                self.getGlobalObject().callNewMessageMethods.push(_updateNewMessage);
             }
-            
         },
         render: function(opt) {
             var options = this.options;
             _.extend(options, opt);
             this._createWrapperElem();
+
         },
         reRender: function(opt) {
             var options = this.options,
@@ -48,9 +59,13 @@ define(function(require, exports, module) {
             this.renderTable();
         },
         renderTable: function() {
+            
             var self = this,
                 options = this.options;
             this._updateWrapperElemStatus(options.status);
+            getGetCountData()(function(result) {
+                 self.element.find('.msg-notify-box .msg-notify-funs').html(result.data?result.data:'0');
+            });
             $.ajax({
                 url: options.message,
                 crossDomain: true,
@@ -62,7 +77,7 @@ define(function(require, exports, module) {
                 }
             }).done(function(res) {
                 if (!res.errno) {
-                    $('#msgs-table').addClass('hide').empty().append(self._createTableElem(res.data.list)).removeClass('hide');
+                    self.element.find('#msgs-table').addClass('hide').empty().append(self._createTableElem(res.data.list)).removeClass('hide');
                 } else {
                     notify({
                         tmpl: 'error',
@@ -89,7 +104,7 @@ define(function(require, exports, module) {
                 }
             }).done(function(res) {
                 if (!res.errno) {
-                    $('#msgs-table').append(self._createTableElem(res.data.list));
+                    self.element.find('#msgs-table').append(self._createTableElem(res.data.list));
                 } else {
                     notify({
                         tmpl: 'error',
@@ -124,11 +139,11 @@ define(function(require, exports, module) {
             h.push('<h4 class="modal-title" id="myModalLabel">广告位</h4>');
             h.push('</div>');
             h.push('<div class="modal-body">');
-            h.push('<table class="table table-bordered mock-upload-table mock-aditem"><tbody>');
-            h.push('<tr><td>广告图</td><td><div class="upload-img-preivew ad-img-preivew"></div></td></tr>');
-            h.push('<tr><td>广告跳转链接</td><td></td></tr>');
-            h.push('<tr><td>有效期</td><td></td></tr>');
-            h.push('</tbody></table>');
+            h.push('<div id="msg-ad-modal-loading" class="mock-loading"><div class="mock-loadingico"></div><span>正在加载 ...</span></div>');
+            h.push('<div id="msg-ad-modal-content"></div>');
+            h.push('</div>');
+            h.push('<div class="modal-footer">');
+            h.push('<button type="button" class="btn btn-default data-cancel" data-dismiss="modal">关闭</button>');
             h.push('</div>');
             h.push('</div>');
             h.push('</div>');
@@ -142,8 +157,11 @@ define(function(require, exports, module) {
             h.push('<h4 class="modal-title" id="myModalLabel">资讯</h4>');
             h.push('</div>');
             h.push('<div class="modal-body">');
-            h.push('<div class="mock-title">吐槽能量池</div>');
-            h.push('<div>UI请参考#rawedit, 仅查看，不可编辑。</div>')
+            h.push('<div id="msg-raw-modal-loading" class="mock-loading"><div class="mock-loadingico"></div><span>正在加载 ...</span></div>');
+            h.push('<div id="msg-raw-modal-content"></div>');
+            h.push('</div>');
+            h.push('<div class="modal-footer">');
+            h.push('<button type="button" class="btn btn-default data-cancel" data-dismiss="modal">关闭</button>');
             h.push('</div>');
             h.push('</div>');
             h.push('</div>');
@@ -201,7 +219,9 @@ define(function(require, exports, module) {
         _bindEvents: function() {
             this._on(this.element, {
                 'click li.tab-nav-item': this._goPage,
-                'change #msg-type-filter': this._filterMsgs
+                'change #msg-type-filter': this._filterMsgs,
+                'click a.msg-raw-view': this._showRawModal,
+                'click div.msg-ad-view': this._showAdModal
             });
         },
         _bindWindowEvent: function() {
@@ -222,7 +242,7 @@ define(function(require, exports, module) {
         },
         _filterMsgs: function(event) {
             var selectedType = $(event.target).val(),
-                $ads = $('#msgs-table');
+                $ads = this.element.find('#msgs-table');
             switch (selectedType) {
                 case '1':
                 case '2':
@@ -234,7 +254,6 @@ define(function(require, exports, module) {
                 default:
                     $ads.children('tr').removeClass('hide');
             }
-
             return false;
         }
     });

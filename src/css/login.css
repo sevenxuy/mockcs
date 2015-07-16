@@ -1,0 +1,188 @@
+.tang-pass-login .pass-generalErrorWrapper {
+    margin:0px;
+}
+.tang-pass-login dl, .tang-pass-login dt, .tang-pass-login dd, .tang-pass-login ul, .tang-pass-login ol, .tang-pass-login li, .tang-pass-login input{
+	margin: 0;
+	padding: 0;
+}
+.tang-pass-login .clearfix:after,.tang-pass-login  .pass-form-item:after{visibility:hidden;display:block;font-size:0;content:" ";clear:both;height:0;}
+.tang-pass-login .clearfix, .tang-pass-login .pass-form-item{zoom:1;}
+
+.tang-pass-login{
+	font:12px/1.5 tahoma,arial,Hiragino Sans GB,\5b8b\4f53;
+	position:relative;
+}
+.tang-pass-login .pass-form-item{
+    height:26px;
+    margin-top:10px;
+    display: block;
+    position: relative;
+}
+.tang-pass-login .pass-label{
+    width:45px;
+    height:26px;
+    line-height:26px;
+    padding-right:5px;
+    display:block;
+    float:left;
+    text-align:right;
+    font-size:12px;
+    color: #333;
+    font-family:"宋体";
+}
+.tang-pass-login .pass-text-input{
+    background:url(http://passport.bdimg.com/passApi/html/img/bd-split.gif) no-repeat top left;
+    width:163px;
+    padding:0 5px 0px 5px;
+    font-family:'宋体';
+    float:left;
+    background-position:0 -160px;
+    background-repeat:no-repeat ;
+    border-left:1px solid #cccccc;
+    border-top:1px solid #cccccc;
+    border-right:1px solid #dddddd;
+    border-bottom:1px solid #dddddd;
+    height:24px;
+    font-size:14px;
+    color:#333;
+    *line-height:24px;
+    line-height:24px\0;
+    -webkit-transition-property:all;
+    -webkit-transition-duration:0.5s;
+    -moz-transition-property:all;
+    -moz-transition-duration:0.5s;
+    -o-transition-property:all;
+    -o-transition-duration:0.5s;
+    transition-property:all;
+    transition-duration:0.5s;
+}
+/* 输入框状态 */
+.tang-pass-login .pass-text-input-hover{ 
+    border-left-color:#ababab;
+    border-top-color:#ababab;
+    border-right-color:#cccccc;
+    border-bottom-color:#cccccc;
+}
+.tang-pass-login .pass-text-input-focus{
+    border-left-color:#377bcb;
+    border-top-color:#377bcb;
+    border-right-color:#377bcb;
+    border-bottom-color:#377bcb;
+}
+.tang-pass-login .pass-text-input-error{
+    border-left-color:#d91111;
+    border-top-color:#db1111;
+    border-right-color:#d91111;
+    border-bottom-color:#d91111;
+}
+.tang-pass-login .pass-generalError{
+    color: #DA1111;
+    display: block;
+    height: 30px;
+    font-size:12px;
+    line-height: 30px;
+    padding-left: 50px;
+}
+.tang-pass-login input:focus{
+    outline: 0;
+}
+
+/* 账号 */
+.tang-pass-login .pass-form-item-userName{
+    margin-top:0;
+}
+
+/* 验证码输入调整 */
+.tang-pass-login .pass-text-input-verifyCode{
+    padding: 0 8px;
+    width: 42px;
+    height: 24px;
+    display: block;
+    float: left;
+}
+
+.tang-pass-login .pass-verifyCode {
+    height:24px;
+    border: 1px solid #DDD;
+    float: left;
+    margin-left:5px;
+}
+.tang-pass-login .pass-change-verifyCode {
+    padding-left: 5px;
+    font-size: 12px;
+    text-decoration: underline;
+    color: #0000CC;
+    line-height: 26px;
+    float: left;
+    cursor: pointer;
+}
+
+/* 记住登录 */
+.tang-pass-login .pass-form-item-memberPass{
+    font-size: 12px;
+    color: #666;
+    position: relative;
+    margin-top:7px;
+    padding-left:50px;
+    height: 18px;
+}
+.tang-pass-login .pass-form-item-memberPass input{
+    vertical-align: middle;
+}
+.tang-pass-login .pass-form-item-memberPass label{
+    padding-left:5px;
+}
+
+/* 登录按钮部分 */
+.tang-pass-login .pass-form-item-submit{
+    margin-bottom:15px;
+}
+.tang-pass-login .pass-form-item-submit{
+    height: 34px;
+    line-height: 34px;
+}
+.tang-pass-login .pass-form-item-submit input {
+    margin-left: 50px;
+    float: left;
+    font-size: 14px;
+    cursor: pointer;
+}
+.tang-pass-login .pass-form-item-submit a.pass-fgtpwd {
+    font-size: 12px;
+    color: #0000cc;
+    margin-left: 20px;
+    float: left;
+    height: 32px;
+    line-height: 32px;
+    text-decoration: underline;
+}
+
+/* 登录按钮状态 */
+.tang-pass-login .pass-button-submit {
+    background:url(http://passport.bdimg.com/passApi/html/img/bd-split.gif) no-repeat top left;
+    width: 97px;
+    height: 34px;
+    border: 0px;
+    color: #FFF;
+    background-position: -0px 0px;
+}
+.tang-pass-login .pass-button-submit:hover {
+    background-position: -120px 0px;
+}
+.tang-pass-login .pass-button-submit:active {
+    background-position: -240px 0px;
+}
+
+/* general error and tip */
+.tang-pass-login .pass-item-error, .tang-pass-login .pass-item-tip{
+    float: left;
+    height:26px;
+    line-height: 26px;
+    padding-left:10px;
+}
+.tang-pass-login .pass-item-error{
+    color: #DA1111;
+}
+.tang-pass-login .pass-item-tip{
+    color:#A4A4A4;
+}

@@ -9,7 +9,7 @@ define(function(require, exports, module) {
         options: {
             message: apihost+'/message/pullmsg?&fn=?',
             type: 1,
-            ps: 10,
+            ps: 100,
             loadmore: true
         },
         _create: function() {
@@ -89,8 +89,8 @@ define(function(require, exports, module) {
             h.push('<div class="mock-hd">粉丝管理</div>');
             h.push('<div class="page-content">');
             h.push('<ul class="tabs-nav">');
-            h.push('<li class="tab-nav-item" data-type="1"><a>最新粉丝</a></li>');
-            h.push('<li class="tab-nav-item" data-type="0"><a>全部粉丝</a></li>');
+            h.push('<li class="tab-nav-item" data-type="1"><a>最新粉丝消息</a></li>');
+            h.push('<li class="tab-nav-item" data-type="0"><a>全部粉丝消息</a></li>');
             h.push('</ul>');
             h.push('<div class="tabs-content">');
             h.push('<table class="table table-bordered table-hover">');

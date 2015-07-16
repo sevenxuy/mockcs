@@ -114,9 +114,21 @@ You should have received a copy of the GNU General Public License along with thi
 
         imageWidget: function() {
             //Class for Widget Handling the upload of Files
+            var progress = $('<div/>', {
+                class: "progress",
+                id: "progress"
+            });
+            var progressbar = $('<div/>', {
+                id: "progressbar",
+                class: "progress-bar progress-bar-info progress-bar-striped",
+                role: "progressbar",
+                style: "width: 0%"
+            });
             var row = $('<div/>', {
                 "class": "row"
-            }).append('<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。</div>').append($('<div/>', {
+            }).append($('<div/>', {
+                id: "progresswrapper"
+            })).append('<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。</div>').append($('<div/>', {
                 id: "imgErrMsg"
             }));
             var container = $('<div/>', {
@@ -142,72 +154,101 @@ You should have received a copy of the GNU General Public License along with thi
                 class: "tab-pane active"
             });
             handleFileSelect = function(evt) {
-                var file = evt.target.files[0];
-                if (!file.type.match('image.*') || !file.name.match(/(?:gif|jpg|png|jpeg)$/)) { //Process only Images
-                    methods.showMessage.apply(this, ["imgErrMsg", "Invalid file type"]);
-                    return false;
-                }
-                var bNeedCompress = false;
-                if (file.size > 100 * 1024) {
-                    bNeedCompress = true;
-                }
-                if (('' + file.name).match(/\.gif$/i)) {
-                    // GIF一定需要压缩， 为了获取到第一帧
-                    bNeedCompress = true;
-                }
-                var data = new FormData();
-                data.append('file', file);
-                $.ajax({
-                    url: '/umis/pushc/uploadfile',
-                    data: data,
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    type: 'POST'
-                }).done(function(res) {
-                    if (!res.errno) {
-                        var newsrc = res.data;
-                        var newImg = new Image(),
-                            w, h;
-                        newImg.onload = function() {
-                            h = newImg.height;
-                            w = newImg.width;
-                            if ((w < 440) || (w > 780) || (h < 290) || (h > 2048)) {
-                                methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。"]);
-                                $("#uploadImageBar :input").val("");
-                                return false;
-                            }
-                            if (bNeedCompress) {
-                                var key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + newsrc);
-                                newsrc = 'http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + newsrc;
-                            }
-                            var li = $('<li/>', {
-                                class: "col-xs-12 col-sm-6 col-md-3 col-lg-3"
-                            });
-                            var a = $('<a/>', {
-                                href: "javascript:void(0)",
-                                class: "thumbnail"
-                            });
-                            var image = $('<img/>', {
-                                src: newsrc
-                            }).appendTo(a).click(function() {
-                                $('#imageList').data('current', '<img src="' + $(this).attr('src') + '" style="width:' + w + 'px;height:' + h + 'px;"/>');
-                            });
-                            li.append(a).appendTo($('#imageList'));
-                        }
-                        newImg.src = newsrc;
-                    } else {
-                        notify({
-                            tmpl: 'error',
-                            text: res.error
-                        });
+                $('#progresswrapper').empty().append(progress.append(progressbar));
+                var files = evt.target.files,
+                    $progress = $('#progress'),
+                    $progressbar = $('#progressbar');
+
+                for (var i = 0, file; file = files[i]; i++) {
+                    if (!file.type.match('image.*') || !file.name.toLowerCase().match(/(?:gif|jpg|png|jpeg)$/)) { //Process only Images
+                        methods.showMessage.apply(this, ["imgErrMsg", "图片格式错误，只能上传png, jpg, jpeg, gif格式的图片。"]);
+                        continue;
                     }
-                }).fail(function() {});
+                    var bNeedCompress = false;
+                    if (file.size > 100 * 1024) {
+                        bNeedCompress = true;
+                    }
+                    if (('' + file.name).toLowerCase().match(/\.gif$/i)) {
+                        // GIF一定需要压缩， 为了获取到第一帧
+                        bNeedCompress = true;
+                    }
+                    var data = new FormData();
+                    data.append('file', file);
+                    $progressbar.css({
+                        'width': '20%'
+                    });
+                    $.ajax({
+                        url: '/umis/pushc/uploadfile',
+                        data: data,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        type: 'POST'
+                    }).done(function(res) {
+                        if (!res.errno) {
+                            var newsrc = res.data;
+                            var newImg = new Image(),
+                                w, h;
+                            $progressbar.css({
+                                'width': '80%'
+                            });
+                            newImg.onload = function() {
+                                h = newImg.height;
+                                w = newImg.width;
+                                if (newsrc.match(/\.gif$/i)) {
+                                    if ((w < 200) || (w > 780) || (h < 100) || (h > 2048)) {
+                                        methods.showMessage.apply(this, ["imgErrMsg", "GIF图片尺寸要求是：最小宽度200px，最大宽度780px；最小高度100px，最大高度2048px。"]);
+                                        $("#uploadImageBar :input").val("");
+                                        $('#progresswrapper').empty();
+                                        return false;
+                                    }
+                                } else {
+                                    if ((w < 440) || (w > 780) || (h < 290) || (h > 2048)) {
+                                        methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。"]);
+                                        $("#uploadImageBar :input").val("");
+                                        $('#progresswrapper').empty();
+                                        return false;
+                                    }
+                                }
+                                if (bNeedCompress) {
+                                    var key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + newsrc);
+                                    newsrc = 'http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + newsrc;
+                                }
+                                $progressbar.css({
+                                    'width': '100%'
+                                });
+                                var li = $('<li/>', {
+                                    class: "col-xs-12 col-sm-6 col-md-3 col-lg-3 editor-li"
+                                });
+                                var a = $('<a/>', {
+                                    href: "javascript:void(0)",
+                                    class: "thumbnail"
+                                });
+                                var del = $('<button>', {
+                                    class: "close"
+                                }).html('X').click(function() {
+                                    $(this).closest('li').remove();
+                                });
+                                var image = $('<img/>', {
+                                    src: newsrc
+                                }).appendTo(a).click(function() {
+                                    $('#imageList').data('current', '<img src="' + $(this).attr('src') + '" style="width:' + w + 'px;height:' + h + 'px;"/>');
+                                });
+                                li.append(a).append(del).appendTo($('#imageList'));
+                            }
+                            newImg.src = newsrc;
+                        } else {
+                            methods.showMessage.apply(this, ["imgErrMsg", res.error]);
+                        }
+                    }).fail(function(res) {
+                        methods.showMessage.apply(this, ["imgErrMsg", "图片上传失败。"]);
+                    });
+                }
             }
             var chooseFromLocal = $('<input/>', {
                 type: "file",
-                class: "hide"
-                    // multiple: "multiple"
+                class: "hide",
+                multiple: "multiple"
             });
             var chooseFromLocalBtn = $('<div class="mock-btn mock-btn-red upload-img-btn inlineb">上传图片</div>');
             chooseFromLocalBtn.on('click', function(event) {
@@ -233,14 +274,17 @@ You should have received a copy of the GNU General Public License along with thi
                 class: "btn btn-success",
                 type: "button"
             }).html("确定").click(function() {
-                var url = $('#imageURL').val();
+                $('#progresswrapper').empty().append(progress.append(progressbar));
+                var url = $('#imageURL').val(),
+                    $progress = $('#progress'),
+                    $progressbar = $('#progressbar');
                 if (url == '') {
                     methods.showMessage.apply(this, ["imgErrMsg", "请输入图片链接。"]);
                     return false;
                 }
-
+                url = url.toLowerCase();
                 if (!url.match(/(?:gif|jpg|png|jpeg)$/)) { //Process only Images
-                    methods.showMessage.apply(this, ["imgErrMsg", "图片类型无效。"]);
+                    methods.showMessage.apply(this, ["imgErrMsg", "图片格式错误，只能上传png, jpg, jpeg, gif格式的图片。"]);
                     $("#imageURL").val("");
                     return false;
                 }
@@ -252,24 +296,45 @@ You should have received a copy of the GNU General Public License along with thi
                 //check image size
                 var newImg = new Image(),
                     w, h;
+                $progressbar.css({
+                    'width': '80%'
+                });
                 newImg.onload = function() {
                     h = newImg.height;
                     w = newImg.width;
-                    if ((w < 440) || (w > 780) || (h < 290) || (h > 2048)) {
-                        methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。"]);
-                        $("#imageURL").val("");
-                        return false;
+                    if (url.match(/\.gif$/i)) {
+                        if ((w < 200) || (w > 780) || (h < 100) || (h > 2048)) {
+                            methods.showMessage.apply(this, ["imgErrMsg", "GIF图片尺寸要求是：最小宽度200px，最大宽度780px；最小高度100px，最大高度2048px。"]);
+                            $("#uploadImageBar :input").val("");
+                            $('#progresswrapper').empty();
+                            return false;
+                        }
+                    } else {
+                        if ((w < 440) || (w > 780) || (h < 290) || (h > 2048)) {
+                            methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。"]);
+                            $("#uploadImageBar :input").val("");
+                            $('#progresswrapper').empty();
+                            return false;
+                        }
                     }
                     if (bNeedCompress) {
                         var key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + url);
                         url = 'http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + url;
                     }
+                    $progressbar.css({
+                        'width': '100%'
+                    });
                     var li = $('<li/>', {
-                        class: "span6 col-xs-12 col-sm-6 col-md-3 col-lg-3"
+                        class: "span6 col-xs-12 col-sm-6 col-md-3 col-lg-3 editor-li"
                     });
                     var a = $('<a/>', {
                         href: "javascript:void(0)",
                         class: "thumbnail"
+                    });
+                    var del = $('<button>', {
+                        class: "close"
+                    }).html('X').click(function() {
+                        $(this).closest('li').remove();
                     });
                     var image = $('<img/>', {
                         src: url
@@ -280,7 +345,7 @@ You should have received a copy of the GNU General Public License along with thi
                         $(this).appendTo(a).click(function() {
                             $('#imageList').data('current', '<img src="' + $(this).attr('src') + '" style="width:' + w + 'px;height:' + h + 'px;"/>');
                         });
-                        li.append(a).appendTo($('#imageList'));
+                        li.append(a).append(del).appendTo($('#imageList'));
                     });
                 }
                 newImg.src = url;
@@ -1174,7 +1239,7 @@ You should have received a copy of the GNU General Public License along with thi
                         }
                         $(editorObj).data("editor").find('a[href="' + targetURL + '"]').each(function() {
                             $(this).attr("target", "_blank");
-                            $(this).wrap( "<p></p>" );
+                            $(this).wrap("<p></p>");
                         });
                         $(".alert").alert("close");
                         $("#InsertLink").modal("hide");
@@ -1196,10 +1261,18 @@ You should have received a copy of the GNU General Public License along with thi
                         $('#imageURL').val("");
                         $("#uploadImageBar :input").val("");
                         $('#imageList').data('current', "");
+                        var imgCount = $('#imageList').children('li').length;
+                        if (imgCount > 30) {
+                            $('#imageList').children('li').each(function(index, item) {
+                                if (index < imgCount - 30) {
+                                    $(this).remove();
+                                }
+                            });
+                        }
                     },
                     "onSave": function() {
+                        $('#progresswrapper').empty();
                         methods.restoreSelection.apply(this);
-                        console.log($('#imageList').data('current'));
                         if ($('#imageList').data('current')) {
                             if (navigator.userAgent.match(/MSIE/i)) {
                                 methods.restoreSelection.apply(this, [$('#imageList').data('current'), 'html']);
@@ -1483,7 +1556,7 @@ You should have received a copy of the GNU General Public License along with thi
             };
 
             var settings = $.extend({
-                'texteffects': true,
+                'texteffects': false,
                 'aligneffects': false,
                 'textformats': false,
                 'fonteffects': true,
@@ -1492,8 +1565,8 @@ You should have received a copy of the GNU General Public License along with thi
                 'extraeffects': false,
                 'advancedoptions': true,
                 'screeneffects': true,
-                'bold': true,
-                'italics': true,
+                'bold': false,
+                'italics': false,
                 'underline': false,
                 'ol': false,
                 'ul': false,
@@ -2159,10 +2232,12 @@ You should have received a copy of the GNU General Public License along with thi
 
         setText: function(text) {
             //Function to set the source code
-            if (!$(this).data("source-mode"))
+            if (!$(this).data("source-mode")) {
                 $(this).data("editor").html(text);
-            else
+            } else {
                 $(this).data("editor").children().first().text(text);
+            }
+
         },
 
         setStyleWithCSS: function() {

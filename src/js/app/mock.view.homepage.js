@@ -68,6 +68,11 @@ define(function(require, exports, module) {
                 'keyup #homnepage-desc': this._onDescChange
             });
         },
+        reRender: function(opt) {
+            var options = this.options;
+            _.extend(options, opt);
+            this.renderTable();
+        },
         _setTop: function(e) {
             var title = $(e.currentTarget).closest('tr').find('td')[1].innerHTML;
             this.element.find("#homepage_settop").find('modal-body').html('是否置顶' + title);
@@ -120,7 +125,7 @@ define(function(require, exports, module) {
             h.push('<div class="page-content">');
             h.push('<div class="mock-title">公开信息</div>');
             h.push('<table class="table table-bordered mock-upload-table"><tbody>');
-            h.push('<tr><td>头像</td><td><div class="hp-avatar"><img src="'+imgBase64Url+'"></div></td></tr>');
+            h.push('<tr><td>头像</td><td><div class="hp-avatar"><img src="' + imgBase64Url + '?t=' + Date.now() + '"></div></td></tr>');
             h.push('<tr><td>名称</td><td>'+currentUserName+'</td></tr>');
             h.push('<tr style="display:none;"><td>状态</td><td id="myStatus"></td></tr>');
             h.push('<tr style="display:none;"><td>修改时间</td><td id="mySubmitTime"></td></tr>');
@@ -136,7 +141,7 @@ define(function(require, exports, module) {
             h.push('<div class="page_num"><span class="page_current"></span><span class="num_gap">/</span><span class="page_total"></span></div>');
             h.push('<div class="mock-btn mock-btn-white page_next hide">&gt;</div>');
             h.push('<input type="text" class="form-control goto_page">');
-            h.push('<div class="mock-btn mock-btn-white page-go">跳转</div>');
+            h.push('<div class="mock-btn mock-btn-white page_go">跳转</div>');
             h.push('</div>');
             h.push('</div>');
             this.element.append(h.join(''));

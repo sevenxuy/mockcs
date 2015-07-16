@@ -363,11 +363,11 @@ define(function(require, module, exports) {
                     }]
                 },
                 events: {
-                    "cilck .btnreply": function(e) {
+                    "click .btnreply": function(e) {
                         var currentTr = $(e.currentTarget).closest("tr")[0];
                         var index = $(currentTr).parent().find("tr").index(currentTr);
                         var currentItem = squareInstance.replytable.getData()[index];
-                        squareInstance.currentReplyId = currentItem.rid;
+                        squareInstance.currentReplyId = currentItem.rid || currentItem.id;
                         squareInstance.$tabsContent.find("#mocksquare-modal h4.modal-title").html("回复:" + currentItem.content);
                         squareInstance.$tabsContent.find("#mocksquare-modal textarea").val('');
                         squareInstance.$tabsContent.find("#mocksquare-modal input[type=checkbox]")[0].checked = false;
@@ -540,7 +540,7 @@ define(function(require, module, exports) {
                 '</div>' +
                 '<div class="modal-body">' +
                 '<span class="errorinfo"></span>' +
-                '<textarea placeholder="回复吐槽" class="form-control"></textarea>' +
+                '<textarea placeholder="回复吐槽" class="form-control" maxlength="15"></textarea><span class="mock-input-tip" style="margin-top:-35px;margin-right:25px;">最多15个字符</span>' +
                 '<div class="checkbox"><label><input type="checkbox"> 匿名发表</label>' +
                 '</div>' +
                 '</div>' +
@@ -571,10 +571,17 @@ define(function(require, module, exports) {
                 var squareInstance = this;
                 var $replyContent = this.$tabsContent.find("#mocksquare-modal textarea");
                 var $anmonyous = this.$tabsContent.find("#mocksquare-modal input[type=checkbox]");
+                var username = "";
+                if($anmonyous[0].checked){
+                    username = "浏览器网友";
+                }
+                else{
+                    username = window.$userinfo.uname;
+                }
                 var param = {
                     "newsid": this.currentPageItemId,
-                    "user": "浏览器上海市网友",
-                    "img": "",
+                    "user": username,
+                    "img": "http://himg.baidu.com/sys/portraitl/item/"+window.$userinfo.uc,
                     "content": $replyContent.val()
                 }
                 if (this.currentReplyId) {
