@@ -725,6 +725,11 @@ define(function(require, exports, module) {
                 isValidate = false;
                 $('span[for=upload-content]').html('请输入正文。').show();
             } else {
+                //filter special characters from Word
+                content = content.replace(/<o:p>/ig, '<p>');
+                content = content.replace(/<\/o:p>/ig, '</p>');
+                content = content.replace(/\n/ig, '<br>');
+                //replace
                 content = content.replace(/<(ul|ol|div|table|cite).*?/ig, '<p');
                 content = content.replace(/<(ul|ol|div|table|cite).*?/ig, '<p');
                 content = content.replace(/<(\/(ul|ol|div|table|cite))>/ig, '</p>');
@@ -737,7 +742,7 @@ define(function(require, exports, module) {
                 content = content.replace(/\sstyle="(\s)*"/ig, '');
                 content = content.replace(/<br>(<br>)+/ig, '<br>');
                 //add p for all text node
-                content = content.replace(/(<img\s.*>)/ig, '</p><p>$1</p><p>');
+                content = content.replace(/(<img\s+[^>]*>)/ig, '</p><p>$1</p><p>');
                 content = content.replace(/<p>\s*<\/p>/ig, '');
                 content = content.split('<p>');
                 content = content.join('</p><p>');
@@ -748,7 +753,6 @@ define(function(require, exports, module) {
                 content = '<p>' + content + '</p>';
                 content = content.replace(/<p>(<br>)*<\/p>/ig, '');
             }
-
             var type = $('#upload-type').val();
             var ext;
 
