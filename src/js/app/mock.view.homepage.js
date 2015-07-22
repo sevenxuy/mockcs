@@ -125,8 +125,8 @@ define(function(require, exports, module) {
             h.push('<div class="page-content">');
             h.push('<div class="mock-title">公开信息</div>');
             h.push('<table class="table table-bordered mock-upload-table"><tbody>');
-            h.push('<tr><td>头像</td><td style="position:relative;"><div class="hp-avatar"><img src="' + imgBase64Url + '?t=' + Date.now() + '"></div><a href="web.im.baidu.com" style="position: absolute;bottom: 3px;display: inline-block;margin-left: 10px;">修改</a></td></tr>');
-            h.push('<tr><td>名称</td><td>' + currentUserName + '<a href="web.im.baidu.com" style="margin-left: 10px;">修改</a></td></tr>');
+            h.push('<tr><td>头像</td><td style="position:relative;"><div class="hp-avatar"><img src="' + imgBase64Url + '?t=' + Date.now() + '"></div><a href="http://web.im.baidu.com" style="position: absolute;bottom: 3px;display: inline-block;margin-left: 10px;">修改</a></td></tr>');
+            h.push('<tr><td>名称</td><td>' + currentUserName + '<a href="http://web.im.baidu.com" style="margin-left: 10px;">修改</a></td></tr>');
             h.push('<tr style="display:none;"><td>状态</td><td id="myStatus"></td></tr>');
             h.push('<tr style="display:none;"><td>修改时间</td><td id="mySubmitTime"></td></tr>');
             h.push('<tr><td>个人简介</td><td><div class="mock-textarea-box"><span class="errorinfo" for="homnepage-desc" style="display:none"></span><textarea class="form-control upload-desc" cols="3" maxlength="25" id="homnepage-desc"></textarea><span class="mock-input-tip">最多25个字符</span></div></td>');
