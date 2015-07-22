@@ -196,8 +196,8 @@ You should have received a copy of the GNU General Public License along with thi
                                 h = newImg.height;
                                 w = newImg.width;
                                 if (newsrc.match(/\.gif$/i)) {
-                                    if ((w < 200) || (w > 780) || (h < 100) || (h > 2048)) {
-                                        methods.showMessage.apply(this, ["imgErrMsg", "GIF图片尺寸要求是：最小宽度200px，最大宽度780px；最小高度100px，最大高度2048px。"]);
+                                    if ((w < 100) || (w > 780) || (h < 100) || (h > 2048)) {
+                                        methods.showMessage.apply(this, ["imgErrMsg", "GIF图片尺寸要求是：最小宽度100px，最大宽度780px；最小高度100px，最大高度2048px。"]);
                                         $("#uploadImageBar :input").val("");
                                         $('#progresswrapper').empty();
                                         return false;
@@ -303,8 +303,8 @@ You should have received a copy of the GNU General Public License along with thi
                     h = newImg.height;
                     w = newImg.width;
                     if (url.match(/\.gif$/i)) {
-                        if ((w < 200) || (w > 780) || (h < 100) || (h > 2048)) {
-                            methods.showMessage.apply(this, ["imgErrMsg", "GIF图片尺寸要求是：最小宽度200px，最大宽度780px；最小高度100px，最大高度2048px。"]);
+                        if ((w < 100) || (w > 780) || (h < 100) || (h > 2048)) {
+                            methods.showMessage.apply(this, ["imgErrMsg", "GIF图片尺寸要求是：最小宽度100px，最大宽度780px；最小高度100px，最大高度2048px。"]);
                             $("#uploadImageBar :input").val("");
                             $('#progresswrapper').empty();
                             return false;
