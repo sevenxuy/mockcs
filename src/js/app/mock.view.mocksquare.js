@@ -235,7 +235,8 @@ define(function(require, module, exports) {
                     // this.mysearch.element.hide();
                     this.mytable.element.hide();
                     this.mypagenav.element.hide();
-                    getMyReplyData.call(this, this.currentPageItemId, this.currentPageNum, defaultPs);
+                    // getMyReplyData.call(this, this.currentPageItemId, this.currentPageNum, defaultPs);
+                    getAllReplayData.call(this, this.currentPageItemId, this.currentPageNum, defaultPs);
                 }
                 // this.newssearch.element.hide();
                 this.newstable.element.hide();
@@ -572,16 +573,15 @@ define(function(require, module, exports) {
                 var $replyContent = this.$tabsContent.find("#mocksquare-modal textarea");
                 var $anmonyous = this.$tabsContent.find("#mocksquare-modal input[type=checkbox]");
                 var username = "";
-                if($anmonyous[0].checked){
+                if ($anmonyous[0].checked) {
                     username = "浏览器网友";
-                }
-                else{
+                } else {
                     username = window.$userinfo.uname;
                 }
                 var param = {
                     "newsid": this.currentPageItemId,
                     "user": username,
-                    "img": "http://himg.baidu.com/sys/portraitl/item/"+window.$userinfo.uc,
+                    "img": "http://himg.baidu.com/sys/portraitl/item/" + window.$userinfo.uc,
                     "content": $replyContent.val()
                 }
                 if (this.currentReplyId) {
