@@ -78,7 +78,7 @@ define(function(require, exports, module) {
                 '</td>' +
                 '</tr>' +
                 '<tr>' +
-                '<td>摘要*</td>' +
+                '<td>摘要</td>' +
                 '<td>' +
                 '<div class="mock-textarea-box">' +
                 '<span class="errorinfo" for="upload-desc" style="display:none;"></span>' +
@@ -107,7 +107,7 @@ define(function(require, exports, module) {
                 '</td>' +
                 '</tr>' +
                 '<tr>' +
-                '<td>正文*</td>' +
+                '<td>正文</td>' +
                 '<td>' +
                 '<span class="errorinfo" for="upload-content" style="display:none;"></span>' +
                 '<textarea id="upload-content" class="form-control"></textarea>' +
@@ -283,7 +283,7 @@ define(function(require, exports, module) {
                 '</td>' +
                 '</tr>' +
                 '<tr>' +
-                '<td>摘要*</td>' +
+                '<td>摘要</td>' +
                 '<td>' +
                 '<div class="mock-textarea-box">' +
                 '<span class="errorinfo" for="upload-desc" style="display:none;"></span>' +
@@ -328,7 +328,7 @@ define(function(require, exports, module) {
                 '</td>' +
                 '</tr>' +
                 '<tr>' +
-                '<td>正文*</td>' +
+                '<td>正文</td>' +
                 '<td>' +
                 '<span class="errorinfo" for="upload-content" style="display:none;"></span>' +
                 '<textarea id="upload-content" class="form-control"></textarea>' +
@@ -713,18 +713,11 @@ define(function(require, exports, module) {
 
             var simg = $('#upload-simg').val().trim();
             var desc = $('#upload-desc').val().trim();
-            if (!desc.length) {
-                isValidate = false;
-                $('span[for=upload-desc]').html('请输入摘要。').show();
-            }
 
             var img = $('#upload-img').val().trim();
 
             var content = $('#upload-content').Editor('getText');
-            if (!content.length) {
-                isValidate = false;
-                $('span[for=upload-content]').html('请输入正文。').show();
-            } else {
+            if (content.length) {
                 //filter special characters from Word
                 content = content.replace(/<o:p>/ig, '<p>');
                 content = content.replace(/<\/o:p>/ig, '</p>');
