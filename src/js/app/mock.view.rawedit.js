@@ -728,7 +728,7 @@ define(function(require, exports, module) {
                 //filter special characters from Word
                 content = content.replace(/<o:p>/ig, '<p>');
                 content = content.replace(/<\/o:p>/ig, '</p>');
-                content = content.replace(/\n/ig, '<br>');
+                content = content.replace(/\n/ig, '');
                 //replace
                 content = content.replace(/<(ul|ol|div|table|cite).*?/ig, '<p');
                 content = content.replace(/<(ul|ol|div|table|cite).*?/ig, '<p');
@@ -737,7 +737,7 @@ define(function(require, exports, module) {
                 content = content.replace(/<(((\/)?(thead|tbody|tfoot))|(tr|td|span|li).*?|(\/(th|td|span))|hr(\/)?|iframe.*iframe|xml.*xml)>|<!--.*-->/ig, '');
                 content = content.replace(/<(td|th)>/ig, ' ');
                 content = content.replace(/<(h1|h2|h3|h4|h5|h6|p).*?>/ig, '<$1>');
-                content = content.replace(/\s(class|width|height|font|alt|data|id)=".*?"/ig, '');
+                content = content.replace(/\s(class|width|height|font|alt|data|id|(data-.*?))=".*?"/ig, '');
                 content = content.replace(/\s?(margin|padding|line-height|outline|vertical-align|display|(list|font|border|max|min|background|text|color).*?):.*?;/ig, '');
                 content = content.replace(/\sstyle="(\s)*"/ig, '');
                 content = content.replace(/<br>(<br>)+/ig, '<br>');
@@ -751,7 +751,11 @@ define(function(require, exports, module) {
                 content = content.join('</p><p>');
                 content = content.replace(/<p><p>/ig, '<p>');
                 content = '<p>' + content + '</p>';
+                //filter empty element
                 content = content.replace(/<p>(<br>)*<\/p>/ig, '');
+                content = content.replace(/<strong><\/strong>/ig, '');
+                content = content.replace(/<p>\s*<\/p>/ig, '');
+                content = content.replace(/<p>(<\w*>|<\/\w*>)<\/p>/ig, '');
             }
             var type = $('#upload-type').val();
             var ext;
