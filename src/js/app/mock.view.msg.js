@@ -6,7 +6,7 @@ define(function(require, exports, module) {
         _updateNewMessage = null,
         _updateFansMessage = null,
         apihost = 'http://' + _util.getApiHost(),
-        getGetCountUrl = function(){
+        getGetCountUrl = function() {
             return _util.getApiUrl({
                 "name": 'getcount',
                 "path": 'message',
@@ -16,7 +16,7 @@ define(function(require, exports, module) {
                 }
             });
         },
-        getGetCountData = function(){
+        getGetCountData = function() {
             return $.ajax({
                 url: getGetCountUrl(),
                 crossDomain: true,
@@ -59,12 +59,12 @@ define(function(require, exports, module) {
             this.renderTable();
         },
         renderTable: function() {
-            
+
             var self = this,
                 options = this.options;
             this._updateWrapperElemStatus(options.status);
             getGetCountData()(function(result) {
-                 self.element.find('.msg-notify-box .msg-notify-funs').html(result.data?result.data:'0');
+                self.element.find('.msg-notify-box .msg-notify-funs').html(result.data ? result.data : '0');
             });
             $.ajax({
                 url: options.message,
@@ -128,7 +128,7 @@ define(function(require, exports, module) {
             h.push('<option value="1">资讯审核</option>');
             h.push('<option value="2">广告审核</option>');
             h.push('<option value="3">个人主页审核</option>');
-            h.push('</select></th><th>审核内容</th><th>审核结果</th><th>错误类型</th><th>消息时间</th></tr></thead><tbody id="msgs-table">');
+            h.push('</select></th><th>审核内容</th><th>审核结果</th><th>错误类型</th><th>错误详情</th><th>消息时间</th></tr></thead><tbody id="msgs-table">');
             h.push('</tbody></table>');
             h.push('<div id="fans-nomore" class="mock-nomore hide">没有更多数据</div>');
             h.push('<div class="modal fade" id="msg-ad-modal" tabindex="-1" role="dialog" aria-hidden="true">');
@@ -200,7 +200,7 @@ define(function(require, exports, module) {
                         case 3:
                             h.push(msg.title);
                     }
-                    h.push('</td><td>' + (msg.isok == 0 ? '通过' : '拒绝') + '</td><td class="error">' + msg.reason + '</td><td>' + _util.dateFormat(msg.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
+                    h.push('</td><td>' + (msg.isok == 0 ? '通过' : '拒绝') + '</td><td class="error">' + (msg.reason || '') + '</td><td>' + (msg.reason1 || '') + '</td><td>' + _util.dateFormat(msg.stime * 1000, 'yyyy-MM-dd hh:mm') + '</td></tr>');
                 });
                 if (data.length < options.ps) {
                     options.loadmore = false;
