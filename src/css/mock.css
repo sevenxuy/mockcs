@@ -645,6 +645,7 @@ textarea.upload-desc {
     vertical-align: middle;
     text-align: center;
     line-height: 60px;
+    display: inline-block;
 }
 
 .hp-avatar > img {

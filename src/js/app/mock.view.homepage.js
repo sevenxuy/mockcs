@@ -4,7 +4,7 @@ define(function(require, exports, module) {
         notify = require('mock.plugin.notify'),
         _util = require('mock.util'),
         _currentDes = '',
-        apihost = 'http://'+_util.getApiHost(),
+        apihost = 'http://' + _util.getApiHost(),
         getAddaudiuserUrl = function(desc) {
             return _util.getApiUrl({
                 "name": "addaudiuser",
@@ -39,9 +39,9 @@ define(function(require, exports, module) {
         };
     $.widget('mock.homepage', _view, {
         options: {
-            getaudinewsbyvid: apihost+'/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            addaudiuser: apihost+'/mock/addaudiuser?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
-            getmyuserlist: apihost+'/mock/getmyuserlist?pn=0&ps=10&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            getaudinewsbyvid: apihost + '/mock/getaudinewsbyvid?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            addaudiuser: apihost + '/mock/addaudiuser?ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
+            getmyuserlist: apihost + '/mock/getmyuserlist?pn=0&ps=10&ua=bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2&cuid=80000000000000000000000000000000|0&fn=?',
             type: 2, //raw online
             ps: 4
         },
@@ -115,18 +115,18 @@ define(function(require, exports, module) {
 
             var imgBase64Url = '',
                 currentUserName = '';
-            if(window.$userinfo){
-                if(window.$userinfo.uc)
-                imgBase64Url = "http://himg.baidu.com/sys/portraitl/item/"+window.$userinfo.uc;
-                if(window.$userinfo.uname)
-                currentUserName = window.$userinfo.uname;
+            if (window.$userinfo) {
+                if (window.$userinfo.uc)
+                    imgBase64Url = "http://himg.baidu.com/sys/portraitl/item/" + window.$userinfo.uc;
+                if (window.$userinfo.uname)
+                    currentUserName = window.$userinfo.uname;
             }
             h.push('<div class="mock-hd">个人主页设置</div>');
             h.push('<div class="page-content">');
             h.push('<div class="mock-title">公开信息</div>');
             h.push('<table class="table table-bordered mock-upload-table"><tbody>');
-            h.push('<tr><td>头像</td><td><div class="hp-avatar"><img src="' + imgBase64Url + '?t=' + Date.now() + '"></div></td></tr>');
-            h.push('<tr><td>名称</td><td>'+currentUserName+'</td></tr>');
+            h.push('<tr><td>头像</td><td style="position:relative;"><div class="hp-avatar"><img src="' + imgBase64Url + '?t=' + Date.now() + '"></div><a href="web.im.baidu.com" style="position: absolute;bottom: 3px;display: inline-block;margin-left: 10px;">修改</a></td></tr>');
+            h.push('<tr><td>名称</td><td>' + currentUserName + '<a href="web.im.baidu.com" style="margin-left: 10px;">修改</a></td></tr>');
             h.push('<tr style="display:none;"><td>状态</td><td id="myStatus"></td></tr>');
             h.push('<tr style="display:none;"><td>修改时间</td><td id="mySubmitTime"></td></tr>');
             h.push('<tr><td>个人简介</td><td><div class="mock-textarea-box"><span class="errorinfo" for="homnepage-desc" style="display:none"></span><textarea class="form-control upload-desc" cols="3" maxlength="25" id="homnepage-desc"></textarea><span class="mock-input-tip">最多25个字符</span></div></td>');
@@ -232,7 +232,7 @@ define(function(require, exports, module) {
                     if (!result.errno) {
                         $status.html('<i class="wait">待审核</i>');
                         $stime.html(_util.dateFormat((new Date()).getTime(), 'yyyy-MM-dd hh:mm'));
-                         $btnSubmit.attr('disabled', 'disabled');
+                        $btnSubmit.attr('disabled', 'disabled');
                         notify({
                             text: '提交简介成功，待审核'
                         });
@@ -259,37 +259,37 @@ define(function(require, exports, module) {
                 var $myStatus = self.element.find('#myStatus'),
                     $mySubmitTime = self.element.find('#mySubmitTime'),
                     $myDesc = self.element.find('#homnepage-desc');
-                    if (!res.errno) {
-                        if (res.data.length > 0) {
-                            $myStatus.parent().show();
-                            $mySubmitTime.parent().show();
-                            switch (res.data[0].state) {
-                                case '0':
-                                    $myStatus.html('<i class="wait">待审核<\/i>');
-                                    break;
-                                case '1':
-                                    $myStatus.html('<i class="failed">拒绝<\/i>');
-                                    break;
-                                case '2':
-                                    $myStatus.html('<i class="pass">通过<\/i>');
-                                    break;
-                            }
-                            $mySubmitTime.html(_util.dateFormat(+(res.data[0].stime) * 1000, 'yyyy-MM-dd hh:mm'));
-                            $myDesc.val(res.data[0].desc);
-                            _currentDes = res.data[0].desc;
-                        } else {
-                            $myStatus.parent().hide();
-                            $mySubmitTime.parent().hide();
-                            $myDesc.val('');
+                if (!res.errno) {
+                    if (res.data.length > 0) {
+                        $myStatus.parent().show();
+                        $mySubmitTime.parent().show();
+                        switch (res.data[0].state) {
+                            case '0':
+                                $myStatus.html('<i class="wait">待审核<\/i>');
+                                break;
+                            case '1':
+                                $myStatus.html('<i class="failed">拒绝<\/i>');
+                                break;
+                            case '2':
+                                $myStatus.html('<i class="pass">通过<\/i>');
+                                break;
                         }
+                        $mySubmitTime.html(_util.dateFormat(+(res.data[0].stime) * 1000, 'yyyy-MM-dd hh:mm'));
+                        $myDesc.val(res.data[0].desc);
+                        _currentDes = res.data[0].desc;
                     } else {
                         $myStatus.parent().hide();
                         $mySubmitTime.parent().hide();
-                        notify({
-                            tmpl: 'error',
-                            text: res.error
-                        })
+                        $myDesc.val('');
                     }
+                } else {
+                    $myStatus.parent().hide();
+                    $mySubmitTime.parent().hide();
+                    notify({
+                        tmpl: 'error',
+                        text: res.error
+                    })
+                }
             });
         }
     });
