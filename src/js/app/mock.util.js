@@ -130,7 +130,13 @@ define(function(require, exports, module) {
             protocol = "http:/",
             path = "",
             name = "",
-            urlParts = null;
+            urlParts = null,
+            parameters = [],
+            defaultParam = {
+                cuid: '80000000000000000000000000000000|0',
+                ua: 'bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2',
+                fn: "?"
+            };
         //obj is required
         if (!obj) {
             throw "please input your param";
@@ -166,20 +172,14 @@ define(function(require, exports, module) {
 
         //add parameters
         if (obj.params) {
-            var parameters = [],
-                defaultParam = {
-                    cuid: '80000000000000000000000000000000|0',
-                    ua: 'bd_720_1280_HTC-HTC+One+X-4-0-4_4-2-6-1_j2',
-                    fn: "?"
-                };
             for (var field in obj.params) {
                 defaultParam[field] = obj.params[field];
             }
-            for (var field in defaultParam) {
-                parameters.push(field + "=" + defaultParam[field]);
-            }
-            parameters.length && (url += "?" + parameters.join("&"));
         }
+        for (var field in defaultParam) {
+            parameters.push(field + "=" + defaultParam[field]);
+        }
+        parameters.length && (url += "?" + parameters.join("&"));
         return url;
     };
 

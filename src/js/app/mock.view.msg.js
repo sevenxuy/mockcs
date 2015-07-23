@@ -8,12 +8,7 @@ define(function(require, exports, module) {
         apihost = 'http://' + _util.getApiHost(),
         getGetCountUrl = function() {
             return _util.getApiUrl({
-                "name": 'getcount',
-                "path": 'message',
-                "params": {
-                    "type": 1,
-                    "status": 0
-                }
+                "name": 'getmyvip'
             });
         },
         getGetCountData = function() {
@@ -64,7 +59,7 @@ define(function(require, exports, module) {
                 options = this.options;
             this._updateWrapperElemStatus(options.status);
             getGetCountData()(function(result) {
-                self.element.find('.msg-notify-box .msg-notify-funs').html(result.data ? result.data : '0');
+                 self.element.find('.msg-notify-box .msg-notify-funs').html(result.data.v_info.fans);
             });
             $.ajax({
                 url: options.message,
