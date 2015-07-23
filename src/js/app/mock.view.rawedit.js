@@ -695,7 +695,9 @@ define(function(require, exports, module) {
         _submitData: function(event) {
             var self = this;
             $('span[for=upload-title]').html('').hide();
+            $('span[for=upload-simg]').html('').hide();
             $('span[for=upload-desc]').html('').hide();
+            $('span[for=upload-img]').html('').hide();
             $('span[for=upload-content]').html('').hide();
             $('span[for=upload-pk]').html('').hide();
             $('span[for=upload-vote-box]').html('').hide();
@@ -712,9 +714,18 @@ define(function(require, exports, module) {
             }
 
             var simg = $('#upload-simg').val().trim();
+            if (!simg.length) {
+                isValidate = false;
+                $('span[for=upload-simg]').html('请输上传广场图。').show();
+            }
+
             var desc = $('#upload-desc').val().trim();
 
             var img = $('#upload-img').val().trim();
+            if (!img.length) {
+                isValidate = false;
+                $('span[for=upload-img]').html('请输上传主图。').show();
+            }
 
             var content = $('#upload-content').Editor('getText');
             if (content.length) {
