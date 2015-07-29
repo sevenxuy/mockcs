@@ -954,10 +954,23 @@ i.wait {
     height: 80px;
 }
 
+li.selected > a.thumbnail {
+    border-color: #2fa0ec;
+}
+
 .thumbnail>img,
 .thumbnail a>img {
     max-width: 100%;
     max-height: 100%;
+}
+
+.draggable-placeholder {
+    border: 1px dashed #D9D9D9 !important;
+    background-color: #F7F7F7 !important;
+    width: 20% !important;
+    padding: 3px !important;
+    height: 80px;
+    float: left;
 }
 
 

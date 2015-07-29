@@ -112,23 +112,38 @@ You should have received a copy of the GNU General Public License along with thi
             }
         },
 
+        _addDraggable: function() {
+            //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
+            //so disable dragging when clicking on label
+            var agent = navigator.userAgent.toLowerCase(),
+                $list = $('#imageList');
+            if ("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
+                $list.on('touchstart', function(e) {
+                    var li = $(e.target).closest('#module-modal-sort-list li');
+                    if (li.length == 0) return;
+                    var label = li.find('label.inline').get(0);
+                    if (label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation();
+                });
+            $list.sortable({
+                opacity: 0.8,
+                revert: true,
+                forceHelperSize: true,
+                placeholder: 'draggable-placeholder',
+                forcePlaceholderSize: true,
+                tolerance: 'pointer',
+                stop: function(event, ui) {
+                    //just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+                    $(ui.item).css('z-index', 'auto');
+                }
+            });
+            $list.disableSelection();
+        },
+
         imageWidget: function() {
             //Class for Widget Handling the upload of Files
-            var progress = $('<div/>', {
-                class: "progress",
-                id: "progress"
-            });
-            var progressbar = $('<div/>', {
-                id: "progressbar",
-                class: "progress-bar progress-bar-info progress-bar-striped",
-                role: "progressbar",
-                style: "width: 0%"
-            });
             var row = $('<div/>', {
                 "class": "row"
-            }).append($('<div/>', {
-                id: "progresswrapper"
-            })).append('<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。</div>').append($('<div/>', {
+            }).append('<div class="bg-warning">图片尺寸要求：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px；若为gif格式，则最小宽度为100px，最小高度为100px。</div>').append($('<div/>', {
                 id: "imgErrMsg"
             }));
             var container = $('<div/>', {
@@ -154,12 +169,31 @@ You should have received a copy of the GNU General Public License along with thi
                 class: "tab-pane active"
             });
             handleFileSelect = function(evt) {
-                $('#progresswrapper').empty().append(progress.append(progressbar));
-                var files = evt.target.files,
-                    $progress = $('#progress'),
-                    $progressbar = $('#progressbar');
-
+                var files = evt.target.files;
                 for (var i = 0, file; file = files[i]; i++) {
+                    var progress = $('<div/>', {
+                        class: "progress"
+                    });
+                    var progressbar = $('<div/>', {
+                        class: "progress-bar progress-bar-info progress-bar-striped",
+                        role: "progressbar",
+                        style: "width: 0%"
+                    });
+                    var li = $('<li/>', {
+                        class: "col-xs-12 col-sm-6 col-md-3 col-lg-3 editor-li ui-sortable-handle"
+                    });
+                    var a = $('<a/>', {
+                        href: "javascript:void(0)",
+                        class: "thumbnail"
+                    });
+                    var del = $('<button>', {
+                        class: "close"
+                    }).html('X').click(function() {
+                        $(this).closest('li').remove();
+                    });
+                    li.append(a).append(del).appendTo($('#imageList'));
+                    li.append(progress.append(progressbar));
+
                     if (!file.type.match('image.*') || !file.name.toLowerCase().match(/(?:gif|jpg|png|jpeg)$/)) { //Process only Images
                         methods.showMessage.apply(this, ["imgErrMsg", "图片格式错误，只能上传png, jpg, jpeg, gif格式的图片。"]);
                         continue;
@@ -174,7 +208,7 @@ You should have received a copy of the GNU General Public License along with thi
                     }
                     var data = new FormData();
                     data.append('file', file);
-                    $progressbar.css({
+                    progressbar.css({
                         'width': '20%'
                     });
                     $.ajax({
@@ -189,7 +223,7 @@ You should have received a copy of the GNU General Public License along with thi
                             var newsrc = res.data;
                             var newImg = new Image(),
                                 w, h;
-                            $progressbar.css({
+                            progressbar.css({
                                 'width': '80%'
                             });
                             newImg.onload = function() {
@@ -197,16 +231,22 @@ You should have received a copy of the GNU General Public License along with thi
                                 w = newImg.width;
                                 if (newsrc.match(/\.gif$/i)) {
                                     if ((w < 100) || (w > 780) || (h < 100) || (h > 2048)) {
-                                        methods.showMessage.apply(this, ["imgErrMsg", "GIF图片尺寸要求是：最小宽度100px，最大宽度780px；最小高度100px，最大高度2048px。"]);
-                                        $("#uploadImageBar :input").val("");
-                                        $('#progresswrapper').empty();
+                                        // methods.showMessage.apply(this, ["imgErrMsg", "GIF图片尺寸要求是：最小宽度100px，最大宽度780px；最小高度100px，最大高度2048px。"]);
+                                        // $("#uploadImageBar :input").val("");
+                                        // $('#progresswrapper').empty();
+                                        // continue;
+                                        a.html("图片尺寸不合规。");
+                                        progress.remove();
                                         return false;
                                     }
                                 } else {
                                     if ((w < 440) || (w > 780) || (h < 290) || (h > 2048)) {
-                                        methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。"]);
-                                        $("#uploadImageBar :input").val("");
-                                        $('#progresswrapper').empty();
+                                        // methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px；若为gif格式，则最小宽度为100px，最小高度为100px。"]);
+                                        // $("#uploadImageBar :input").val("");
+                                        // $('#progresswrapper').empty();
+                                        // continue;
+                                        a.html("图片尺寸不合规。");
+                                        progress.remove();
                                         return false;
                                     }
                                 }
@@ -214,27 +254,30 @@ You should have received a copy of the GNU General Public License along with thi
                                     var key = $.md5('wisetimgkey_noexpire_3f60e7362b8c23871c7564327a31d9d70' + newsrc);
                                     newsrc = 'http://cdn01.baidu-img.cn/timg?cbs&quality=60&size=b' + w + '_' + h + '&sec=0&di=' + key + '&src=' + newsrc;
                                 }
-                                $progressbar.css({
+                                progressbar.css({
                                     'width': '100%'
                                 });
-                                var li = $('<li/>', {
-                                    class: "col-xs-12 col-sm-6 col-md-3 col-lg-3 editor-li"
+                                progress.remove();
+
+                                li.attr({
+                                    'data-img': $(this).attr('src'),
+                                    'data-width': w,
+                                    'data-height': h
                                 });
-                                var a = $('<a/>', {
-                                    href: "javascript:void(0)",
-                                    class: "thumbnail"
-                                });
-                                var del = $('<button>', {
-                                    class: "close"
-                                }).html('X').click(function() {
-                                    $(this).closest('li').remove();
-                                });
+
                                 var image = $('<img/>', {
                                     src: newsrc
                                 }).appendTo(a).click(function() {
-                                    $('#imageList').data('current', '<img src="' + $(this).attr('src') + '" style="width:' + w + 'px;height:' + h + 'px;"/>');
+                                    if (li.hasClass('selected')) {
+                                        li.removeClass('selected');
+                                    } else {
+                                        li.addClass('selected');
+                                    }
+                                    // $('#imageList').data('current', '<img src="' + $(this).attr('src') + '" style="width:' + w + 'px;height:' + h + 'px;"/>');
+
                                 });
-                                li.append(a).append(del).appendTo($('#imageList'));
+
+                                methods._addDraggable.apply(this);
                             }
                             newImg.src = newsrc;
                         } else {
@@ -311,7 +354,7 @@ You should have received a copy of the GNU General Public License along with thi
                         }
                     } else {
                         if ((w < 440) || (w > 780) || (h < 290) || (h > 2048)) {
-                            methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px。"]);
+                            methods.showMessage.apply(this, ["imgErrMsg", "图片尺寸要求是：最小宽度440px，最大宽度780px；最小高度290px，最大高度2048px；若为gif格式，则最小宽度为100px，最小高度为100px。"]);
                             $("#uploadImageBar :input").val("");
                             $('#progresswrapper').empty();
                             return false;
@@ -325,8 +368,12 @@ You should have received a copy of the GNU General Public License along with thi
                         'width': '100%'
                     });
                     var li = $('<li/>', {
-                        class: "span6 col-xs-12 col-sm-6 col-md-3 col-lg-3 editor-li"
-                    });
+                        class: "span6 col-xs-12 col-sm-6 col-md-3 col-lg-3 editor-li ui-sortable-handle"
+                    }).attr({
+                        'data-img': url,
+                        'data-width': w,
+                        'data-height': h
+                    });;
                     var a = $('<a/>', {
                         href: "javascript:void(0)",
                         class: "thumbnail"
@@ -343,9 +390,15 @@ You should have received a copy of the GNU General Public License along with thi
                         return false;
                     }).load(function() {
                         $(this).appendTo(a).click(function() {
-                            $('#imageList').data('current', '<img src="' + $(this).attr('src') + '" style="width:' + w + 'px;height:' + h + 'px;"/>');
+                            if (li.hasClass('selected')) {
+                                li.removeClass('selected');
+                            } else {
+                                li.addClass('selected');
+                            }
+                            // $('#imageList').data('current', '<img src="' + $(this).attr('src') + '" style="width:' + w + 'px;height:' + h + 'px;"/>');
                         });
                         li.append(a).append(del).appendTo($('#imageList'));
+                        methods._addDraggable.apply(this);
                     });
                 }
                 newImg.src = url;
@@ -361,7 +414,7 @@ You should have received a copy of the GNU General Public License along with thi
                 'class': 'col-xs-12 col-sm-12 col-md-12 col-lg-12'
             });
             var imageList = $('<ul/>', {
-                "class": "thumbnails padding-top list-unstyled",
+                "class": "thumbnails padding-top list-unstyled item-list ui-sortable",
                 "id": 'imageList'
             }).appendTo(imageListContainer);
             row.append(container).append(imageListContainer);
@@ -475,12 +528,12 @@ You should have received a copy of the GNU General Public License along with thi
                 id: "imgAlt",
                 type: "text",
                 class: "form-control form-control-link ",
-                placeholder: "Alt Text",
+                placeholder: "替换文字",
             })).append($('<input/>', {
                 id: "imgTarget",
                 class: "form-control form-control-link ",
                 type: "text",
-                placeholder: "Link Target"
+                placeholder: "链接地址"
             })).append($('<input/>', {
                 id: "imgHidden",
                 type: "hidden"
@@ -1260,7 +1313,7 @@ You should have received a copy of the GNU General Public License along with thi
                     "beforeLoad": function() {
                         $('#imageURL').val("");
                         $("#uploadImageBar :input").val("");
-                        $('#imageList').data('current', "");
+                        // $('#imageList').data('current', "");
                         var imgCount = $('#imageList').children('li').length;
                         if (imgCount > 30) {
                             $('#imageList').children('li').each(function(index, item) {
@@ -1273,12 +1326,17 @@ You should have received a copy of the GNU General Public License along with thi
                     "onSave": function() {
                         $('#progresswrapper').empty();
                         methods.restoreSelection.apply(this);
-                        if ($('#imageList').data('current')) {
-                            if (navigator.userAgent.match(/MSIE/i)) {
-                                methods.restoreSelection.apply(this, [$('#imageList').data('current'), 'html']);
-                            } else {
-                                document.execCommand('insertHTML', false, $('#imageList').data('current'));
-                            }
+                        var $selected = $('#imageList').children('li.selected');
+                        if ($selected.length) {
+                            $selected.each(function() {
+                                var img = '<img src="' + $(this).attr('data-img') + '" style="width:' + $(this).attr('data-width') + 'px;height:' + $(this).attr('data-height') + 'px;">';
+                                if (navigator.userAgent.match(/MSIE/i)) {
+                                    methods.restoreSelection.apply(this, [img, 'html']);
+                                } else {
+                                    document.execCommand('insertHTML', false, img);
+                                }
+                            });
+
                         } else {
                             methods.showMessage.apply(this, ["imgErrMsg", "请选中要插入的图片。"]);
                             return false;
@@ -1736,18 +1794,18 @@ You should have received a copy of the GNU General Public License along with thi
 
         createImageContext: function(event, cMenuUl) {
             var cModalId = "imgAttribute";
-            var cModalHeader = "Image Attributes";
+            var cModalHeader = "设置图片属性";
             var imgModalBody = methods.imageAttributeWidget.apply(this, ["edit"]);
             var onSave = function() {
                 var urlPattern = /(http|ftp|https):\/\/[\w-]+(\.[\w-]+)+([\w.,@?^=%&amp;:\/~+#-]*[\w@?^=%&amp;\/~+#-])?/;
                 var imageAlt = $('#imgAlt').val();
                 var imageTarget = $('#imgTarget').val();
                 if (imageAlt == "") {
-                    methods.showMessage.apply(this, ["imageErrMsg", "Please enter image alternative text"]);
+                    methods.showMessage.apply(this, ["imageErrMsg", "请输入图片替换文字"]);
                     return false;
                 }
                 if (imageTarget != "" && !imageTarget.match(urlPattern)) {
-                    methods.showMessage.apply(this, ["imageErrMsg", "Please enter valid url"]);
+                    methods.showMessage.apply(this, ["imageErrMsg", "请输入有效链接地址"]);
                     return false;
                 }
                 if ($("#imgHidden").val() != "") {
@@ -1773,7 +1831,7 @@ You should have received a copy of the GNU General Public License along with thi
             methods.createModal.apply(this, [cModalId, cModalHeader, imgModalBody, onSave]);
             var modalTrigger = $('<a/>', {
                 href: "#" + cModalId,
-                "text": "Image Attributes",
+                "text": "设置",
                 "data-toggle": "modal"
             }).click(function(e) {
                 return function() {
@@ -1798,7 +1856,7 @@ You should have received a copy of the GNU General Public License along with thi
             }(event));
             cMenuUl.append($('<li/>').append(modalTrigger))
                 .append($('<li/>').append($('<a/>', {
-                    text: "Remove Image"
+                    text: "删除"
                 }).click(
                     function(e) {
                         return function() {

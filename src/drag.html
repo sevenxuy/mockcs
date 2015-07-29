@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>百度浏览器吐槽开放平台</title>
+    <link rel="stylesheet" href="css/jquery-ui.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="css/editor.css" />
+    <link rel="stylesheet" href="css/jquery.datetimepicker.css">
+    <link rel="stylesheet" href="css/mock.css">
+    <style>
+    .item-list {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0
+    }
+    
+    .draggable-placeholder {
+        border: 2px dashed #D9D9D9 !important;
+        background-color: #F7F7F7 !important;
+        width: 115px;
+        height: 80px;
+        float: left;
+    }
+    
+    .ui-sortable-handle {
+        width: 115px;
+        height: 80px;
+        float: left;
+    }
+    </style>
+</head>
+
+<body>
+    <ul id="sortme" class="item-list ui-sortable">
+        <li class="ui-sortable-handle">aaa</li>
+        <li class="ui-sortable-handle">bbb</li>
+        <li class="ui-sortable-handle">ccc</li>
+        <li class="ui-sortable-handle">ddd</li>
+        <li class="ui-sortable-handle">eee</li>
+    </ul>
+    <script src="js/lib/jquery-1.9.1.min.js"></script>
+    <script src="js/lib/jquery-ui.min.js"></script>
+    <script src="js/lib/bootstrap.min.js"></script>
+    <script src="js/lib/jquery.ui.touch-punch.min.js"></script>
+    <script>
+    //Android's default browser somehow is confused when tapping on label which will lead to dragging the task
+    //so disable dragging when clicking on label
+    var agent = navigator.userAgent.toLowerCase(),
+        $list = $('#sortme');
+    if ("ontouchstart" in document && /applewebkit/.test(agent) && /android/.test(agent))
+        $list.on('touchstart', function(e) {
+            var li = $(e.target).closest('#module-modal-sort-list li');
+            if (li.length == 0) return;
+            var label = li.find('label.inline').get(0);
+            if (label == e.target || $.contains(label, e.target)) e.stopImmediatePropagation();
+        });
+    $list.sortable({
+        opacity: 0.8,
+        revert: true,
+        forceHelperSize: true,
+        placeholder: 'draggable-placeholder',
+        forcePlaceholderSize: true,
+        tolerance: 'pointer',
+        stop: function(event, ui) {
+            //just for Chrome!!!! so that dropdowns on items don't appear below other items after being moved
+            $(ui.item).css('z-index', 'auto');
+        }
+    });
+    $list.disableSelection();
+    </script>
+</body>
+
+</html>

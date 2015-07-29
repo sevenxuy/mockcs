@@ -741,6 +741,7 @@ define(function(require, exports, module) {
                 content = content.replace(/<(((\/)?(thead|tbody|tfoot))|(tr|td|span|li).*?|(\/(th|td|span))|hr(\/)?|iframe.*iframe|xml.*xml)>|<!--.*-->/ig, '');
                 content = content.replace(/<(td|th)>/ig, ' ');
                 content = content.replace(/<(h1|h2|h3|h4|h5|h6|p).*?>/ig, '<$1>');
+                content = content.replace(/\s*(=|:)\s*/ig, '$1'); //remove blank around = and :
                 content = content.replace(/\s(class|width|height|font|alt|data|id|(data-.*?))=".*?"/ig, '');
                 content = content.replace(/\s?(margin|padding|line-height|outline|vertical-align|display|(list|font|border|max|min|background|text|color).*?):.*?;/ig, '');
                 content = content.replace(/\sstyle="(\s)*"/ig, '');

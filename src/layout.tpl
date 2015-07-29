@@ -4,12 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <title>百度浏览器吐槽开放平台</title>
-  <link rel="stylesheet" href="{%$resourceloc%}/css/bootstrap.min.css">
-  <link rel="stylesheet" href="{%$resourceloc%}/css/font-awesome.min.css">
-  <link rel="stylesheet" href="{%$resourceloc%}/css/default.css">
-  <link rel="stylesheet" href="{%$resourceloc%}/css/editor.css"/>
-  <link rel="stylesheet" href="{%$resourceloc%}/css/jquery.datetimepicker.css">
-  <link rel="stylesheet" href="{%$resourceloc%}/css/mock.css">
+  <link rel="stylesheet" href="{%$resourceloc%}/vip/css/jquery-ui.min.css">
+  <link rel="stylesheet" href="{%$resourceloc%}/vip/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{%$resourceloc%}/vip/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{%$resourceloc%}/vip/css/default.css">
+  <link rel="stylesheet" href="{%$resourceloc%}/vip/css/editor.css"/>
+  <link rel="stylesheet" href="{%$resourceloc%}/vip/css/jquery.datetimepicker.css">
+  <link rel="stylesheet" href="{%$resourceloc%}/vip/css/mock.css">
   <script type='text/javascript' src='http://passport.baidu.com/passApi/js/wrapper.js?cdnversion={%$smarty.now%}'></script>
   <script type="text/javascript ">
     var $userinfo ={%$userinfo%};
@@ -53,7 +54,7 @@
       </div>
     </div>
   </div>
-  <script data-main="{%$resourceloc%}/js/app/main" src="{%$resourceloc%}/js/lib/require-2.1.11.min.js"></script>
+  <script data-main="{%$resourceloc%}/vip/js/app/main" src="{%$resourceloc%}/vip/js/lib/require-2.1.11.min.js"></script>
   <script type="text/javascript">
     if (location.search.substring(1)) {
       var queryStr = location.search.substring(1).split('&'),oneQueryStr,callbackStr,config = {};
